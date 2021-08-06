@@ -1,0 +1,41 @@
+{
+  "name": "generate-next-links",
+  "description": "Generate links enum containing paths to nextjs pages",
+  "version": "1.0.0",
+  "author": {
+    "name": "Christian Lindeneg",
+    "email": "hi@lindeneg.org",
+    "url": "https://lindeneg.org"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "nextjs",
+    "utility",
+    "generate-links"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindeneg/generate-next-links.git"
+  },
+  "homepage": "https://github.com/lindeneg/generate-next-links#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": {
+    "generate-next-links": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npm run start -- --path __mock__ --dry --verbose",
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/node": "^16.4.12",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "glob": "^7.1.7"
+  }
+}

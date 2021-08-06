@@ -10,6 +10,10 @@ const logLevel = {
   [LogLevel.Error]: console.error,
 };
 
-export function log(level: LogLevel, ...args: string[]) {
-  logLevel[level](...args);
+export function getRunTimeInSeconds(start: number) {
+  return ((Date.now() - start) / 1000).toFixed(3);
+}
+
+export function log(dry: boolean, level: LogLevel, ...args: string[]) {
+  !dry && logLevel[level](...args);
 }

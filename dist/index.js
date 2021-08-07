@@ -36,7 +36,12 @@ function main(config) {
     if (config.dry) {
         logger(log_1.LogLevel.Debug, "dry run chosen, no files committed\n");
         log_1.log(false, log_1.LogLevel.Debug, config.name, sortedLinks, "\n\ndry run generated " + sortedLinks.length + " links in " + log_1.getRunTimeInSeconds(start) + " seconds");
-        process_1.exit(0);
+        if (process.env.NODE_ENV === "test") {
+            return [config.name, sortedLinks];
+        }
+        else {
+            process_1.exit(0);
+        }
     }
     create_1.createTsLinksEnum(config.out, sortedLinks, config.name, start, config.verbose);
 }

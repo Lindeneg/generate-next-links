@@ -16,7 +16,7 @@ export async function createTsLinksEnum(
   fs.writeFile(
     name,
     `
-    enum ${enumName} {
+    export enum ${enumName} {
         ${links.map(([k, v]) => `${k} = "${v}"`)}
     };
     `,

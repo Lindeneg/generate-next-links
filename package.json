@@ -27,7 +27,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "npm run start -- --path __mock__ --dry --verbose",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "test": "jest"
   },

@@ -2,6 +2,23 @@ import fs from "fs";
 import { exit } from "process";
 import { LogLevel, log } from "./log";
 
+const HELP = `
+Usage: generate-next-links 
+
+If no args are specified, a 'pages' folder must be located
+inside the folder where the script is running from
+
+Options:
+ --name      Name of generated TypeScript enum
+ --path      Path to folder where 'pages' directory resides
+ --out       Path where TypeScript file will be written to
+ --dry       Perform all operations except writing to disk
+ --verbose   Show all log messages in stdout
+ --help      Show help                                                
+ --version   Show version number
+
+`;
+
 export type Config = {
   path: string;
   out: string;
@@ -57,6 +74,9 @@ export function getConfig(rootPath: string, args: string[]): Config {
         case "--verbose":
           config.verbose = true;
           break;
+        case "--help":
+          log(false, LogLevel.Debug, HELP);
+          exit(0);
         default:
           break;
       }
@@ -67,7 +87,7 @@ export function getConfig(rootPath: string, args: string[]): Config {
     if (process.env.NODE_ENV === "test") {
       throw new Error("`pages` folder not found.. exiting..");
     } else {
-      // show help
+      log(false, LogLevel.Debug, HELP);
       exit(0);
     }
   }

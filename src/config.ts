@@ -1,5 +1,6 @@
 import fs from "fs";
 import { exit } from "process";
+import { LogLevel, log } from "./log";
 
 export type Config = {
   path: string;

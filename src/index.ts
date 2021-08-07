@@ -1,10 +1,12 @@
 import glob from "glob";
+import { exit } from "process";
 import { Link, getLink } from "./link";
 import { createTsLinksEnum } from "./create";
 import { Config } from "./config";
-import { exit } from "process";
+import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export function main(config: Config) {
+  const logger = log.bind(null, !config.verbose);
   const links: Link[] = [];
   const start = Date.now();
   glob.sync(`${config.path}{/**/*.jsx,/**/*.tsx}`).map((f) => {
@@ -13,22 +15,32 @@ export function main(config: Config) {
       const name = names[1];
       const linkNames = getLink(name);
       if (linkNames) {
-        config.verbose &&
-          console.log(`found nextjs link path: '${linkNames[1]}'`);
+        logger(LogLevel.Debug, `found nextjs link path: '${linkNames[1]}'`);
         links.push(linkNames);
       } else {
-        config.verbose && console.log(`ignoring file: '${name}'`);
+        logger(LogLevel.Debug, `ignoring file: '${name}'`);
       }
     } else {
-      console.log(`error: name did not contain 'pages' in its path: ${f}`);
+      logger(
+        LogLevel.Error,
+        `error: name did not contain 'pages' in its path: ${f}`
+      );
       exit(1);
     }
   });
-  config.verbose && console.log(`found ${links.length} links in total`);
+  logger(LogLevel.Debug, `sorting ${links.length} nextjs links`);
   const sortedLinks = links.sort((a, b) => (b[0] > a[0] ? -1 : 1));
   if (config.dry) {
-    config.verbose && console.log("dry run chosen, no files committed...\n");
-    console.log(config.name, sortedLinks);
+    logger(LogLevel.Debug, "dry run chosen, no files committed\n");
+    log(
+      false,
+      LogLevel.Debug,
+      config.name,
+      sortedLinks,
+      `\ndry run generated ${sortedLinks.length} links in ${getRunTimeInSeconds(
+        start
+      )} seconds`
+    );
     exit(0);
   }
   createTsLinksEnum(

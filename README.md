@@ -6,15 +6,29 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 
 ### Getting Started
 
-#### Installing
+##### Installing
 
-- How/where to download your program
-- Any modifications needed to be made to files/folders
+- `npm install -g generate-next-links`
+- or
+- `npx generate-next-links`
 
-#### Executing program
+##### Options
 
-- How to run the program
-- Step-by-step bullets
+```sh
+Usage: generate-next-links
+
+If no args are specified, a 'pages' folder must be located
+inside the folder where the script is running from
+
+Options:
+ --name      Name of generated TypeScript enum
+ --path      Path to folder where 'pages' directory resides
+ --out       Path where TypeScript file will be written to
+ --dry       Perform all operations except writing to disk
+ --verbose   Show all log messages in stdout
+ --help      Show help
+ --version   Show version number
+```
 
 ---
 

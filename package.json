@@ -28,7 +28,8 @@
     "start": "node index.js",
     "dev": "npm run start -- --path __mock__ --dry --verbose",
     "build": "tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "echo 'no tests...'"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

@@ -22,6 +22,6 @@ function log(dry, level) {
     for (var _i = 2; _i < arguments.length; _i++) {
         args[_i - 2] = arguments[_i];
     }
-    !dry && logLevel[level].apply(logLevel, args);
+    process.env.NODE_ENV !== "test" && !dry && logLevel[level].apply(logLevel, args);
 }
 exports.log = log;

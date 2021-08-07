@@ -63,8 +63,13 @@ function getConfig(rootPath, args) {
     }
     if (!isDirectory("pages", config.path, config.verbose)) {
         log_1.log(false, log_1.LogLevel.Error, "`pages` folder not found.. exiting..");
-        log_1.log(false, log_1.LogLevel.Debug, HELP);
-        process_1.exit(0);
+        if (process.env.NODE_ENV === "test") {
+            throw new Error("`pages` folder not found.. exiting..");
+        }
+        else {
+            log_1.log(false, log_1.LogLevel.Debug, HELP);
+            process_1.exit(0);
+        }
     }
     config.path += (config.path.endsWith("/") ? "" : "/") + "pages";
     log_1.log(!config.verbose, log_1.LogLevel.Debug, "parsed config: ", config);

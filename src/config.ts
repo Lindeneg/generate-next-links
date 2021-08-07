@@ -18,7 +18,7 @@ export function isDirectory(
   try {
     return fs.lstatSync(`${path}/${target}`).isDirectory();
   } catch (err) {
-    verbose && console.error(err);
+    log(!verbose, LogLevel.Warning, err);
   }
   return false;
 }
@@ -63,12 +63,11 @@ export function getConfig(rootPath: string, args: string[]): Config {
     }
   }
   if (!isDirectory("pages", config.path, config.verbose)) {
-    console.log(
-      "please run the script inside a directory with a `pages` folder or specify a `--path` argument."
-    );
+    log(false, LogLevel.Error, "`pages` folder not found.. exiting..");
+    // show help
     exit(0);
   }
   config.path += (config.path.endsWith("/") ? "" : "/") + "pages";
-  config.verbose && console.log("parsed config: ", config);
+  log(!config.verbose, LogLevel.Debug, "parsed config: ", config);
   return config;
 }

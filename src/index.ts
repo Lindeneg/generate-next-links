@@ -37,7 +37,7 @@ export function main(config: Config) {
       LogLevel.Debug,
       config.name,
       sortedLinks,
-      `\ndry run generated ${sortedLinks.length} links in ${getRunTimeInSeconds(
+      `\n\ndry run generated ${sortedLinks.length} links in ${getRunTimeInSeconds(
         start
       )} seconds`
     );

@@ -28,7 +28,6 @@ Options:
  --dry       Perform all operations except writing to disk
  --verbose   Show all log messages in stdout
  --help      Show help
- --version   Show version number
 ```
 
 ---

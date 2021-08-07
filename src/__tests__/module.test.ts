@@ -20,10 +20,11 @@ describe("Module test suite", () => {
         ["ADMIN_BLOG", "/admin/blog"],
         ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
         ["ADMIN_USER_ID", "/admin/user/[id]"],
+        ["CUSTOMER_ID", "/[customerId]"],
         ["FAQ_LANGUAGE", "/faq/[language]"],
         ["PRODUCTS_CATEGORY", "/products/[category]"],
         [
-          "PRODUCTS_CATEGORY_THEME_COLOR_COLORID",
+          "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID",
           "/products/[category]/theme/color/[colorId]",
         ],
         [

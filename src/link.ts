@@ -1,7 +1,7 @@
 export type Link = [string, string];
 
 export function getLink(target: string): Link | null {
-  const name = target.replace(/\.(tsx|jsx)/g, "");
+  const name = target.replace(/^\//, "").replace(/\.(tsx|jsx)/g, "");
   if (!name || /^(\_app|index)$/.test(name)) {
     return null;
   }
@@ -12,9 +12,11 @@ export function getLink(target: string): Link | null {
   return [cleanLinkName(name), "/" + name];
 }
 
-function cleanLinkName(name: string) {
+export function cleanLinkName(name: string) {
   return name
+    .replace(/^\//, "")
     .replace(/(\/|\-)/g, "_")
     .replace(/\[|\]/g, "")
-    .toUpperCase();
+    .toUpperCase()
+    .trim();
 }

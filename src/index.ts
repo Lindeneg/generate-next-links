@@ -1,15 +1,15 @@
-import glob from "glob";
 import { exit } from "process";
 import { Link, getLink } from "./link";
 import { createTsLinksEnum } from "./create";
 import { Config } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
-export function main(config: Config): [string, Link[]] | undefined {
+export function main(config: Config) {
   const logger = log.bind(null, !config.verbose);
   const links: Link[] = [];
   const start = Date.now();
-  glob.sync(`${config.path}{/**/*.jsx,/**/*.tsx}`).map((f) => {
+  //glob.sync(`${config.path}{/**/*.jsx,/**/*.tsx}`).map((f) => {
+  /*
     const names = f.split("pages/");
     if (names.length >= 2) {
       const name = names[1];
@@ -54,4 +54,5 @@ export function main(config: Config): [string, Link[]] | undefined {
     start,
     config.verbose
   );
+  */
 }

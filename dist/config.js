@@ -7,7 +7,7 @@ exports.getConfig = exports.isDirectory = void 0;
 var fs_1 = __importDefault(require("fs"));
 var process_1 = require("process");
 var log_1 = require("./log");
-var HELP = "\nUsage: generate-next-links \n\nIf no args are specified, a 'pages' folder must be located\ninside the folder where the script is running from\n\nOptions:\n --name      Name of generated TypeScript enum\n --path      Path to folder where 'pages' directory resides\n --out       Path where TypeScript file will be written to\n --dry       Perform all operations except writing to disk\n --verbose   Show all log messages in stdout\n --help      Show help                                                \n --version   Show version number\n\n";
+var HELP = "\nUsage: generate-next-links \n\nIf no args are specified, a 'pages' folder must be located\ninside the folder where the script is running from\n\nOptions:\n --name      Name of generated TypeScript enum\n --path      Path to folder where 'pages' directory resides\n --out       Path where TypeScript file will be written to\n --dry       Perform all operations except writing to disk\n --verbose   Show all log messages in stdout\n --help      Show help                                                \n\n";
 function isDirectory(target, path, verbose) {
     try {
         return fs_1.default.lstatSync(path + "/" + target).isDirectory();

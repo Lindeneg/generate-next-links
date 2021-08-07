@@ -5,7 +5,7 @@ import { createTsLinksEnum } from "./create";
 import { Config } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
-export function main(config: Config) {
+export function main(config: Config): [string, Link[]] | undefined {
   const logger = log.bind(null, !config.verbose);
   const links: Link[] = [];
   const start = Date.now();
@@ -37,11 +37,15 @@ export function main(config: Config) {
       LogLevel.Debug,
       config.name,
       sortedLinks,
-      `\n\ndry run generated ${sortedLinks.length} links in ${getRunTimeInSeconds(
-        start
-      )} seconds`
+      `\n\ndry run generated ${
+        sortedLinks.length
+      } links in ${getRunTimeInSeconds(start)} seconds`
     );
-    exit(0);
+    if (process.env.NODE_ENV === "test") {
+      return [config.name, sortedLinks];
+    } else {
+      exit(0);
+    }
   }
   createTsLinksEnum(
     config.out,

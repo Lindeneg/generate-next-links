@@ -1,1 +1,1 @@
-This folder simply contains a mock of a real nextjs pages folder. It's neat to have this mock structure as it allows for manually testing the script and if Jest is implemented at some point, those tests can be automated.
+This folder simply contains a mock of a real nextjs pages folder. Used in development and in testing.

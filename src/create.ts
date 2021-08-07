@@ -54,3 +54,5 @@ export async function createTsLinksEnum(
     }
   );
 }
+
+export function createJsLinksObject() {}

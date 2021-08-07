@@ -29,12 +29,13 @@
     "dev": "npm run start -- --path __mock__ --dry --verbose",
     "build": "tsc",
     "clean": "rm -rf dist",
-    "test": "echo 'no tests...'"
+    "test": "jest"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.12",
+    "ts-jest": "^27.0.4",
     "typescript": "^4.3.5"
   },
   "dependencies": {

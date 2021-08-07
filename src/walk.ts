@@ -60,32 +60,33 @@ function walk(
 }
 
 walk("__mock__", (err, results) => {
-  console.log(results);
   const root: Node = { id: Id.next(), parentId: null };
   const data: Node[] = [root];
   const map: NodeMap = new Map();
   map.set(root.id, "/");
   const parents: { [k: string]: Node["id"] } = {};
-  console.log(results);
   results.forEach((result) => {
-    let id = Id.next();
     let parentId = root.id;
     let child = "";
     const splitted = result.split("pages/");
     if (splitted.length >= 2) {
-      const targets = splitted[1].split("/");
-      child = targets[targets.length - 1].replace(/\.(tsx|jsx)/g, "");
-      if (targets.length > 1) {
-        const parent = targets.slice(0, targets.length - 1).join("/");
-        if (!parents[parent]) {
-          parentId = Id.next();
-          parents[parent] = parentId;
-        } else {
-          parentId = parents[parent];
+      if (!/^(_app|index)\.tsx$/.test(splitted[1])) {
+        const targets = splitted[1].split("/");
+        child = targets[targets.length - 1].replace(/\.(tsx|jsx)/g, "");
+        if (targets.length > 1) {
+          const parent = targets.slice(0, targets.length - 1).join("/");
+          if (!parents[parent]) {
+            parentId = Id.next();
+            parents[parent] = parentId;
+            map.set(parentId, parent);
+          } else {
+            parentId = parents[parent];
+          }
         }
       }
     }
     if (child !== "") {
+      const id = Id.next();
       map.set(id, child);
       data.push({ id, parentId });
     }

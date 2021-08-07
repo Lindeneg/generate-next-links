@@ -14,6 +14,7 @@ Options:
  --out       Path where TypeScript file will be written to
  --dry       Perform all operations except writing to disk
  --verbose   Show all log messages in stdout
+ --version   Show current version
  --help      Show help                                                
 
 `;
@@ -67,6 +68,13 @@ export function getConfig(rootPath: string, args: string[]): Config {
             }
           }
           break;
+        case "--version":
+          log(
+            false,
+            LogLevel.Debug,
+            `version: ${process.env.npm_package_version}`
+          );
+          exit(0);
         case "--dry":
           config.dry = true;
           break;

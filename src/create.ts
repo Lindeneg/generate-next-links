@@ -1,6 +1,7 @@
 import fs from "fs";
 import { exec } from "child_process";
 import { Link } from "./link";
+import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export async function createTsLinksEnum(
   path: string,
@@ -9,8 +10,9 @@ export async function createTsLinksEnum(
   start = Date.now(),
   verbose = false
 ) {
+  const logger = log.bind(null, !verbose);
   const name = `${path}/links_${Date.now()}.ts`;
-  verbose && console.log(`creating file: ${name}`);
+  logger(LogLevel.Debug, `creating file: ${name}`);
   fs.writeFile(
     name,
     `
@@ -20,24 +22,34 @@ export async function createTsLinksEnum(
     `,
     (err) => {
       if (!err) {
-        console.log("formatting file..");
+        logger(LogLevel.Debug, `formatting file with prettier...`);
         exec(`npx prettier --write ${name}`, (error, stdout, stderr) => {
           if (error) {
-            verbose && console.log(`error: ${error.message}`);
+            log(
+              false,
+              LogLevel.Warning,
+              "failed to format file with prettier.."
+            );
+            logger(LogLevel.Error, error.message);
           } else if (stderr) {
-            verbose && console.log(`stderr: ${stderr}`);
+            log(
+              false,
+              LogLevel.Warning,
+              "failed to run prettier format command.."
+            );
+            logger(LogLevel.Error, stderr);
           } else {
-            verbose && console.log(`nextjs links enum successfully created`);
-            verbose &&
-              console.log(
-                `finished running in ${((Date.now() - start) / 1000).toFixed(
-                  3
-                )} seconds`
-              );
+            log(
+              false,
+              LogLevel.Debug,
+              `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
+                start
+              )} seconds here: ${name}`
+            );
           }
         });
       } else {
-        verbose && console.log(err);
+        logger(LogLevel.Error, err);
       }
     }
   );

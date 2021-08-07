@@ -1,23 +1,14 @@
-import fs from "fs";
 import { getConfig, isDirectory } from "../config";
-
-const name = `__mockdir__${Date.now()}__`;
 
 describe("Config Test Suite", () => {
   test("can find exiting directory", () => {
-    fs.mkdir(name, (err) => {
-      expect(isDirectory(name, "./", false)).toBe(true);
-    });
+    expect(isDirectory("__mockdir__", "./src/__tests__", false)).toBe(true);
   });
 
   test("can not find non-exiting directory", () => {
-    try {
-      fs.rm(name, { recursive: true, force: true }, (err) => {
-        expect(isDirectory(name, "./", false)).toBe(false);
-      });
-    } catch (err) {
-      expect(isDirectory(name, "./", false)).toBe(false);
-    }
+    expect(
+      isDirectory("__mockdir__" + Date.now(), "./src/__tests__", false)
+    ).toBe(false);
   });
 
   test("get config throws on root path not having a `pages` folder", () => {

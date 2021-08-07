@@ -14,6 +14,6 @@ export function getRunTimeInSeconds(start: number) {
   return ((Date.now() - start) / 1000).toFixed(3);
 }
 
-export function log(dry: boolean, level: LogLevel, ...args: string[]) {
+export function log(dry: boolean, level: LogLevel, ...args: unknown[]) {
   !dry && logLevel[level](...args);
 }

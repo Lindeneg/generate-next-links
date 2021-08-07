@@ -9,8 +9,9 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 ##### Installing
 
 - `npm install -g generate-next-links`
-- or
-- `npx generate-next-links`
+- `generate-next-links [...ARGS]`
+- **or**
+- `npx generate-next-links [...ARGS]`
 
 ##### Options
 

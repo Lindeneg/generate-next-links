@@ -64,8 +64,12 @@ export function getConfig(rootPath: string, args: string[]): Config {
   }
   if (!isDirectory("pages", config.path, config.verbose)) {
     log(false, LogLevel.Error, "`pages` folder not found.. exiting..");
-    // show help
-    exit(0);
+    if (process.env.NODE_ENV === "test") {
+      throw new Error("`pages` folder not found.. exiting..");
+    } else {
+      // show help
+      exit(0);
+    }
   }
   config.path += (config.path.endsWith("/") ? "" : "/") + "pages";
   log(!config.verbose, LogLevel.Debug, "parsed config: ", config);

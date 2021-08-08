@@ -1,7 +1,8 @@
+import { exit } from "process";
 import { Id } from "./id";
 import { walk } from "./walk";
 import { Config } from "./config";
-import { LogLevel, Logger } from "./log";
+import { LogLevel, Logger, log } from "./log";
 import { Parents, getParent, getGrandParentId } from "./family";
 
 export type Node = {
@@ -23,12 +24,76 @@ export function getNodeMap(initializeWithIndex = true): NodeMap {
   return map;
 }
 
+export function handleChild(
+  child: string,
+  nodes: Node[],
+  map: NodeMap,
+  parentId: number | null,
+  indexId: number | null,
+  logger?: Logger
+) {
+  if (child !== "") {
+    if (child === "index") {
+      if (indexId !== null) {
+        logger && logger(LogLevel.Debug, `using reuseable node '#${indexId}'`);
+        nodes.push(createNode(indexId, parentId));
+        return indexId;
+      } else {
+        const id = Id.next();
+        indexId = id;
+        logger && logger(LogLevel.Debug, `creating reuseable node '#${id}'`);
+        map.set(id, { name: "", isDir: false });
+        nodes.push(createNode(id, parentId));
+        return indexId;
+      }
+    } else {
+      const id = Id.next();
+      map.set(id, { name: child, isDir: false });
+      nodes.push(createNode(id, parentId));
+      logger && logger(LogLevel.Debug, `found child '${child}#${id}'`);
+    }
+  }
+}
+
+export function handleParent(
+  targets: string[],
+  nodes: Node[],
+  map: NodeMap,
+  parents: Parents,
+  parentId: number | null,
+  logger?: Logger
+) {
+  if (targets.length > 1) {
+    const [parentName, parentPath] = getParent(targets);
+    if (!parents[parentPath]) {
+      parentId = Id.next();
+      parents[parentPath] = parentId;
+      nodes.push(
+        createNode(parentId, getGrandParentId(parentPath, nodes, map, parents))
+      );
+      map.set(parentId, { name: parentName, isDir: true });
+      logger &&
+        logger(LogLevel.Debug, `created parent '${parentName}#${parentId}'`);
+    } else {
+      parentId = parents[parentPath];
+      logger &&
+        logger(LogLevel.Debug, `used parent '${parentName}#${parentId}'`);
+    }
+  }
+
+  return parentId;
+}
+
 export function generateLinkNodeTree(
   config: Config,
   callback: (nodes: Node[], map: NodeMap) => void,
   logger?: Logger
 ) {
   walk(config.path, (err, results) => {
+    if (err) {
+      log(false, LogLevel.Error, "could not walk the target directory: ", err);
+      exit(1);
+    }
     const nodes: Node[] = [{ id: Id.next(), parentId: null }];
     const map = getNodeMap();
     const parents: Parents = {};
@@ -41,98 +106,24 @@ export function generateLinkNodeTree(
         if (!/^(_app|index)\.tsx$/.test(splitted[1])) {
           const targets = splitted[1].split("/");
           child = targets[targets.length - 1].replace(/\.(tsx|jsx)/g, "");
-          if (targets.length > 1) {
-            const [parentName, parentPath] = getParent(targets);
-            if (!parents[parentPath]) {
-              parentId = Id.next();
-              parents[parentPath] = parentId;
-              map.set(parentId, { name: parentName, isDir: true });
-              logger &&
-                logger(
-                  LogLevel.Debug,
-                  `found parent '${parentName}#${parentId}'`
-                );
-              nodes.push(
-                createNode(parentId, getGrandParentId(parentPath, parents))
-              );
-            } else {
-              parentId = parents[parentPath];
-            }
-          }
+          parentId = handleParent(
+            targets,
+            nodes,
+            map,
+            parents,
+            parentId,
+            logger
+          );
         } else {
           logger && logger(LogLevel.Debug, `ignoring file '${splitted[1]}'`);
         }
       }
-      if (child !== "") {
-        let childName = child;
-        if (child === "index") {
-          if (indexId !== null) {
-            logger &&
-              logger(LogLevel.Debug, `using reuseable node '#${indexId}'`);
-            nodes.push(createNode(indexId, parentId));
-            return;
-          } else {
-            const id = Id.next();
-            indexId = id;
-            logger &&
-              logger(LogLevel.Debug, `creating reuseable node '#${id}'`);
-            map.set(id, { name: "", isDir: false });
-            nodes.push(createNode(id, parentId));
-            return;
-          }
-        } else {
-          const id = Id.next();
-          map.set(id, { name: childName, isDir: false });
-          nodes.push(createNode(id, parentId));
-          logger && logger(LogLevel.Debug, `found child '${child}#${id}'`);
-        }
+      const idx = handleChild(child, nodes, map, parentId, indexId, logger);
+      if (typeof idx === "number") {
+        indexId = idx;
+        return;
       }
     });
     callback(nodes, map);
   });
-}
-
-export function getLinkTree(
-  config: Config,
-  callback: (
-    err: string | null,
-    root: Node[] | null,
-    map: NodeMap | null
-  ) => void,
-  logger?: Logger
-) {
-  logger && logger(LogLevel.Debug, "building node tree..");
-  generateLinkNodeTree(
-    config,
-    (nodes, map) => {
-      callback(null, nodes, map);
-      /*
-      logger &&
-        logger(
-          LogLevel.Debug,
-          `built tree with ${map.size} nodes`,
-          "\nbuilding link tree.."
-        );
-      const idMapping = nodes.reduce((acc, el, i) => {
-        acc[el.id] = i;
-        return acc;
-      }, {} as { [key: number]: number });
-      let root: Node | null = null;
-      let error: string | null = null;
-      nodes.forEach((el) => {
-        if (el.parentId !== null) {
-          const parentEl = nodes[idMapping[el.parentId]];
-          parentEl.children = [...(parentEl.children || []), el];
-        } else {
-          root = el;
-        }
-      });
-      if (!root) {
-        error = `could not generate root node for link tree: ${nodes}`;
-      }
-      callback(error, root, map);
-      */
-    },
-    logger
-  );
 }

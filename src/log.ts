@@ -4,6 +4,8 @@ export enum LogLevel {
   Error,
 }
 
+export type Logger = (level: LogLevel, ...args: unknown[]) => void;
+
 const logLevel = {
   [LogLevel.Debug]: console.log,
   [LogLevel.Warning]: console.warn,

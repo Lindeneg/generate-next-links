@@ -1,11 +1,14 @@
 import { exit } from "process";
-import { getLinks } from "./link";
+import { Link, getLinks } from "./link";
 import { generateLinkNodeTree } from "./node";
 import { createTsLinksEnum } from "./create";
 import { Config } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
-export function main(config: Config) {
+export function main(
+  config: Config,
+  callback: (result: [string, Link[]]) => void = () => {}
+) {
   const logger = log.bind(null, !config.verbose);
   generateLinkNodeTree(
     config,
@@ -27,7 +30,7 @@ export function main(config: Config) {
           )} seconds`
         );
         if (process.env.NODE_ENV === "test") {
-          return [config.name, links];
+          return callback([config.name, links]);
         } else {
           exit(0);
         }

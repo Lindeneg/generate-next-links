@@ -1,4 +1,3 @@
-import glob from "glob";
 import { exit } from "process";
 import { getLinkTree, getLinks } from "./link";
 import { createTsLinksEnum } from "./create";

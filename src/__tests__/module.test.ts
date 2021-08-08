@@ -2,8 +2,9 @@ import { getConfig } from "../config";
 import { main } from "../index";
 
 describe("Module test suite", () => {
-  /*
   test("can execute a dry run", () => {
+    /*
+
     const config = getConfig(".", [
       "",
       "",
@@ -38,6 +39,6 @@ describe("Module test suite", () => {
         ["PRODUCTS_ID", "/products/[id]"],
       ],
     ]);
-  });
   */
+  });
 });

@@ -26,6 +26,7 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      start: config.start,
     });
   });
 
@@ -38,6 +39,7 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      start: config.start,
     });
   });
 
@@ -61,6 +63,7 @@ describe("Config Test Suite", () => {
       name: "PageLinks",
       dry: true,
       verbose: true,
+      start: config.start,
     });
   });
 });

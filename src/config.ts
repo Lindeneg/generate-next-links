@@ -25,6 +25,7 @@ export type Config = {
   name: string;
   dry: boolean;
   verbose: boolean;
+  start: number;
 };
 
 export function isDirectory(
@@ -41,12 +42,13 @@ export function isDirectory(
 }
 
 export function getConfig(rootPath: string, args: string[]): Config {
-  const config = {
+  const config: Config = {
     path: rootPath,
     out: rootPath,
     name: "links",
     dry: false,
     verbose: false,
+    start: Date.now(),
   };
   if (args.length >= 3) {
     for (let i = 2; i < args.length; i++) {

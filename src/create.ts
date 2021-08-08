@@ -23,7 +23,7 @@ export async function createTsLinksEnum(
     (err) => {
       if (!err) {
         logger(LogLevel.Debug, `formatting file with prettier...`);
-        exec(`npx prettier --write ${name}`, (error, stdout, stderr) => {
+        exec(`npx --y prettier --write ${name}`, (error, stdout, stderr) => {
           if (error) {
             log(
               false,

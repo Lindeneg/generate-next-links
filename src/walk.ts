@@ -25,7 +25,7 @@ export function walk(
             }
           });
         } else {
-          if (/(^.+\.(tsx|jsx)|(?!.+\/pages\/index.tsx))$/.test(file)) {
+          if (/^.+\.(tsx|jsx)$/.test(file)) {
             results.push(file);
           }
           if (!--pending) {

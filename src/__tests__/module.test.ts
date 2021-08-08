@@ -1,7 +1,7 @@
 import { getConfig } from "../config";
 import { main } from "../index";
 
-describe("Module test suite", () => {
+describe("Module Test Suite", () => {
   test("can execute a dry run", () => {
     const config = getConfig(".", [
       "",

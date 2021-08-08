@@ -28,7 +28,7 @@ export function main(
             LogLevel.Debug,
             config.name,
             content,
-            `dry run generated ${links.length} links in ${getRunTimeInSeconds(
+            `\ndry run generated ${links.length} links in ${getRunTimeInSeconds(
               config.start
             )} seconds`
           );

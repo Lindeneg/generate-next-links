@@ -1,4 +1,3 @@
-import { notEqual } from "assert";
 import { Node, NodeMap } from "./node";
 
 export type Link = [string, string];

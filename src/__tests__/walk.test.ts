@@ -3,7 +3,7 @@ import { walk } from "../walk";
 describe("Walk Test Suite", () => {
   test("can walk __mock__ directory", () => {
     walk("__mock__", (err, results) => {
-      expect(JSON.stringify(results.map((e) => e.split("pages/")[1]))).toEqual(JSON.stringify([
+      expect(results.map((e) => e.split("pages/")[1])).toEqual([
         "_app.tsx",
         "index.tsx",
         "[customerId]/index.tsx",
@@ -19,7 +19,7 @@ describe("Walk Test Suite", () => {
         "products/[category]/theme/current.tsx",
         "products/[category]/theme/new.tsx",
         "products/[category]/theme/color/[colorId].tsx",
-      ]));
+      ]);
     });
   });
 });

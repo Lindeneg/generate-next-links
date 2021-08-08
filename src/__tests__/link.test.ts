@@ -33,16 +33,25 @@ describe("Link Test Suite", () => {
       ["CUSTOMER_ID", "/[customerId]"],
       ["FAQ_LANGUAGE", "/faq/[language]"],
       ["ADMIN", "/admin"],
+      ["ADMIN_USER", "/admin/user"],
       ["ADMIN_USER_ID", "/admin/user/[id]"],
-      ["ADMIN_BLOG", "/admin/blog"],
       ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
-      ["PRODUCTS", "/products"],
+      ["PRODUCTS_ID", "/products/[id]"],
+      ["PRODUCTS_EDIT", "/products/edit"],
+      ["PRODUCTS_CREATE", "/products/create"],
+      ["PRODUCTS_CATEGORY", "/products/[category]"],
+      ["PRODUCTS_CATEGORY_THEME_CURRENT", "/products/[category]/theme/current"],
+      ["PRODUCTS_CATEGORY_THEME_NEW", "/products/[category]/theme/new"],
+      [
+        "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID",
+        "/products/[category]/theme/color/[colorId]",
+      ],
     ]);
   });
 
   test.each([
     ["/faq/[language]", nodes[4]],
-    ["/admin/blog", nodes[9]],
+    ["/admin/user/[id]", nodes[9]],
     ["/admin/blog/posts", nodes[11]],
     ["/products", nodes[12]],
   ])("build link path: %s", (after, before) => {

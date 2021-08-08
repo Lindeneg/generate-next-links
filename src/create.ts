@@ -20,7 +20,7 @@ export async function createTsLinksEnum(
   content =
     process.env.NODE_ENV === "test"
       ? content
-      : format("", { parser: "typescript" });
+      : format(content, { parser: "typescript" });
   if (config.dry) {
     dryCallback(content);
   } else {

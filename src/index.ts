@@ -28,9 +28,9 @@ export function main(
             LogLevel.Debug,
             config.name,
             content,
-            `\n\ndry run generated ${
-              links.length
-            } links in ${getRunTimeInSeconds(config.start)} seconds`
+            `dry run generated ${links.length} links in ${getRunTimeInSeconds(
+              config.start
+            )} seconds`
           );
           if (process.env.NODE_ENV === "test") {
             return callback([config.name, links]);

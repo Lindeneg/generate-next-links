@@ -1,3 +1,4 @@
+import { notEqual } from "assert";
 import { Node, NodeMap } from "./node";
 
 export type Link = [string, string];
@@ -28,11 +29,11 @@ export function buildLinkPath(
   nodes: Node[],
   link = ""
 ): string {
-  const mapNode = map.get(node.id);
   if (node.parentId !== null || nodes.length !== 0) {
+    const mapNode = map.get(node.id);
     const metaNode = nodes.find((e) => e.id === node.parentId);
-    if (metaNode) {
-      return buildLinkPath(metaNode, map, nodes, `/${mapNode?.name}${link}`);
+    if (metaNode && mapNode) {
+      return buildLinkPath(metaNode, map, nodes, `/${mapNode.name}${link}`);
     }
   }
   return link;

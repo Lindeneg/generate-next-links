@@ -4,42 +4,10 @@ import {
   getLinks,
   buildLinkPath,
 } from "../link";
-
-const testNodes = [
-  { id: 0, parentId: null },
-  { id: 1, parentId: 0 },
-  { id: 2, parentId: 1 },
-  { id: 3, parentId: 0 },
-  { id: 4, parentId: 3 },
-  { id: 5, parentId: 0 },
-  { id: 2, parentId: 5 },
-  { id: 6, parentId: 5 },
-  { id: 7, parentId: 6 },
-  { id: 8, parentId: 5 },
-  { id: 2, parentId: 8 },
-  { id: 9, parentId: 8 },
-  { id: 10, parentId: 0 },
-];
-
-const testMap = new Map();
-
-[
-  [0, { name: "/", isDir: true }],
-  [1, { name: "[customerId]", isDir: true }],
-  [2, { name: "", isDir: false }],
-  [3, { name: "faq", isDir: true }],
-  [4, { name: "[language]", isDir: false }],
-  [5, { name: "admin", isDir: true }],
-  [6, { name: "user", isDir: true }],
-  [7, { name: "[id]", isDir: false }],
-  [8, { name: "blog", isDir: true }],
-  [9, { name: "posts", isDir: false }],
-  [10, { name: "products", isDir: false }],
-].forEach((entry) => {
-  testMap.set(entry[0], entry[1]);
-});
+import { getTestData } from "./test-util";
 
 describe("Link Test Suite", () => {
+  const [nodes, map] = getTestData();
   test.each([
     ["/admin/edit/blog/[articleId]", "ADMIN_EDIT_BLOG_ARTICLE_ID"],
     ["/admin/edit/[slug]/[id]", "ADMIN_EDIT_SLUG_ID"],
@@ -61,7 +29,7 @@ describe("Link Test Suite", () => {
   });
 
   test("can generate links from nodes and map", () => {
-    expect(getLinks(testNodes, testMap)).toEqual([
+    expect(getLinks(nodes, map)).toEqual([
       ["CUSTOMER_ID", "/[customerId]"],
       ["FAQ_LANGUAGE", "/faq/[language]"],
       ["ADMIN", "/admin"],
@@ -73,11 +41,11 @@ describe("Link Test Suite", () => {
   });
 
   test.each([
-    ["/faq/[language]", testNodes[4]],
-    ["/admin/blog", testNodes[9]],
-    ["/admin/blog/posts", testNodes[11]],
-    ["/products", testNodes[12]],
+    ["/faq/[language]", nodes[4]],
+    ["/admin/blog", nodes[9]],
+    ["/admin/blog/posts", nodes[11]],
+    ["/products", nodes[12]],
   ])("build link path: %s", (after, before) => {
-    expect(buildLinkPath(before, testMap, testNodes)).toBe(after);
+    expect(buildLinkPath(before, map, nodes)).toBe(after);
   });
 });

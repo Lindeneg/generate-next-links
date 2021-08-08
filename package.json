@@ -29,7 +29,8 @@
     "dev": "npm run start -- --path __mock__ --dry --verbose",
     "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "prepublish": "npm run clean && npm run build && npm run test"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

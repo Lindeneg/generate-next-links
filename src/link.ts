@@ -30,9 +30,9 @@ export function buildLinkPath(
 ): string {
   if (node.parentId !== null || nodes.length !== 0) {
     const mapNode = map.get(node.id);
-    const metaNode = nodes.find((e) => e.id === node.parentId);
-    if (metaNode && mapNode) {
-      return buildLinkPath(metaNode, map, nodes, `/${mapNode.name}${link}`);
+    const parentNode = nodes.find((e) => e.id === node.parentId);
+    if (parentNode && mapNode) {
+      return buildLinkPath(parentNode, map, nodes, `/${mapNode.name}${link}`);
     }
   }
   return link;

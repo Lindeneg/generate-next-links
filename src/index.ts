@@ -2,7 +2,7 @@ import { exit } from "process";
 import { Link, getLinks } from "./link";
 import { generateLinkNodeTree } from "./node";
 import { createTsLinksEnum } from "./create";
-import { Config } from "./config";
+import { Config, getConfig } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export function main(
@@ -26,7 +26,6 @@ export function main(
           log(
             false,
             LogLevel.Debug,
-            config.name,
             content,
             `\ndry run generated ${links.length} links in ${getRunTimeInSeconds(
               config.start
@@ -43,4 +42,8 @@ export function main(
     },
     logger
   );
+}
+
+if (require.main === module) {
+  main(getConfig(process.env.PWD || "", process.argv));
 }

@@ -2,7 +2,7 @@ import { exit } from "process";
 import { Link, getLinks } from "./link";
 import { generateLinkNodeTree } from "./node";
 import { createTsLinksEnum } from "./create";
-import { Config, getConfig } from "./config";
+import { Config } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export function main(
@@ -42,8 +42,4 @@ export function main(
     },
     logger
   );
-}
-
-if (require.main === module) {
-  main(getConfig(process.env.PWD || "", process.argv));
 }

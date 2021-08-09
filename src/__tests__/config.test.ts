@@ -26,10 +26,11 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      start: config.start,
     });
   });
 
-  test("can get parse single config arg", () => {
+  test("can parse single config arg", () => {
     const rootPath = "./";
     const config = getConfig(rootPath, ["", "", "--path", "__mock__"]);
     expect(config).toEqual({
@@ -38,10 +39,11 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      start: config.start,
     });
   });
 
-  test("can get parse multiple config args", () => {
+  test("can parse multiple config args", () => {
     const rootPath = "./";
     const config = getConfig(rootPath, [
       "",
@@ -61,6 +63,7 @@ describe("Config Test Suite", () => {
       name: "PageLinks",
       dry: true,
       verbose: true,
+      start: config.start,
     });
   });
 });

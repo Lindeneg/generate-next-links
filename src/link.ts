@@ -1,26 +1,16 @@
+import { Node, NodeMap } from "./node";
+
 export type Link = [string, string];
 
 export function convertCamelCase(target: string) {
   const result: string[] = [];
   target.split(" ").forEach((entry) => {
-    if (entry != "") {
-      let splitWords = entry.split(/(?=[A-Z])/).join("_");
+    if (entry !== "") {
+      const splitWords = entry.split(/(?=[A-Z])/).join("_");
       result.push(splitWords.charAt(0).toUpperCase() + splitWords.slice(1));
     }
   });
   return result.join(" ");
-}
-
-export function getLink(target: string): Link | null {
-  const name = target.replace(/^\//, "").replace(/\.(tsx|jsx)/g, "");
-  if (!name || /^(\_app|index)$/.test(name)) {
-    return null;
-  }
-  if (/^.+\/index$/.test(name)) {
-    const cleanName = name.replace(/\/index/, "");
-    return [cleanLinkName(cleanName), "/" + cleanName];
-  }
-  return [cleanLinkName(name), "/" + name];
 }
 
 export function cleanLinkName(name: string) {
@@ -30,4 +20,34 @@ export function cleanLinkName(name: string) {
     .replace(/\[|\]/g, "")
     .toUpperCase()
     .trim();
+}
+
+export function buildLinkPath(
+  node: Node,
+  map: NodeMap,
+  nodes: Node[],
+  link = ""
+): string {
+  if (node.parentId !== null || nodes.length !== 0) {
+    const mapNode = map.get(node.id);
+    const parentNode = nodes.find((e) => e.id === node.parentId);
+    if (parentNode && mapNode) {
+      return buildLinkPath(parentNode, map, nodes, `/${mapNode.name}${link}`);
+    }
+  }
+  return link;
+}
+
+export function getLinks(nodes: Node[], map: NodeMap) {
+  const links: Link[] = [];
+  nodes.forEach((node) => {
+    if (!map.get(node.id)?.isDir) {
+      let linkPath = buildLinkPath(node, map, nodes);
+      linkPath = linkPath.endsWith("/")
+        ? linkPath.substr(0, linkPath.length - 1)
+        : linkPath;
+      linkPath && links.push([cleanLinkName(linkPath), linkPath]);
+    }
+  });
+  return links;
 }

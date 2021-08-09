@@ -1,56 +1,43 @@
 import fs from "fs";
-import { exec } from "child_process";
+import { exit } from "process";
+import { format } from "prettier";
+import { Config } from "./config";
 import { Link } from "./link";
-import { LogLevel, log, getRunTimeInSeconds } from "./log";
+import { Logger, LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export async function createTsLinksEnum(
-  path: string,
   links: Link[],
-  enumName: string,
-  start = Date.now(),
-  verbose = false
+  config: Config,
+  dryCallback: (content: string) => void,
+  logger?: Logger
 ) {
-  const logger = log.bind(null, !verbose);
-  const name = `${path}/links_${Date.now()}.ts`;
-  logger(LogLevel.Debug, `creating file: ${name}`);
-  fs.writeFile(
-    name,
-    `
-    export enum ${enumName} {
-        ${links.map(([k, v]) => `${k} = "${v}"`)}
-    };
-    `,
-    (err) => {
-      if (!err) {
-        logger(LogLevel.Debug, `formatting file with prettier...`);
-        exec(`npx prettier --write ${name}`, (error, stdout, stderr) => {
-          if (error) {
-            log(
-              false,
-              LogLevel.Warning,
-              "failed to format file with prettier.."
-            );
-            logger(LogLevel.Error, error.message);
-          } else if (stderr) {
-            log(
-              false,
-              LogLevel.Warning,
-              "failed to run prettier format command.."
-            );
-            logger(LogLevel.Error, stderr);
-          } else {
-            log(
-              false,
-              LogLevel.Debug,
-              `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
-                start
-              )} seconds here: ${name}`
-            );
-          }
-        });
+  const name = `${config.out}/links_${Date.now()}.ts`;
+  let content = `
+  export enum ${config.name} {
+      ${links.map(([k, v]) => `${k} = "${v}"`)}
+  };
+  `;
+  content =
+    process.env.NODE_ENV === "test"
+      ? content
+      : format(content, { parser: "typescript" });
+  if (config.dry) {
+    dryCallback(content);
+  } else {
+    logger && logger(LogLevel.Debug, `creating file: ${name}`);
+    fs.writeFile(name, content, (err) => {
+      if (err) {
+        logger && logger(LogLevel.Error, err);
+        exit(1);
       } else {
-        logger(LogLevel.Error, err);
+        log(
+          false,
+          LogLevel.Debug,
+          `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
+            config.start
+          )} seconds here: ${name}`
+        );
       }
-    }
-  );
+    });
+  }
 }

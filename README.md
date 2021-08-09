@@ -15,7 +15,7 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 
 ##### Options
 
-```sh
+```
 Usage: generate-next-links
 
 If no args are specified, a 'pages' folder must be located
@@ -27,6 +27,7 @@ Options:
  --out       Path where TypeScript file will be written to
  --dry       Perform all operations except writing to disk
  --verbose   Show all log messages in stdout
+ --version   Show current version
  --help      Show help
 ```
 

@@ -1,7 +1,7 @@
 {
   "name": "generate-next-links",
   "description": "Generate links enum containing paths to nextjs pages",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "author": {
     "name": "Christian Lindeneg",
     "email": "hi@lindeneg.org",
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/lindeneg/generate-next-links#readme",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
-    "generate-next-links": "index.js"
+    "generate-next-links": "dist/index.js"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node dist/index.js",
     "dev": "npm run start -- --path __mock__ --dry --verbose",
     "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",

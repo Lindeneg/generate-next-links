@@ -32,7 +32,7 @@
     "bundle": "webpack",
     "clean": "rm -rf dist",
     "test": "jest --verbose",
-    "prepublish": "npm run build && npm run test"
+    "prepublish": "npm run test && npm run build"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",

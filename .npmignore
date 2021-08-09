@@ -4,3 +4,4 @@ __mock__
 src
 jest.config.js
 tsconfig.*
+webpack.config.js

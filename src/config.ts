@@ -2,6 +2,8 @@ import fs from "fs";
 import { exit } from "process";
 import { LogLevel, log } from "./log";
 
+const VERSION = "2.0.5";
+
 const HELP = `
 Usage: generate-next-links 
 
@@ -71,11 +73,7 @@ export function getConfig(rootPath: string, args: string[]): Config {
           }
           break;
         case "--version":
-          log(
-            false,
-            LogLevel.Debug,
-            `version: ${process.env.npm_package_version}`
-          );
+          log(false, LogLevel.Debug, `version: ${VERSION}`);
           exit(0);
         case "--dry":
           config.dry = true;

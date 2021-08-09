@@ -99,6 +99,8 @@ export function generateLinkNodeTree(
   });
 }
 
+/* Both of the below functions needs some refactoring */
+
 function handleChild(
   child: string,
   nodes: Node[],

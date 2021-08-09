@@ -37,30 +37,33 @@ Options:
 Suppose we have a next.js application with the following `pages` structure:
 
 ```sh
-pages
-  ├── admin
-  │   ├── blog
-  │   │   ├── index.tsx
-  │   │   └── post.tsx
-  │   ├── index.tsx
-  │   └── user
-  │       └── [id].tsx
-  ├── _app.tsx
-  ├── faq
-  │   └── [language].tsx
-  ├── index.tsx
-  └── products
-      ├── [category]
-      │   ├── index.tsx
-      │   └── theme
-      │       ├── color
-      │       │   └── [colorId].tsx
-      │       ├── current.tsx
-      │       └── new.tsx
-      ├── create
-      │   └── index.tsx
-      ├── edit.tsx
-      └── [id].tsx
+.
+└── pages
+    ├── [customerId]
+    │   └── index.tsx
+    ├── _app.tsx
+    ├── admin
+    │   ├── blog
+    │   │   ├── index.tsx
+    │   │   └── posts.tsx
+    │   ├── index.tsx
+    │   └── user
+    │       └── [id].tsx
+    ├── faq
+    │   └── [language].tsx
+    ├── index.tsx
+    └── products
+        ├── [category]
+        │   ├── index.tsx
+        │   └── theme
+        │       ├── color
+        │       │   └── [colorId].tsx
+        │       ├── current.tsx
+        │       └── new.tsx
+        ├── [id].tsx
+        ├── create
+        │   └── index.tsx
+        └── edit.tsx
 ```
 
 Then given the above structure, this program will generate a `.ts` file with the following `enum`:
@@ -69,8 +72,9 @@ Then given the above structure, this program will generate a `.ts` file with the
 export enum links {
   ADMIN = "/admin",
   ADMIN_BLOG = "/admin/blog",
-  ADMIN_BLOG_POST = "/admin/blog/post",
+  ADMIN_BLOG_POSTS = "/admin/blog/posts",
   ADMIN_USER_ID = "/admin/user/[id]",
+  CUSTOMER_ID = "/[customerId]",
   FAQ_LANGUAGE = "/faq/[language]",
   PRODUCTS_CATEGORY = "/products/[category]",
   PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID = "/products/[category]/theme/color/[colorId]",
@@ -89,8 +93,11 @@ function component (props) {
   return (
     <Link
       href={{
-        pathname: links.PRODUCTS_ID,
-        query: { id: props.id },
+        pathname: links.PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID,
+        query: {
+          category: props.category,
+          colorId: props.id
+        },
       }}
     >
   )

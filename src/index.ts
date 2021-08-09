@@ -2,7 +2,7 @@ import { exit } from "process";
 import { Link, getLinks } from "./link";
 import { generateLinkNodeTree } from "./node";
 import { createTsLinksEnum } from "./create";
-import { Config } from "./config";
+import { Config, getConfig } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export function main(
@@ -43,3 +43,8 @@ export function main(
     logger
   );
 }
+
+module.exports = {
+  main,
+  getConfig,
+};

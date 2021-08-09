@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const { main } = require("./dist/index");
-const { getConfig } = require("./dist/config");
+const { main, getConfig } = require("./dist/index");
 
 main(getConfig(process.env.PWD || "", process.argv));

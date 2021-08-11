@@ -13,48 +13,28 @@ export class NodeMap {
   private map: Map<MapKey, MapValue>;
   private parents: Parents;
   private log: Logger;
-  constructor(init = false, logger?: Logger) {
+  constructor(logger?: Logger) {
     this.map = new Map();
     this.parents = {};
     this.log = logger || (() => null);
-    if (init) {
-      const id = Id.next();
-      this.map.set(id, {
-        name: "/",
-        isDir: true,
-        parentId: null,
-      });
-    }
   }
 
   public setNode(value: MapValue): MapKey {
-    const key = Id.next();
+    let key = Id.next();
+    if (this.map.has(key)) {
+      key = Id.next();
+    }
     this.log(LogLevel.Debug, `setting node '${value.name}#${key}'`);
     this.map.set(key, value);
     return key;
   }
 
-  public getNode(key: number) {
+  public getNode(key: number): MapValue | undefined {
     return this.map.get(key);
   }
 
-  public hasNode(key: number) {
-    return this.map.has(key);
-  }
-
-  public setParent(key: string, value: number) {
-    if (this.getParent(key) === null) {
-      this.log(LogLevel.Debug, `setting parent '#${value}'`);
-      this.parents[key] = value;
-    }
-  }
-
-  public getParent(key: string): MapValue["parentId"] {
-    const entry = this.parents[key];
-    if (typeof entry !== "undefined") {
-      return entry;
-    }
-    return null;
+  public keys(): IterableIterator<number> {
+    return this.map.keys();
   }
 
   public handleChild(child: string, parentId: MapValue["parentId"]) {
@@ -79,13 +59,26 @@ export class NodeMap {
           parentId: this.getGrandParentId(parentPath),
         });
         this.setParent(parentPath, parentId);
-        this.log(LogLevel.Debug, `created parent '${parentName}#${parentId}'`);
       } else {
         parentId = parent;
         this.log(LogLevel.Debug, `used parent '${parentName}#${parentId}'`);
       }
     }
     return parentId;
+  }
+
+  private setParent(key: string, value: number) {
+    if (this.getParent(key) === null) {
+      this.parents[key] = value;
+    }
+  }
+
+  private getParent(key: string): MapValue["parentId"] {
+    const entry = this.parents[key];
+    if (typeof entry !== "undefined") {
+      return entry;
+    }
+    return null;
   }
 
   private getParentPath(targets: string[]): [string, string] {
@@ -105,13 +98,15 @@ export class NodeMap {
       .join("/");
     if (this.getParent(grandParentPath) === null) {
       const name = grandParentPath.split("/");
-      const id = this.setNode({
-        name: name[name.length - 1],
-        isDir: true,
-        parentId: this.getGrandParentId(path),
-      });
-      this.setParent(grandParentPath, id);
+      this.setParent(
+        grandParentPath,
+        this.setNode({
+          name: name[name.length - 1],
+          isDir: true,
+          parentId: this.getGrandParentId(path),
+        })
+      );
     }
-    return this.getGrandParentId(grandParentPath);
+    return this.getParent(grandParentPath) || 0;
   }
 }

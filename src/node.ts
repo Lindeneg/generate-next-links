@@ -21,7 +21,7 @@ export class NodeMap {
 
   public setNode(value: MapValue): MapKey {
     let key = Id.next();
-    if (this.map.has(key)) {
+    if (this.getNode(key)) {
       key = Id.next();
     }
     this.log(LogLevel.Debug, `setting node '${value.name}#${key}'`);
@@ -64,7 +64,7 @@ export class NodeMap {
         this.log(LogLevel.Debug, `used parent '${parentName}#${parentId}'`);
       }
     }
-    return parentId;
+    return parentId || 0;
   }
 
   private setParent(key: string, value: number) {
@@ -90,23 +90,23 @@ export class NodeMap {
 
   private getGrandParentId(path: string): number {
     const parentPath = path.split("/");
-    if (parentPath.length <= 1) {
+    if (parentPath.length === 1) {
       return 0;
     }
     const grandParentPath = parentPath
       .slice(0, parentPath.length - 1)
       .join("/");
-    if (this.getParent(grandParentPath) === null) {
+    const grandParent = this.getParent(grandParentPath);
+    if (grandParent === null) {
       const name = grandParentPath.split("/");
-      this.setParent(
-        grandParentPath,
-        this.setNode({
-          name: name[name.length - 1],
-          isDir: true,
-          parentId: this.getGrandParentId(path),
-        })
-      );
+      const id = this.setNode({
+        name: name[name.length - 1],
+        isDir: true,
+        parentId: this.getGrandParentId(grandParentPath),
+      });
+      this.setParent(grandParentPath, id);
+      return id;
     }
-    return this.getParent(grandParentPath) || 0;
+    return grandParent || 0;
   }
 }

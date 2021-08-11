@@ -80,8 +80,6 @@ export function generateLinkNodeTree(
       }
       nodeMap.handleChild(child, parentId);
     });
-    console.log(nodeMap);
-
     callback(nodeMap);
   });
 }

@@ -48,4 +48,4 @@ module.exports = {
   getConfig,
 };
 
-main(getConfig(".", ["", "", "--path", "__mock__", "--dry", "--verbos"]));
+main(getConfig(".", ["", "", "--path", "../street/src", "--dry", "--verbos"]));

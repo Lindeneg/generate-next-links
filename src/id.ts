@@ -7,11 +7,7 @@ export class Id {
       Id.hasCalled = true;
       return Id.CURRENT;
     }
-    return Id.CURRENT++;
-  }
-
-  public static reset() {
-    Id.CURRENT = 0;
-    Id.hasCalled = false;
+    Id.CURRENT = Id.CURRENT + 1;
+    return Id.CURRENT;
   }
 }

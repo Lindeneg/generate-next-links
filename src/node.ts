@@ -16,8 +16,8 @@ export class NodeMap {
   private log: Logger;
   constructor(logger?: Logger) {
     this.map = new Map();
-    this.parents = {};
     this.id = new Id();
+    this.parents = {};
     this.log = logger || (() => null);
   }
 

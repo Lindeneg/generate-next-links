@@ -4,26 +4,25 @@ import { LogLevel, Logger } from "./log";
 export type MapKey = number;
 export type MapValue = {
   name: string;
-  parentId: number | null;
+  parentId: MapKey | null;
   isDir: boolean;
 };
 export type Parents = { [key: string]: MapValue["parentId"] };
 
 export class NodeMap {
   private map: Map<MapKey, MapValue>;
+  private id: Id;
   private parents: Parents;
   private log: Logger;
   constructor(logger?: Logger) {
     this.map = new Map();
     this.parents = {};
+    this.id = new Id();
     this.log = logger || (() => null);
   }
 
   public setNode(value: MapValue): MapKey {
-    let key = Id.next();
-    if (this.getNode(key)) {
-      key = Id.next();
-    }
+    const key = this.id.next();
     this.log(LogLevel.Debug, `setting node '${value.name}#${key}'`);
     this.map.set(key, value);
     return key;
@@ -39,7 +38,6 @@ export class NodeMap {
 
   public handleChild(child: string, parentId: MapValue["parentId"]) {
     if (child !== "") {
-      this.log(LogLevel.Debug, `handling child '#${child}'`);
       this.setNode({
         name: child === "index" ? "" : child,
         isDir: false,
@@ -97,16 +95,16 @@ export class NodeMap {
       .slice(0, parentPath.length - 1)
       .join("/");
     const grandParent = this.getParent(grandParentPath);
-    if (grandParent === null) {
-      const name = grandParentPath.split("/");
-      const id = this.setNode({
-        name: name[name.length - 1],
-        isDir: true,
-        parentId: this.getGrandParentId(grandParentPath),
-      });
-      this.setParent(grandParentPath, id);
-      return id;
+    if (grandParent !== null) {
+      return grandParent;
     }
-    return grandParent || 0;
+    const name = grandParentPath.split("/");
+    const id = this.setNode({
+      name: name[name.length - 1],
+      isDir: true,
+      parentId: this.getGrandParentId(grandParentPath),
+    });
+    this.setParent(grandParentPath, id);
+    return id;
   }
 }

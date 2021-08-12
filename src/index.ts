@@ -47,5 +47,3 @@ module.exports = {
   main,
   getConfig,
 };
-
-main(getConfig(".", ["", "", "--path", "../street/src", "--dry", "--verbos"]));

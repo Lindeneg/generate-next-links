@@ -1,5 +1,5 @@
 import { exit } from "process";
-import { MapKey, NodeMap } from "./node";
+import { MapValue, NodeMap } from "./node";
 import { walk } from "./walk";
 import { Config } from "./config";
 import { LogLevel, Logger, log } from "./log";
@@ -27,13 +27,16 @@ export function cleanLinkName(name: string) {
 }
 
 export function buildLinkPath(
-  key: MapKey,
+  node: MapValue | undefined,
   nodeMap: NodeMap,
   link = ""
 ): string {
-  const node = nodeMap.getNode(key);
   if (node && node.parentId !== null) {
-    return buildLinkPath(node.parentId, nodeMap, `/${node.name}${link}`);
+    return buildLinkPath(
+      nodeMap.getNode(node.parentId),
+      nodeMap,
+      `/${node.name}${link}`
+    );
   }
   return link;
 }
@@ -42,8 +45,9 @@ export function getLinks(nodeMap: NodeMap) {
   const links: Link[] = [];
   const keys = nodeMap.keys();
   for (let key of keys) {
-    if (!nodeMap.getNode(key)?.isDir) {
-      let linkPath = buildLinkPath(key, nodeMap);
+    const node = nodeMap.getNode(key);
+    if (!node?.isDir) {
+      let linkPath = buildLinkPath(node, nodeMap);
       linkPath = linkPath.endsWith("/")
         ? linkPath.substr(0, linkPath.length - 1)
         : linkPath;

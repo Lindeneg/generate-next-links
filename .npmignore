@@ -2,6 +2,8 @@ node_modules
 __mock__
 .github
 src
+lib
 jest.config.js
+index.dev.js
 tsconfig.*
 webpack.config.js

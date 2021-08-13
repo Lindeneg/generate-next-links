@@ -1,20 +1,22 @@
+import { getConfig } from "../config";
 import {
   cleanLinkName,
   convertCamelCase,
   getLinks,
   buildLinkPath,
+  generateLinkNodeTree,
 } from "../link";
-import { getTestData } from "./test-util";
+import { MOCK_NODE_MAP } from "./test-util";
 
 describe("Link Test Suite", () => {
-  const [nodes, map] = getTestData();
+  const nodeMap = MOCK_NODE_MAP();
   test.each([
     ["/admin/edit/blog/[articleId]", "ADMIN_EDIT_BLOG_ARTICLE_ID"],
     ["/admin/edit/[slug]/[id]", "ADMIN_EDIT_SLUG_ID"],
     ["admin/user/[id]", "ADMIN_USER_ID"],
     ["admin/music/artist/[artistId]", "ADMIN_MUSIC_ARTIST_ARTIST_ID"],
   ])("clean: %s , %s", (dirtyLink, cleanLink) => {
-    expect(cleanLinkName(dirtyLink)).toBe(cleanLink);
+    expect(cleanLinkName(dirtyLink, true)).toBe(cleanLink);
   });
 
   test.each([
@@ -29,13 +31,13 @@ describe("Link Test Suite", () => {
   });
 
   test("can generate links from nodes and map", () => {
-    expect(getLinks(nodes, map)).toEqual([
+    expect(getLinks(nodeMap, true)).toEqual([
       ["CUSTOMER_ID", "/[customerId]"],
       ["FAQ_LANGUAGE", "/faq/[language]"],
       ["ADMIN", "/admin"],
-      ["ADMIN_USER", "/admin/user"],
-      ["ADMIN_USER_ID", "/admin/user/[id]"],
+      ["ADMIN_BLOG", "/admin/blog"],
       ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
+      ["ADMIN_USER_ID", "/admin/user/[id]"],
       ["PRODUCTS_ID", "/products/[id]"],
       ["PRODUCTS_EDIT", "/products/edit"],
       ["PRODUCTS_CREATE", "/products/create"],
@@ -48,13 +50,21 @@ describe("Link Test Suite", () => {
       ],
     ]);
   });
-
   test.each([
-    ["/faq/[language]", nodes[4]],
-    ["/admin/user/[id]", nodes[9]],
-    ["/admin/blog/posts", nodes[11]],
-    ["/products", nodes[12]],
-  ])("build link path: %s", (after, before) => {
-    expect(buildLinkPath(before, map, nodes)).toBe(after);
+    ["current", "/[customerId]", 1],
+    ["user", "/admin/user", 10],
+    ["create", "/products/create", 15],
+    ["current", "/products/[category]/theme/current", 20],
+  ])("build link path: %s => %s", (_, expected, id) => {
+    expect(buildLinkPath(nodeMap.getNode(id), nodeMap)).toBe(expected);
+  });
+  test("can generate nodemap from __mock__ directory", (done) => {
+    generateLinkNodeTree(
+      getConfig("./__mock__", ["", "", "--dry"]),
+      (predictedNodeMap) => {
+        expect(predictedNodeMap.size).toEqual(nodeMap.size);
+        done();
+      }
+    );
   });
 });

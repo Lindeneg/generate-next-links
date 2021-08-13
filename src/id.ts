@@ -1,17 +1,18 @@
 export class Id {
-  private static CURRENT = 0;
-  private static hasCalled = false;
+  private id: number;
+  private hasCalled: boolean;
 
-  public static next() {
-    if (Id.CURRENT === 0 && !Id.hasCalled) {
-      Id.hasCalled = true;
-      return Id.CURRENT;
-    }
-    return Id.CURRENT++;
+  constructor() {
+    this.id = 0;
+    this.hasCalled = false;
   }
 
-  public static reset() {
-    Id.CURRENT = 0;
-    Id.hasCalled = false;
+  public next() {
+    if (this.id === 0 && !this.hasCalled) {
+      this.hasCalled = true;
+      return this.id;
+    }
+    this.id++;
+    return this.id;
   }
 }

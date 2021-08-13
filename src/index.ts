@@ -1,6 +1,5 @@
 import { exit } from "process";
-import { Link, getLinks } from "./link";
-import { generateLinkNodeTree } from "./node";
+import { Link, generateLinkNodeTree, getLinks } from "./link";
 import { createTsLinksEnum } from "./create";
 import { Config, getConfig } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
@@ -12,12 +11,14 @@ export function main(
   const logger = log.bind(null, !config.verbose);
   generateLinkNodeTree(
     config,
-    (nodes, map) => {
-      if (!nodes || !map) {
+    (map) => {
+      if (!map) {
         log(false, LogLevel.Error, "could not generate link tree");
         exit(1);
       }
-      const links = getLinks(nodes, map).sort((a, b) => (b[0] > a[0] ? -1 : 1));
+      const links = getLinks(map, config.convertCamelCase).sort((a, b) =>
+        b[0] > a[0] ? -1 : 1
+      );
       createTsLinksEnum(
         links,
         config,
@@ -32,7 +33,7 @@ export function main(
             )} seconds`
           );
           if (process.env.NODE_ENV === "test") {
-            return callback([config.name, links]);
+            return callback([content, links]);
           } else {
             exit(0);
           }

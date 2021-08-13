@@ -31,7 +31,7 @@ export function main(
             )} seconds`
           );
           if (process.env.NODE_ENV === "test") {
-            return callback([config.name, links]);
+            return callback([content, links]);
           } else {
             exit(0);
           }

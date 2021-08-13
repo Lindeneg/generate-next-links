@@ -11,7 +11,7 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 - `npm install -g generate-next-links`
 - `generate-next-links [...ARGS]`
 - **or**
-- `npx generate-next-links [...ARGS]`
+- `npx generate-next-links@latest [...ARGS]`
 
 ##### Options
 
@@ -22,13 +22,16 @@ If no args are specified, a 'pages' folder must be located
 inside the folder where the script is running from
 
 Options:
- --name      Name of generated TypeScript enum
- --path      Path to folder where 'pages' directory resides
- --out       Path where TypeScript file will be written to
- --dry       Perform all operations except writing to disk
- --verbose   Show all log messages in stdout
- --version   Show current version
- --help      Show help
+ -N --name [NAME]         name of generated TypeScript enum
+ -P --path [PATH]         path to folder where 'pages' directory resides
+ -O --out  [PATH]         path to folder where ts file will be written to
+ -D --dry                 perform all operations except writing to disk
+ -V --verbose             show all log messages in stdout
+ -T --omit-timestamp      omit timestamp from written ts file
+ -J --export-json         export json instead of ts enum
+ -C --convert-camel-case  convert camel case to be delimited by underscore
+ -I --version             show current version
+ -H --help                show help
 ```
 
 ---
@@ -102,5 +105,25 @@ function component (props) {
       }}
     >
   )
+}
+```
+
+Note that `json` is also supported. The above structure would yield the following `.json` file:
+
+```json
+{
+  "ADMIN": "/admin",
+  "ADMIN_BLOG": "/admin/blog",
+  "ADMIN_BLOG_POSTS": "/admin/blog/posts",
+  "ADMIN_USER_ID": "/admin/user/[id]",
+  "CUSTOMER_ID": "/[customerId]",
+  "FAQ_LANGUAGE": "/faq/[language]",
+  "PRODUCTS_CATEGORY": "/products/[category]",
+  "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID": "/products/[category]/theme/color/[colorId]",
+  "PRODUCTS_CATEGORY_THEME_CURRENT": "/products/[category]/theme/current",
+  "PRODUCTS_CATEGORY_THEME_NEW": "/products/[category]/theme/new",
+  "PRODUCTS_CREATE": "/products/create",
+  "PRODUCTS_EDIT": "/products/edit",
+  "PRODUCTS_ID": "/products/[id]"
 }
 ```

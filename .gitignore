@@ -1,4 +1,5 @@
 node_modules
 dist
 lib
+index.dev.js
 .DS*

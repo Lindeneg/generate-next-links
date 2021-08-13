@@ -5,22 +5,38 @@ import { Config } from "./config";
 import { Link } from "./link";
 import { Logger, LogLevel, log, getRunTimeInSeconds } from "./log";
 
+function getContent(links: Link[], config: Config): string {
+  if (config.exportJson) {
+    return JSON.stringify(
+      links.reduce((a, b) => {
+        return {
+          ...a,
+          [b[0]]: b[1],
+        };
+      }, {})
+    );
+  }
+  return `
+  export enum ${config.name} {
+      ${links.map(([k, v]) => `${k} = "${v}"`)}
+  };
+  `;
+}
+
 export async function createTsLinksEnum(
   links: Link[],
   config: Config,
   dryCallback: (content: string) => void,
   logger?: Logger
 ) {
-  const name = `${config.out}/links_${Date.now()}.ts`;
-  let content = `
-  export enum ${config.name} {
-      ${links.map(([k, v]) => `${k} = "${v}"`)}
-  };
-  `;
+  const name = `${config.out}/links${
+    config.omitTimestamp ? "" : "_" + Date.now()
+  }.${config.exportJson ? "json" : "ts"}`;
+  let content = getContent(links, config);
   content =
     process.env.NODE_ENV === "test"
       ? content
-      : format(content, { parser: "typescript" });
+      : format(content, { parser: config.exportJson ? "json" : "typescript" });
   if (config.dry) {
     dryCallback(content);
   } else {

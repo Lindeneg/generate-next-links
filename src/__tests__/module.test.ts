@@ -1,4 +1,3 @@
-import path from "path";
 import { main } from "../";
 import { getConfig } from "../config";
 import { MOCK_LINKS_ARRAY } from "./test-util";

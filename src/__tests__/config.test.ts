@@ -26,6 +26,9 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      omitTimestamp: false,
+      convertCamelCase: false,
+      exportJson: false,
       start: config.start,
     });
   });
@@ -39,6 +42,9 @@ describe("Config Test Suite", () => {
       name: "links",
       dry: false,
       verbose: false,
+      omitTimestamp: false,
+      convertCamelCase: false,
+      exportJson: false,
       start: config.start,
     });
   });
@@ -63,6 +69,9 @@ describe("Config Test Suite", () => {
       name: "PageLinks",
       dry: true,
       verbose: true,
+      omitTimestamp: false,
+      convertCamelCase: false,
+      exportJson: false,
       start: config.start,
     });
   });

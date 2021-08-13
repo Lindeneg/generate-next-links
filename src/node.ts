@@ -40,14 +40,15 @@ export class NodeMap {
     return this.map.size;
   }
 
-  public handleChild(child: string, parentId: MapValue["parentId"]) {
+  public handleChild(child: string, parentId: MapValue["parentId"]): number {
     if (child !== "") {
-      this.setNode({
+      return this.setNode({
         name: child === "index" ? "" : child,
         isDir: false,
         parentId,
       });
     }
+    return -1;
   }
 
   public handleParent(targets: string[], parentId: number | null) {

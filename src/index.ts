@@ -16,7 +16,9 @@ export function main(
         log(false, LogLevel.Error, "could not generate link tree");
         exit(1);
       }
-      const links = getLinks(map).sort((a, b) => (b[0] > a[0] ? -1 : 1));
+      const links = getLinks(map, config.convertCamelCase).sort((a, b) =>
+        b[0] > a[0] ? -1 : 1
+      );
       createTsLinksEnum(
         links,
         config,

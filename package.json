@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "node index.dev.js --path __mock__ --dry --verbose",
+    "dev": "node index.dev.js -P __mock__ -D -V -C",
     "build": "npm run clean && npm run types && npm run bundle && rm -rf lib",
     "build-dev": "npm run types -- --watch",
     "types": "tsc --project tsconfig.build.json",

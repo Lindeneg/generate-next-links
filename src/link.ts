@@ -17,8 +17,8 @@ export function convertCamelCase(target: string) {
   return result.join(" ");
 }
 
-export function cleanLinkName(name: string) {
-  return convertCamelCase(name)
+export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
+  return (doConvertCamelCase ? convertCamelCase(name) : name)
     .replace(/^\//, "")
     .replace(/(\/|\-)/g, "_")
     .replace(/\[|\]/g, "")
@@ -41,7 +41,7 @@ export function buildLinkPath(
   return link;
 }
 
-export function getLinks(nodeMap: NodeMap) {
+export function getLinks(nodeMap: NodeMap, doConvertCamelCase: boolean) {
   const links: Link[] = [];
   const keys = nodeMap.keys();
   for (let key of keys) {
@@ -51,7 +51,8 @@ export function getLinks(nodeMap: NodeMap) {
       linkPath = linkPath.endsWith("/")
         ? linkPath.substr(0, linkPath.length - 1)
         : linkPath;
-      linkPath && links.push([cleanLinkName(linkPath), linkPath]);
+      linkPath &&
+        links.push([cleanLinkName(linkPath, doConvertCamelCase), linkPath]);
     }
   }
   return links;

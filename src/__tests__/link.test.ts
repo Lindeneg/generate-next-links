@@ -16,7 +16,7 @@ describe("Link Test Suite", () => {
     ["admin/user/[id]", "ADMIN_USER_ID"],
     ["admin/music/artist/[artistId]", "ADMIN_MUSIC_ARTIST_ARTIST_ID"],
   ])("clean: %s , %s", (dirtyLink, cleanLink) => {
-    expect(cleanLinkName(dirtyLink)).toBe(cleanLink);
+    expect(cleanLinkName(dirtyLink, true)).toBe(cleanLink);
   });
 
   test.each([
@@ -31,7 +31,7 @@ describe("Link Test Suite", () => {
   });
 
   test("can generate links from nodes and map", () => {
-    expect(getLinks(nodeMap)).toEqual([
+    expect(getLinks(nodeMap, true)).toEqual([
       ["CUSTOMER_ID", "/[customerId]"],
       ["FAQ_LANGUAGE", "/faq/[language]"],
       ["ADMIN", "/admin"],

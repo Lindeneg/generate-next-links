@@ -1,4 +1,8 @@
-import { Node, NodeMap } from "./node";
+import { exit } from "process";
+import { MapValue, NodeMap } from "./node";
+import { walk } from "./walk";
+import { Config } from "./config";
+import { LogLevel, Logger, log } from "./log";
 
 export type Link = [string, string];
 
@@ -23,31 +27,63 @@ export function cleanLinkName(name: string) {
 }
 
 export function buildLinkPath(
-  node: Node,
-  map: NodeMap,
-  nodes: Node[],
+  node: MapValue | undefined,
+  nodeMap: NodeMap,
   link = ""
 ): string {
-  if (node.parentId !== null || nodes.length !== 0) {
-    const mapNode = map.get(node.id);
-    const parentNode = nodes.find((e) => e.id === node.parentId);
-    if (parentNode && mapNode) {
-      return buildLinkPath(parentNode, map, nodes, `/${mapNode.name}${link}`);
-    }
+  if (node && node.parentId !== null) {
+    return buildLinkPath(
+      nodeMap.getNode(node.parentId),
+      nodeMap,
+      `/${node.name}${link}`
+    );
   }
   return link;
 }
 
-export function getLinks(nodes: Node[], map: NodeMap) {
+export function getLinks(nodeMap: NodeMap) {
   const links: Link[] = [];
-  nodes.forEach((node) => {
-    if (!map.get(node.id)?.isDir) {
-      let linkPath = buildLinkPath(node, map, nodes);
+  const keys = nodeMap.keys();
+  for (let key of keys) {
+    const node = nodeMap.getNode(key);
+    if (!node?.isDir) {
+      let linkPath = buildLinkPath(node, nodeMap);
       linkPath = linkPath.endsWith("/")
         ? linkPath.substr(0, linkPath.length - 1)
         : linkPath;
       linkPath && links.push([cleanLinkName(linkPath), linkPath]);
     }
-  });
+  }
   return links;
+}
+
+export function generateLinkNodeTree(
+  config: Config,
+  callback: (map: NodeMap) => void,
+  logger?: Logger
+) {
+  walk(config.path, (err, results) => {
+    if (err) {
+      log(false, LogLevel.Error, "could not walk the target directory: ", err);
+      exit(1);
+    }
+    const nodeMap = new NodeMap(logger);
+    nodeMap.setNode({ name: "/", isDir: true, parentId: null });
+    results.forEach((result) => {
+      const splitted = result.split("pages/");
+      let parentId: number | null = null;
+      let child: string = "";
+      if (splitted.length >= 2) {
+        if (!/^(_app|index)\.tsx$/.test(splitted[1])) {
+          const targets = splitted[1].split("/");
+          child = targets[targets.length - 1].replace(/\.(tsx|jsx)/g, "");
+          parentId = nodeMap.handleParent(targets, parentId);
+        } else {
+          logger && logger(LogLevel.Debug, `ignoring file '${splitted[1]}'`);
+        }
+      }
+      nodeMap.handleChild(child, parentId);
+    });
+    callback(nodeMap);
+  });
 }

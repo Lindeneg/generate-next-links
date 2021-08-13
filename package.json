@@ -28,6 +28,7 @@
     "start": "node index.js",
     "dev": "node index.dev.js --path __mock__ --dry --verbose",
     "build": "npm run clean && npm run types && npm run bundle && rm -rf lib",
+    "build-dev": "npm run types -- --watch",
     "types": "tsc --project tsconfig.build.json",
     "bundle": "webpack",
     "clean": "rm -rf dist",

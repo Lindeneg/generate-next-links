@@ -36,6 +36,10 @@ export class NodeMap {
     return this.map.keys();
   }
 
+  public size(): number {
+    return this.map.size;
+  }
+
   public handleChild(child: string, parentId: MapValue["parentId"]) {
     if (child !== "") {
       this.setNode({

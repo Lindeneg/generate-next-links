@@ -1,38 +1,24 @@
-import { NodeMap, MapValue, Parents } from "../node";
+import { NodeMap } from "../node";
 
-export const MOCK_ENUM_STRING = function (name = "links") {
-  return `
-export enum ${name} {                                                                         
-  ADMIN = "/admin",                                                                            
-  ADMIN_BLOG = "/admin/blog",                                            
-  ADMIN_BLOG_POSTS = "/admin/blog/posts",                                                      
-  ADMIN_USER_ID = "/admin/user/[id]",                                                          
-  CUSTOMER_ID = "/[customerId]",                                                               
-  FAQ_LANGUAGE = "/faq/[language]",                                                            
-  PRODUCTS_CATEGORY = "/products/[category]",                                                  
-  PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID = "/products/[category]/theme/color/[colorId]",       
-  PRODUCTS_CATEGORY_THEME_CURRENT = "/products/[category]/theme/current",                      
-  PRODUCTS_CATEGORY_THEME_NEW = "/products/[category]/theme/new",                              
-  PRODUCTS_CREATE = "/products/create",                                                        
-  PRODUCTS_EDIT = "/products/edit",                                                            
-  PRODUCTS_ID = "/products/[id]",                                                              
-}
-`;
-};
-
-export const MOCK_PARENTS = function (): Parents {
-  return {
-    "[customerId]": 1,
-    faq: 3,
-    admin: 5,
-    "admin/blog": 7,
-    "admin/user": 10,
-    products: 12,
-    "products/create": 15,
-    "products/[category]": 17,
-    "products/[category]/theme": 19,
-    "products/[category]/theme/color": 22,
-  };
+export const MOCK_LINKS_ARRAY = function () {
+  return [
+    ["ADMIN", "/admin"],
+    ["ADMIN_BLOG", "/admin/blog"],
+    ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
+    ["ADMIN_USER_ID", "/admin/user/[id]"],
+    ["CUSTOMER_ID", "/[customerId]"],
+    ["FAQ_LANGUAGE", "/faq/[language]"],
+    ["PRODUCTS_CATEGORY", "/products/[category]"],
+    [
+      "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID",
+      "/products/[category]/theme/color/[colorId]",
+    ],
+    ["PRODUCTS_CATEGORY_THEME_CURRENT", "/products/[category]/theme/current"],
+    ["PRODUCTS_CATEGORY_THEME_NEW", "/products/[category]/theme/new"],
+    ["PRODUCTS_CREATE", "/products/create"],
+    ["PRODUCTS_EDIT", "/products/edit"],
+    ["PRODUCTS_ID", "/products/[id]"],
+  ];
 };
 
 export const MOCK_NODE_MAP = function (): NodeMap {

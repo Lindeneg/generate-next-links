@@ -2,7 +2,7 @@ import fs from "fs";
 import { exit } from "process";
 import { LogLevel, log } from "./log";
 
-const VERSION = "2.0.7";
+const VERSION = "2.0.8";
 
 const HELP = `
 Usage: generate-next-links 

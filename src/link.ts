@@ -31,12 +31,18 @@ export function buildLinkPath(
   nodeMap: NodeMap,
   link = ""
 ): string {
-  if (node && node.parentId !== null) {
-    return buildLinkPath(
-      nodeMap.getNode(node.parentId),
-      nodeMap,
-      `/${node.name}${link}`
-    );
+  if (node) {
+    if (node.parentId !== null) {
+      return buildLinkPath(
+        nodeMap.getNode(node.parentId),
+        nodeMap,
+        `/${node.name}${link}`
+      );
+    } else {
+      if (node.name !== "/") {
+        link = node.name + link;
+      }
+    }
   }
   return link;
 }
@@ -69,7 +75,7 @@ export function generateLinkNodeTree(
       exit(1);
     }
     const nodeMap = new NodeMap(logger);
-    nodeMap.setNode({ name: "/", isDir: true, parentId: null });
+    nodeMap.setNode({ name: config.base, isDir: true, parentId: null });
     results.forEach((result) => {
       const splitted = result.split("pages/");
       let parentId: number | null = null;

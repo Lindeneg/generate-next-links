@@ -14,6 +14,7 @@ Options:
  -N --name [NAME]         name of generated TypeScript enum
  -P --path [PATH]         path to folder where 'pages' directory resides
  -O --out  [PATH]         path to folder where ts file will be written to
+ -B --base [PATH]         nextjs base path, defaults to '/'
  -D --dry                 perform all operations except writing to disk
  -V --verbose             show all log messages in stdout
  -T --omit-timestamp      omit timestamp from written ts file
@@ -28,6 +29,7 @@ export type Config = {
   path: string;
   out: string;
   name: string;
+  base: string;
   dry: boolean;
   verbose: boolean;
   omitTimestamp: boolean;
@@ -54,6 +56,7 @@ export function getConfig(rootPath: string, args: string[]): Config {
     path: rootPath,
     out: rootPath,
     name: "links",
+    base: "/",
     dry: false,
     verbose: false,
     omitTimestamp: false,
@@ -71,20 +74,34 @@ export function getConfig(rootPath: string, args: string[]): Config {
         case "-P":
         case "--name":
         case "-N":
+        case "--base":
+        case "-B":
           if (i + 1 < args.length) {
+            const next = args[i + 1];
             const target =
-              (args[i + 1].startsWith("/") || arg === "--name" ? "" : "/") +
-              args[i + 1];
-            if (arg === "--out") {
+              (next.startsWith("/") || ["--name", "-N"].includes(arg)
+                ? ""
+                : "/") + next;
+            if (["--out", "-O"].includes(arg)) {
               config.out += target;
-            } else if (arg === "--name") {
+            } else if (["--name", "-N"].includes(arg)) {
               config.name = target;
-            } else {
+            } else if (["--path", "-P"].includes(arg)) {
               config.path += target;
+            } else if (["--base", "-B"].includes(arg)) {
+              config.base = target;
+            } else {
+              log(
+                false,
+                LogLevel.Error,
+                `a flag '${arg}' that requires an argument was passed without an argument`
+              );
+              exit(1);
             }
           }
           break;
         case "--version":
+        case "-I":
           log(false, LogLevel.Debug, `version: ${VERSION}`);
           exit(0);
         case "--dry":
@@ -108,6 +125,7 @@ export function getConfig(rootPath: string, args: string[]): Config {
           config.exportJson = true;
           break;
         case "--help":
+        case "-H":
           log(false, LogLevel.Debug, HELP);
           exit(0);
         default:

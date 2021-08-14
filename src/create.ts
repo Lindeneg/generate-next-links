@@ -23,7 +23,7 @@ function getContent(links: Link[], config: Config): string {
   `;
 }
 
-export async function createTsLinksEnum(
+export async function writeResult(
   links: Link[],
   config: Config,
   dryCallback: (content: string) => void,

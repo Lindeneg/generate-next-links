@@ -1,6 +1,6 @@
 import { exit } from "process";
 import { Link, generateLinkNodeTree, getLinks } from "./link";
-import { createTsLinksEnum } from "./create";
+import { writeResult } from "./create";
 import { Config, getConfig } from "./config";
 import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
@@ -19,7 +19,7 @@ export function main(
       const links = getLinks(map, config.convertCamelCase).sort((a, b) =>
         b[0] > a[0] ? -1 : 1
       );
-      createTsLinksEnum(
+      writeResult(
         links,
         config,
         (content) => {

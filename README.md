@@ -25,6 +25,7 @@ Options:
  -N --name [NAME]         name of generated TypeScript enum
  -P --path [PATH]         path to folder where 'pages' directory resides
  -O --out  [PATH]         path to folder where ts file will be written to
+ -B --base [PATH]         nextjs base path, defaults to '/'
  -D --dry                 perform all operations except writing to disk
  -V --verbose             show all log messages in stdout
  -T --omit-timestamp      omit timestamp from written ts file

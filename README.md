@@ -25,6 +25,7 @@ Options:
  -N --name [NAME]         name of generated TypeScript enum
  -P --path [PATH]         path to folder where 'pages' directory resides
  -O --out  [PATH]         path to folder where ts file will be written to
+ -B --base [PATH]         nextjs base path, defaults to '/'
  -D --dry                 perform all operations except writing to disk
  -V --verbose             show all log messages in stdout
  -T --omit-timestamp      omit timestamp from written ts file
@@ -78,10 +79,10 @@ export enum links {
   ADMIN_BLOG = "/admin/blog",
   ADMIN_BLOG_POSTS = "/admin/blog/posts",
   ADMIN_USER_ID = "/admin/user/[id]",
-  CUSTOMER_ID = "/[customerId]",
+  CUSTOMERID = "/[customerId]",
   FAQ_LANGUAGE = "/faq/[language]",
   PRODUCTS_CATEGORY = "/products/[category]",
-  PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID = "/products/[category]/theme/color/[colorId]",
+  PRODUCTS_CATEGORY_THEME_COLOR_COLORID = "/products/[category]/theme/color/[colorId]",
   PRODUCTS_CATEGORY_THEME_CURRENT = "/products/[category]/theme/current",
   PRODUCTS_CATEGORY_THEME_NEW = "/products/[category]/theme/new",
   PRODUCTS_CREATE = "/products/create",
@@ -116,10 +117,10 @@ Note that `json` is also supported. The above structure would yield the followin
   "ADMIN_BLOG": "/admin/blog",
   "ADMIN_BLOG_POSTS": "/admin/blog/posts",
   "ADMIN_USER_ID": "/admin/user/[id]",
-  "CUSTOMER_ID": "/[customerId]",
+  "CUSTOMERID": "/[customerId]",
   "FAQ_LANGUAGE": "/faq/[language]",
   "PRODUCTS_CATEGORY": "/products/[category]",
-  "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID": "/products/[category]/theme/color/[colorId]",
+  "PRODUCTS_CATEGORY_THEME_COLOR_COLORID": "/products/[category]/theme/color/[colorId]",
   "PRODUCTS_CATEGORY_THEME_CURRENT": "/products/[category]/theme/current",
   "PRODUCTS_CATEGORY_THEME_NEW": "/products/[category]/theme/new",
   "PRODUCTS_CREATE": "/products/create",

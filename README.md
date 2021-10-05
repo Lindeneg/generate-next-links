@@ -98,7 +98,7 @@ function component (props) {
   return (
     <Link
       href={{
-        pathname: links.PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID,
+        pathname: links.PRODUCTS_CATEGORY_THEME_COLOR_COLORID,
         query: {
           category: props.category,
           colorId: props.id

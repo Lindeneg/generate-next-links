@@ -55,7 +55,7 @@ export function getLinks(nodeMap: NodeMap, doConvertCamelCase: boolean) {
     if (!node?.isDir) {
       let linkPath = buildLinkPath(node, nodeMap);
       linkPath = linkPath.endsWith("/")
-        ? linkPath.substr(0, linkPath.length - 1)
+        ? linkPath.substring(0, linkPath.length - 1)
         : linkPath;
       linkPath &&
         links.push([cleanLinkName(linkPath, doConvertCamelCase), linkPath]);
@@ -81,7 +81,7 @@ export function generateLinkNodeTree(
       let parentId: number | null = null;
       let child: string = "";
       if (splitted.length >= 2) {
-        if (!/^(_app|index)\.tsx$/.test(splitted[1])) {
+        if (!/^(_app|_document|index)\.tsx$/.test(splitted[1])) {
           const targets = splitted[1].split("/");
           child = targets[targets.length - 1].replace(/\.(tsx|jsx)/g, "");
           parentId = nodeMap.handleParent(targets, parentId);

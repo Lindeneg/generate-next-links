@@ -2,6 +2,9 @@ import { NodeMap } from "../node";
 
 export const MOCK_LINKS_ARRAY = function () {
   return [
+    ["400", "/400"],
+    ["42_ANSWER", "/42/answer"],
+    ["500", "/500"],
     ["ADMIN", "/admin"],
     ["ADMIN_BLOG", "/admin/blog"],
     ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],

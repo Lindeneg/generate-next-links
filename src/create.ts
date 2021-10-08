@@ -5,6 +5,13 @@ import { Config } from "./config";
 import { Link } from "./link";
 import { Logger, LogLevel, log, getRunTimeInSeconds } from "./log";
 
+function handleNumber(val: string) {
+  if (val.length > 0 && Number.isNaN(Number(val[0]))) {
+    return val;
+  }
+  return `N${val}`;
+}
+
 function getContent(links: Link[], config: Config): string {
   if (config.exportJson) {
     return JSON.stringify(
@@ -18,7 +25,7 @@ function getContent(links: Link[], config: Config): string {
   }
   return `
   export enum ${config.name} {
-      ${links.map(([k, v]) => `${k} = "${v}"`)}
+      ${links.map(([k, v]) => `${handleNumber(k)} = "${v}"`)}
   };
   `;
 }

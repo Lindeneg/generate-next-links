@@ -18,7 +18,7 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 ```
 Usage: generate-next-links
 
-If no args are specified, a 'pages' folder must be located
+If no 'path' is specified, a 'pages' folder must be located
 inside the folder where the script is running from
 
 Options:

@@ -15,6 +15,8 @@ Options:
  -P --path [PATH]         path to folder where 'pages' directory resides
  -O --out  [PATH]         path to folder where ts file will be written to
  -B --base [PATH]         nextjs base path, defaults to '/'
+ -A --api                 include API paths found in '/pages/api' folder
+ -R --root                include an 'INDEX' entry with path '/'
  -D --dry                 perform all operations except writing to disk
  -V --verbose             show all log messages in stdout
  -T --omit-timestamp      omit timestamp from written ts file
@@ -31,6 +33,8 @@ export type Config = {
   name: string;
   base: string;
   dry: boolean;
+  api: boolean;
+  root: boolean;
   verbose: boolean;
   omitTimestamp: boolean;
   exportJson: boolean;
@@ -58,6 +62,8 @@ export function getConfig(rootPath: string, args: string[]): Config {
     name: "links",
     base: "/",
     dry: false,
+    api: false,
+    root: false,
     verbose: false,
     omitTimestamp: false,
     exportJson: false,
@@ -111,6 +117,14 @@ export function getConfig(rootPath: string, args: string[]): Config {
         case "--verbose":
         case "-V":
           config.verbose = true;
+          break;
+        case "--api":
+        case "-A":
+          config.api = true;
+          break;
+        case "--root":
+        case "-R":
+          config.root = true;
           break;
         case "--omit-timestamp":
         case "-T":

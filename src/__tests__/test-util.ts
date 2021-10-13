@@ -1,6 +1,15 @@
 import { NodeMap } from "../node";
 
-export const MOCK_LINKS_ARRAY = function () {
+export const MOCK_API_LINKS_ARRAY = function () {
+  return [
+    ["API_ARTICLE_GET_MANY", "/api/article/get-many"],
+    ["API_ARTICLE_GET_SINGLE", "/api/article/get-single"],
+    ["API_LOGIN", "/api/login"],
+    ["API_SIGNUP", "/api/signup"],
+  ];
+};
+
+export const MOCK_LINKS_ARRAY = function (API_LINKS: string[][] = []) {
   return [
     ["400", "/400"],
     ["42_ANSWER", "/42/answer"],
@@ -9,6 +18,7 @@ export const MOCK_LINKS_ARRAY = function () {
     ["ADMIN_BLOG", "/admin/blog"],
     ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
     ["ADMIN_USER_ID", "/admin/user/[id]"],
+    ...API_LINKS,
     ["CUSTOMER_ID", "/[customerId]"],
     ["FAQ_LANGUAGE", "/faq/[language]"],
     ["PRODUCTS_CATEGORY", "/products/[category]"],

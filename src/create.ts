@@ -12,6 +12,13 @@ function handleNumber(val: string) {
   return `N${val}`;
 }
 
+function getRoot(root: boolean): Link[] {
+  if (root) {
+    return [["INDEX", "/"]];
+  }
+  return [];
+}
+
 function getContent(links: Link[], config: Config): string {
   if (config.exportJson) {
     return JSON.stringify(
@@ -39,7 +46,7 @@ export async function writeResult(
   const name = `${config.out}/links${
     config.omitTimestamp ? "" : "_" + Date.now()
   }.${config.exportJson ? "json" : "ts"}`;
-  let content = getContent(links, config);
+  let content = getContent([...getRoot(config.root), ...links], config);
   content =
     process.env.NODE_ENV === "test"
       ? content

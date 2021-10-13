@@ -6,7 +6,7 @@ import { LogLevel, log, getRunTimeInSeconds } from "./log";
 
 export function main(
   config: Config,
-  callback: (result: [string, Link[]]) => void = () => {}
+  testCallback: (result: [string, Link[]]) => void = () => {}
 ) {
   const logger = log.bind(null, !config.verbose);
   generateLinkNodeTree(
@@ -33,7 +33,7 @@ export function main(
             )} seconds`
           );
           if (process.env.NODE_ENV === "test") {
-            return callback([content, links]);
+            return testCallback([content, links]);
           } else {
             exit(0);
           }

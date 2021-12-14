@@ -43,53 +43,47 @@ Options:
 
 Suppose we have a next.js application with the following `pages` structure:
 
-```sh
+```
 .
 └── pages
-    ├── [customerId]
-    │   └── index.tsx
-    ├── _app.tsx
+    ├── 404.tsx
+    ├── 500.tsx
     ├── admin
-    │   ├── blog
-    │   │   ├── index.tsx
-    │   │   └── posts.tsx
-    │   ├── index.tsx
-    │   └── user
-    │       └── [id].tsx
-    ├── faq
-    │   └── [language].tsx
+    │   ├── administrate.tsx
+    │   ├── index.tsx
+    │   └── user
+    │       ├── index.tsx
+    │       └── options
+    │           └── dashboard.tsx
+    ├── _app.tsx
+    ├── content
+    │   ├── [articleId]
+    │   │   └── index.tsx
+    │   └── index.tsx
+    ├── _document.tsx
     ├── index.tsx
-    └── products
-        ├── [category]
-        │   ├── index.tsx
-        │   └── theme
-        │       ├── color
-        │       │   └── [colorId].tsx
-        │       ├── current.tsx
-        │       └── new.tsx
-        ├── [id].tsx
-        ├── create
-        │   └── index.tsx
-        └── edit.tsx
+    ├── posts
+    │   └── [...slug].tsx
+    └── user
+        └── [[...slug]].tsx
 ```
 
-Then given the above structure, this program will generate a `.ts` file with the following `enum`:
+_`[...slug]` and `[[...slug]]` are [catch-all-routes](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)_
+
+Given the above structure, this program will generate a `.ts` file with the following `enum`:
 
 ```ts
 export enum links {
+  N404 = "/404",
+  N500 = "/500",
   ADMIN = "/admin",
-  ADMIN_BLOG = "/admin/blog",
-  ADMIN_BLOG_POSTS = "/admin/blog/posts",
-  ADMIN_USER_ID = "/admin/user/[id]",
-  CUSTOMERID = "/[customerId]",
-  FAQ_LANGUAGE = "/faq/[language]",
-  PRODUCTS_CATEGORY = "/products/[category]",
-  PRODUCTS_CATEGORY_THEME_COLOR_COLORID = "/products/[category]/theme/color/[colorId]",
-  PRODUCTS_CATEGORY_THEME_CURRENT = "/products/[category]/theme/current",
-  PRODUCTS_CATEGORY_THEME_NEW = "/products/[category]/theme/new",
-  PRODUCTS_CREATE = "/products/create",
-  PRODUCTS_EDIT = "/products/edit",
-  PRODUCTS_ID = "/products/[id]",
+  ADMIN_ADMINISTRATE = "/admin/administrate",
+  ADMIN_USER = "/admin/user",
+  ADMIN_USER_OPTIONS_DASHBOARD = "/admin/user/options/dashboard",
+  CONTENT = "/content",
+  CONTENT_ARTICLEID = "/content/[articleId]",
+  POSTS_CATCHALL_SLUG = "/posts/[...slug]",
+  USER_OPTIONAL_CATCHALL_SLUG = "/user/[[...slug]]",
 }
 ```
 
@@ -100,10 +94,9 @@ function component (props) {
   return (
     <Link
       href={{
-        pathname: links.PRODUCTS_CATEGORY_THEME_COLOR_COLORID,
+        pathname: links.CONTENT_ARTICLEID,
         query: {
-          category: props.category,
-          colorId: props.id
+          articleId: props.id
         },
       }}
     >
@@ -111,22 +104,38 @@ function component (props) {
 }
 ```
 
-Note that `json` is also supported. The above structure would yield the following `.json` file:
+Suppose the following `api` folder is present in the above example and we'd like to include it
 
-```json
-{
-  "ADMIN": "/admin",
-  "ADMIN_BLOG": "/admin/blog",
-  "ADMIN_BLOG_POSTS": "/admin/blog/posts",
-  "ADMIN_USER_ID": "/admin/user/[id]",
-  "CUSTOMERID": "/[customerId]",
-  "FAQ_LANGUAGE": "/faq/[language]",
-  "PRODUCTS_CATEGORY": "/products/[category]",
-  "PRODUCTS_CATEGORY_THEME_COLOR_COLORID": "/products/[category]/theme/color/[colorId]",
-  "PRODUCTS_CATEGORY_THEME_CURRENT": "/products/[category]/theme/current",
-  "PRODUCTS_CATEGORY_THEME_NEW": "/products/[category]/theme/new",
-  "PRODUCTS_CREATE": "/products/create",
-  "PRODUCTS_EDIT": "/products/edit",
-  "PRODUCTS_ID": "/products/[id]"
+```
+.
+└── pages
+    ├── api
+    │   ├── article
+    │   │   └── create.ts
+    │   ├── auth
+    │   │   ├── login.ts
+    │   │   └── logout.ts
+    │   └── user
+    │       └── [[...userId]].ts
+```
+
+Then run the program with the `--api` flag to produce the following:
+
+```ts
+export enum links {
+  N404 = "/404",
+  N500 = "/500",
+  ADMIN = "/admin",
+  ADMIN_ADMINISTRATE = "/admin/administrate",
+  ADMIN_USER = "/admin/user",
+  ADMIN_USER_OPTIONS_DASHBOARD = "/admin/user/options/dashboard",
+  API_ARTICLE_CREATE = "/api/article/create",
+  API_AUTH_LOGIN = "/api/auth/login",
+  API_AUTH_LOGOUT = "/api/auth/logout",
+  API_USER_OPTIONAL_CATCHALL_USERID = "/api/user/[[...userId]]",
+  CONTENT = "/content",
+  CONTENT_ARTICLEID = "/content/[articleId]",
+  POSTS_CATCHALL_SLUG = "/posts/[...slug]",
+  USER_OPTIONAL_CATCHALL_SLUG = "/user/[[...slug]]",
 }
 ```

@@ -2,8 +2,8 @@ import { NodeMap } from "../node";
 
 export const MOCK_API_LINKS_ARRAY = function () {
   return [
-    ["API_ARTICLE_GET_MANY", "/api/article/get-many"],
-    ["API_ARTICLE_GET_SINGLE", "/api/article/get-single"],
+    ["API_ARTICLE_GETMANY", "/api/article/get-many"],
+    ["API_ARTICLE_GETSINGLE", "/api/article/get-single"],
     ["API_LOGIN", "/api/login"],
     ["API_SIGNUP", "/api/signup"],
   ];
@@ -19,8 +19,12 @@ export const MOCK_LINKS_ARRAY = function (API_LINKS: string[][] = []) {
     ["ADMIN_BLOG_POSTS", "/admin/blog/posts"],
     ["ADMIN_USER_ID", "/admin/user/[id]"],
     ...API_LINKS,
+    ["CATCHALL_MILES", "/[...miles]"],
     ["CUSTOMER_ID", "/[customerId]"],
     ["FAQ_LANGUAGE", "/faq/[language]"],
+    ["OPTIONAL_CATCHALL_DAVIS", "/[[...davis]]"],
+    ["POSTALT_OPTIONAL_CATCHALL_SLUG", "/post-alt/[[...slug]]"],
+    ["POST_CATCHALL_SLUG", "/post/[...slug]"],
     ["PRODUCTS_CATEGORY", "/products/[category]"],
     [
       "PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID",

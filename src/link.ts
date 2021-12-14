@@ -6,6 +6,17 @@ import { LogLevel, Logger, log } from "./log";
 
 export type Link = [string, string];
 
+function clean(
+  target: string,
+  callback: (item: string, idx: number) => string
+) {
+  let result = "";
+  for (let i = 0; i < target.length; i++) {
+    result += callback(target[i], i);
+  }
+  return result;
+}
+
 export function convertCamelCase(target: string) {
   const result: string[] = [];
   target.split(" ").forEach((entry) => {
@@ -18,12 +29,35 @@ export function convertCamelCase(target: string) {
 }
 
 export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
-  return (doConvertCamelCase ? convertCamelCase(name) : name)
-    .replace(/^\//, "")
-    .replace(/(\/|\-)/g, "_")
-    .replace(/\[|\]/g, "")
-    .toUpperCase()
-    .trim();
+  const notSeparator = /^\/(\[){1,2}\.\.\.[a-zA-Z]+(\]){1,2}$/.test(name);
+  const target = (doConvertCamelCase ? convertCamelCase(name) : name).replace(
+    /\/(\[){1,2}\.\.\.[a-zA-Z]+(\]){1,2}/,
+    (e) => {
+      const isOpt = (e.match(/(\[)|(\])/g) || []).length === 4;
+      const label = /\.\.\.([a-zA-Z]+)/.exec(e);
+      if (label && label.length > 1) {
+        const prefix =
+          (notSeparator ? "" : "_") +
+          (isOpt ? "optional_catchall_" : "catchall_");
+        return prefix + label[1];
+      }
+      return e;
+    }
+  );
+  return clean(target, (e, i) => {
+    if (e === "/" && i > 0) {
+      return "_";
+    } else if (
+      (e === "/" && i === 0) ||
+      e === "[" ||
+      e === "]" ||
+      e == " " ||
+      e === "-"
+    ) {
+      return "";
+    }
+    return e.toUpperCase();
+  });
 }
 
 export function buildLinkPath(

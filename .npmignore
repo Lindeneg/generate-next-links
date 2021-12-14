@@ -4,6 +4,7 @@ __mock__
 src
 lib
 jest.config.js
+package-lock.json
 index.dev.js
 tsconfig.*
 webpack.config.js

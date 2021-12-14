@@ -41,7 +41,7 @@ Options:
 
 ### Description
 
-Suppose we have a next.js application with the following `pages` structure:
+Suppose a next.js application with the following `pages` structure:
 
 ```
 .
@@ -104,22 +104,22 @@ function component (props) {
 }
 ```
 
-Suppose the following `api` folder is present in the above example and we'd like to include it
+Suppose the following `api` folder is present in the above example
 
 ```
 .
 └── pages
     ├── api
-    │   ├── article
-    │   │   └── create.ts
-    │   ├── auth
-    │   │   ├── login.ts
-    │   │   └── logout.ts
-    │   └── user
-    │       └── [[...userId]].ts
+        ├── article
+        │   └── create.ts
+        ├── auth
+        │   ├── login.ts
+        │   └── logout.ts
+        └── user
+            └── [[...userId]].ts
 ```
 
-Then run the program with the `--api` flag to produce the following:
+Run the program with the `--api` flag to produce the following:
 
 ```ts
 export enum links {

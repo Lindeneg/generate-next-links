@@ -59,7 +59,9 @@ export async function writeResult(
       if (err) {
         logger && logger(LogLevel.Error, err);
         console.log("Error: failed to write file: " + name);
-        console.log("Suggestion: run with flag `-V` to debug");
+        if (!config.verbose) {
+          console.log("Suggestion: run with flag `-V` to debug");
+        }
         exit(1);
       } else {
         log(

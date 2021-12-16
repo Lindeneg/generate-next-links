@@ -104,7 +104,7 @@ function component (props) {
 }
 ```
 
-Or with another library such as [cl-fill-link]()
+Or with another library such as [cl-fill-link](https://github.com/Lindeneg/cl-fill-link)
 
 ```ts
 // returns: '/posts/category/music/jazz/miles-davis'

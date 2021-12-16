@@ -104,6 +104,15 @@ function component (props) {
 }
 ```
 
+Or with another library such as [cl-fill-link]()
+
+```ts
+// returns: '/posts/category/music/jazz/miles-davis'
+fillLink(links.POSTS_CATCHALL_SLUG, {
+  slug: ["category", "music", "jazz", "miles-davis"],
+});
+```
+
 Suppose the following `api` folder is present in the above example
 
 ```

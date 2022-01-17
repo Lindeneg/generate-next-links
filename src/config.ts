@@ -2,7 +2,8 @@ import fs from "fs";
 import { exit } from "process";
 import { LogLevel, log } from "./log";
 
-const VERSION = "2.1.3";
+// should probably just import package.json
+const VERSION = "2.1.4";
 
 const HELP = `
 Usage: generate-next-links 

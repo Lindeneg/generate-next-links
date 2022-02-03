@@ -1,9 +1,9 @@
-import fs from "fs";
-import { exit } from "process";
-import { LogLevel, log } from "./log";
+import fs from 'fs';
+import { exit } from 'process';
+import { LogLevel, log } from './log';
+import packageJson from '../package.json';
 
-// should probably just import package.json
-const VERSION = "2.1.4";
+const VERSION = packageJson.version;
 
 const HELP = `
 Usage: generate-next-links 
@@ -60,8 +60,8 @@ export function getConfig(rootPath: string, args: string[]): Config {
   const config: Config = {
     path: rootPath,
     out: rootPath,
-    name: "links",
-    base: "/",
+    name: 'links',
+    base: '/',
     dry: false,
     api: false,
     root: false,
@@ -75,27 +75,27 @@ export function getConfig(rootPath: string, args: string[]): Config {
     for (let i = 2; i < args.length; i++) {
       const arg = args[i];
       switch (arg) {
-        case "--out":
-        case "-O":
-        case "--path":
-        case "-P":
-        case "--name":
-        case "-N":
-        case "--base":
-        case "-B":
+        case '--out':
+        case '-O':
+        case '--path':
+        case '-P':
+        case '--name':
+        case '-N':
+        case '--base':
+        case '-B':
           if (i + 1 < args.length) {
             const next = args[i + 1];
             const target =
-              (next.startsWith("/") || ["--name", "-N"].includes(arg)
-                ? ""
-                : "/") + next;
-            if (["--out", "-O"].includes(arg)) {
+              (next.startsWith('/') || ['--name', '-N'].includes(arg)
+                ? ''
+                : '/') + next;
+            if (['--out', '-O'].includes(arg)) {
               config.out += target;
-            } else if (["--name", "-N"].includes(arg)) {
+            } else if (['--name', '-N'].includes(arg)) {
               config.name = target;
-            } else if (["--path", "-P"].includes(arg)) {
+            } else if (['--path', '-P'].includes(arg)) {
               config.path += target;
-            } else if (["--base", "-B"].includes(arg)) {
+            } else if (['--base', '-B'].includes(arg)) {
               config.base = target;
             } else {
               log(
@@ -107,40 +107,40 @@ export function getConfig(rootPath: string, args: string[]): Config {
             }
           }
           break;
-        case "--version":
-        case "-I":
+        case '--version':
+        case '-I':
           log(false, LogLevel.Debug, `version: ${VERSION}`);
           exit(0);
-        case "--dry":
-        case "-D":
+        case '--dry':
+        case '-D':
           config.dry = true;
           break;
-        case "--verbose":
-        case "-V":
+        case '--verbose':
+        case '-V':
           config.verbose = true;
           break;
-        case "--api":
-        case "-A":
+        case '--api':
+        case '-A':
           config.api = true;
           break;
-        case "--root":
-        case "-R":
+        case '--root':
+        case '-R':
           config.root = true;
           break;
-        case "--omit-timestamp":
-        case "-T":
+        case '--omit-timestamp':
+        case '-T':
           config.omitTimestamp = true;
           break;
-        case "--convert-camel-case":
-        case "-C":
+        case '--convert-camel-case':
+        case '-C':
           config.convertCamelCase = true;
           break;
-        case "--export-json":
-        case "-J":
+        case '--export-json':
+        case '-J':
           config.exportJson = true;
           break;
-        case "--help":
-        case "-H":
+        case '--help':
+        case '-H':
           log(false, LogLevel.Debug, HELP);
           exit(0);
         default:
@@ -148,16 +148,16 @@ export function getConfig(rootPath: string, args: string[]): Config {
       }
     }
   }
-  if (!isDirectory("pages", config.path, config.verbose)) {
-    log(false, LogLevel.Error, "`pages` folder not found.. exiting..");
-    if (process.env.NODE_ENV === "test") {
-      throw new Error("`pages` folder not found.. exiting..");
+  if (!isDirectory('pages', config.path, config.verbose)) {
+    log(false, LogLevel.Error, '`pages` folder not found.. exiting..');
+    if (process.env.NODE_ENV === 'test') {
+      throw new Error('`pages` folder not found.. exiting..');
     } else {
       log(false, LogLevel.Debug, HELP);
       exit(0);
     }
   }
-  config.path += (config.path.endsWith("/") ? "" : "/") + "pages";
-  log(!config.verbose, LogLevel.Debug, "parsed config: ", config);
+  config.path += (config.path.endsWith('/') ? '' : '/') + 'pages';
+  log(!config.verbose, LogLevel.Debug, 'parsed config: ', config);
   return config;
 }

@@ -1,8 +1,8 @@
-import { exit } from "process";
-import { MapValue, NodeMap } from "./node";
-import { walk } from "./walk";
-import { Config } from "./config";
-import { LogLevel, Logger, log } from "./log";
+import { exit } from 'process';
+import { MapValue, NodeMap } from './node';
+import { walk } from './walk';
+import { Config } from './config';
+import { LogLevel, Logger, log } from './log';
 
 export type Link = [string, string];
 
@@ -12,7 +12,7 @@ function clean(
   target: string,
   callback: (item: string, idx: number) => string
 ) {
-  let result = "";
+  let result = '';
   for (let i = 0; i < target.length; i++) {
     result += callback(target[i], i);
   }
@@ -21,13 +21,13 @@ function clean(
 
 export function convertCamelCase(target: string) {
   const result: string[] = [];
-  target.split(" ").forEach((entry) => {
-    if (entry !== "") {
-      const splitWords = entry.split(/(?=[A-Z])/).join("_");
+  target.split(' ').forEach((entry) => {
+    if (entry !== '') {
+      const splitWords = entry.split(/(?=[A-Z])/).join('_');
       result.push(splitWords.charAt(0).toUpperCase() + splitWords.slice(1));
     }
   });
-  return result.join(" ");
+  return result.join(' ');
 }
 
 export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
@@ -39,18 +39,18 @@ export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
       const label = /\.{3}([a-zA-Z]+)/.exec(e);
       if (label && label.length > 1) {
         const prefix =
-          (notSeparator ? "" : "_") +
-          (isOpt ? "optional_catchall_" : "catchall_");
+          (notSeparator ? '' : '_') +
+          (isOpt ? 'optional_catchall_' : 'catchall_');
         return prefix + label[1];
       }
       return e;
     }
   );
   return clean(target, (e, i) => {
-    if (e === "/" && i > 0) {
-      return "_";
-    } else if ((e === "/" && i === 0) || ["[", "]", " ", "-"].includes(e)) {
-      return "";
+    if (e === '/' && i > 0) {
+      return '_';
+    } else if ((e === '/' && i === 0) || ['[', ']', ' ', '-'].includes(e)) {
+      return '';
     }
     return e.toUpperCase();
   });
@@ -59,7 +59,7 @@ export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
 export function buildLinkPath(
   node: MapValue | undefined,
   nodeMap: NodeMap,
-  link = ""
+  link = ''
 ): string {
   if (node) {
     if (node.parentId !== null) {
@@ -69,7 +69,7 @@ export function buildLinkPath(
         `/${node.name}${link}`
       );
     } else {
-      if (node.name !== "/") {
+      if (node.name !== '/') {
         link = node.name + link;
       }
     }
@@ -84,7 +84,7 @@ export function getLinks(nodeMap: NodeMap, doConvertCamelCase: boolean) {
     const node = nodeMap.getNode(key);
     if (!node?.isDir) {
       let linkPath = buildLinkPath(node, nodeMap);
-      linkPath = linkPath.endsWith("/")
+      linkPath = linkPath.endsWith('/')
         ? linkPath.substring(0, linkPath.length - 1)
         : linkPath;
       linkPath &&
@@ -101,20 +101,20 @@ export function generateLinkNodeTree(
 ) {
   walk(config.api, config.path, (err, results) => {
     if (err) {
-      log(false, LogLevel.Error, "could not walk the target directory: ", err);
+      log(false, LogLevel.Error, 'could not walk the target directory: ', err);
       exit(1);
     }
     const nodeMap = new NodeMap(logger);
     const reExt = config.api ? /\.(tsx|jsx|ts)/g : /\.(tsx|jsx)/g;
     nodeMap.setNode({ name: config.base, isDir: true, parentId: null });
     results.forEach((result) => {
-      const splitted = result.split("pages/");
+      const splitted = result.split('pages/');
       let parentId: number | null = null;
-      let child: string = "";
+      let child: string = '';
       if (splitted.length >= 2) {
         if (!/^(_app|_document|index)\.tsx$/.test(splitted[1])) {
-          const targets = splitted[1].split("/");
-          child = targets[targets.length - 1].replace(reExt, "");
+          const targets = splitted[1].split('/');
+          child = targets[targets.length - 1].replace(reExt, '');
           parentId = nodeMap.handleParent(targets, parentId);
         } else {
           logger && logger(LogLevel.Debug, `ignoring file '${splitted[1]}'`);

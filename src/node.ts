@@ -1,5 +1,5 @@
-import { Id } from "./id";
-import { LogLevel, Logger } from "./log";
+import { Id } from './id';
+import { LogLevel, Logger } from './log';
 
 export type MapKey = number;
 export type MapValue = {
@@ -7,7 +7,7 @@ export type MapValue = {
   parentId: MapKey | null;
   isDir: boolean;
 };
-export type Parents = { [key: string]: MapValue["parentId"] };
+export type Parents = { [key: string]: MapValue['parentId'] };
 
 export class NodeMap {
   private map: Map<MapKey, MapValue>;
@@ -40,10 +40,10 @@ export class NodeMap {
     return this.map.size;
   }
 
-  public handleChild(child: string, parentId: MapValue["parentId"]): number {
-    if (child !== "") {
+  public handleChild(child: string, parentId: MapValue['parentId']): number {
+    if (child !== '') {
       return this.setNode({
-        name: child === "index" ? "" : child,
+        name: child === 'index' ? '' : child,
         isDir: false,
         parentId,
       });
@@ -76,9 +76,9 @@ export class NodeMap {
     }
   }
 
-  private getParent(key: string): MapValue["parentId"] {
+  private getParent(key: string): MapValue['parentId'] {
     const entry = this.parents[key];
-    if (typeof entry !== "undefined") {
+    if (typeof entry !== 'undefined') {
       return entry;
     }
     return null;
@@ -87,23 +87,23 @@ export class NodeMap {
   private getParentPath(targets: string[]): [string, string] {
     const parent = targets.slice(0, targets.length - 1);
     const parentName = parent[parent.length - 1];
-    const parentPath = parent.join("/");
+    const parentPath = parent.join('/');
     return [parentName, parentPath];
   }
 
   private getGrandParentId(path: string): number {
-    const parentPath = path.split("/");
+    const parentPath = path.split('/');
     if (parentPath.length === 1) {
       return 0;
     }
     const grandParentPath = parentPath
       .slice(0, parentPath.length - 1)
-      .join("/");
+      .join('/');
     const grandParent = this.getParent(grandParentPath);
     if (grandParent !== null) {
       return grandParent;
     }
-    const name = grandParentPath.split("/");
+    const name = grandParentPath.split('/');
     const id = this.setNode({
       name: name[name.length - 1],
       isDir: true,

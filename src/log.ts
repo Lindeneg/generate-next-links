@@ -17,5 +17,5 @@ export function getRunTimeInSeconds(start: number) {
 }
 
 export function log(dry: boolean, level: LogLevel, ...args: unknown[]) {
-  process.env.NODE_ENV !== "test" && !dry && logLevel[level](...args);
+  process.env.NODE_ENV !== 'test' && !dry && logLevel[level](...args);
 }

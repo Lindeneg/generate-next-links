@@ -1,8 +1,8 @@
-import { exit } from "process";
-import { Link, generateLinkNodeTree, getLinks } from "./link";
-import { writeResult } from "./create";
-import { Config, getConfig } from "./config";
-import { LogLevel, log, getRunTimeInSeconds } from "./log";
+import { exit } from 'process';
+import { Link, generateLinkNodeTree, getLinks } from './link';
+import { writeResult } from './create';
+import { Config, getConfig } from './config';
+import { LogLevel, log, getRunTimeInSeconds } from './log';
 
 export function main(
   config: Config,
@@ -13,7 +13,7 @@ export function main(
     config,
     (map) => {
       if (!map) {
-        log(false, LogLevel.Error, "could not generate link tree");
+        log(false, LogLevel.Error, 'could not generate link tree');
         exit(1);
       }
       const links = getLinks(map, config.convertCamelCase).sort((a, b) =>
@@ -23,7 +23,7 @@ export function main(
         links,
         config,
         (content) => {
-          logger(LogLevel.Debug, "dry run chosen, no files committed\n");
+          logger(LogLevel.Debug, 'dry run chosen, no files committed\n');
           log(
             false,
             LogLevel.Debug,
@@ -32,7 +32,7 @@ export function main(
               config.start
             )} seconds`
           );
-          if (process.env.NODE_ENV === "test") {
+          if (process.env.NODE_ENV === 'test') {
             return testCallback([content, links]);
           } else {
             exit(0);

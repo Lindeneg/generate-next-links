@@ -1,9 +1,9 @@
-import fs from "fs";
-import { exit } from "process";
-import { format } from "prettier";
-import { Config } from "./config";
-import { Link } from "./link";
-import { Logger, LogLevel, log, getRunTimeInSeconds } from "./log";
+import fs from 'fs';
+import { exit } from 'process';
+import { format } from 'prettier';
+import { Config } from './config';
+import { Link } from './link';
+import { Logger, LogLevel, log, getRunTimeInSeconds } from './log';
 
 function handleNumber(val: string) {
   if (val.length > 0 && Number.isNaN(Number(val[0]))) {
@@ -14,7 +14,7 @@ function handleNumber(val: string) {
 
 function getRoot(root: boolean): Link[] {
   if (root) {
-    return [["INDEX", "/"]];
+    return [['INDEX', '/']];
   }
   return [];
 }
@@ -44,13 +44,13 @@ export async function writeResult(
   logger?: Logger
 ) {
   const name = `${config.out}/links${
-    config.omitTimestamp ? "" : "_" + Date.now()
-  }.${config.exportJson ? "json" : "ts"}`;
+    config.omitTimestamp ? '' : '_' + Date.now()
+  }.${config.exportJson ? 'json' : 'ts'}`;
   let content = getContent([...getRoot(config.root), ...links], config);
   content =
-    process.env.NODE_ENV === "test"
+    process.env.NODE_ENV === 'test'
       ? content
-      : format(content, { parser: config.exportJson ? "json" : "typescript" });
+      : format(content, { parser: config.exportJson ? 'json' : 'typescript' });
   if (config.dry) {
     dryCallback(content);
   } else {
@@ -58,9 +58,9 @@ export async function writeResult(
     fs.writeFile(name, content, (err) => {
       if (err) {
         logger && logger(LogLevel.Error, err);
-        log(false, LogLevel.Error, "Error: failed to write file: " + name);
+        log(false, LogLevel.Error, 'Error: failed to write file: ' + name);
         if (!config.verbose) {
-          log(false, LogLevel.Debug, "Suggestion: run with flag `-V` to debug");
+          log(false, LogLevel.Debug, 'Suggestion: run with flag `-V` to debug');
         }
         exit(1);
       } else {

@@ -1,30 +1,30 @@
-import { getConfig, isDirectory } from "../config";
+import { getConfig, isDirectory } from '../config';
 
-describe("Config Test Suite", () => {
-  test("can find exiting directory", () => {
-    expect(isDirectory("__mockdir__", "./src/__tests__", false)).toBe(true);
+describe('Config Test Suite', () => {
+  test('can find exiting directory', () => {
+    expect(isDirectory('__mockdir__', './src/__tests__', false)).toBe(true);
   });
 
-  test("can not find non-exiting directory", () => {
+  test('can not find non-exiting directory', () => {
     expect(
-      isDirectory("__mockdir__" + Date.now(), "./src/__tests__", false)
+      isDirectory('__mockdir__' + Date.now(), './src/__tests__', false)
     ).toBe(false);
   });
 
-  test("get config throws on root path not having a `pages` folder", () => {
-    expect(() => getConfig("./", [])).toThrow(
-      "`pages` folder not found.. exiting.."
+  test('get config throws on root path not having a `pages` folder', () => {
+    expect(() => getConfig('./', [])).toThrow(
+      '`pages` folder not found.. exiting..'
     );
   });
 
-  test("can get default config", () => {
-    const rootPath = "./__mock__";
+  test('can get default config', () => {
+    const rootPath = './__mock__';
     const config = getConfig(rootPath, []);
     expect(config).toEqual({
-      path: rootPath + "/pages",
+      path: rootPath + '/pages',
       out: rootPath,
-      name: "links",
-      base: "/",
+      name: 'links',
+      base: '/',
       dry: false,
       api: false,
       root: false,
@@ -36,14 +36,14 @@ describe("Config Test Suite", () => {
     });
   });
 
-  test("can parse single config arg", () => {
-    const rootPath = "./";
-    const config = getConfig(rootPath, ["", "", "--path", "__mock__"]);
+  test('can parse single config arg', () => {
+    const rootPath = './';
+    const config = getConfig(rootPath, ['', '', '--path', '__mock__']);
     expect(config).toEqual({
-      path: rootPath + "/__mock__/pages",
+      path: rootPath + '/__mock__/pages',
       out: rootPath,
-      name: "links",
-      base: "/",
+      name: 'links',
+      base: '/',
       dry: false,
       api: false,
       root: false,
@@ -55,26 +55,26 @@ describe("Config Test Suite", () => {
     });
   });
 
-  test("can parse multiple config args", () => {
-    const rootPath = "./";
+  test('can parse multiple config args', () => {
+    const rootPath = './';
     const config = getConfig(rootPath, [
-      "",
-      "",
-      "--path",
-      "__mock__",
-      "--dry",
-      "--api",
-      "--name",
-      "PageLinks",
-      "--verbose",
-      "--out",
-      "src/shared",
+      '',
+      '',
+      '--path',
+      '__mock__',
+      '--dry',
+      '--api',
+      '--name',
+      'PageLinks',
+      '--verbose',
+      '--out',
+      'src/shared',
     ]);
     expect(config).toEqual({
-      path: rootPath + "/__mock__/pages",
-      out: rootPath + "/src/shared",
-      name: "PageLinks",
-      base: "/",
+      path: rootPath + '/__mock__/pages',
+      out: rootPath + '/src/shared',
+      name: 'PageLinks',
+      base: '/',
       dry: true,
       api: true,
       root: false,

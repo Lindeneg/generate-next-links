@@ -31,7 +31,7 @@
     "build-dev": "npm run types -- --watch",
     "types": "tsc --project tsconfig.build.json",
     "bundle": "webpack",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist lib",
     "test": "jest --verbose",
     "prepublish": "npm run test && npm run build"
   },

@@ -6,6 +6,8 @@ import { LogLevel, Logger, log } from "./log";
 
 export type Link = [string, string];
 
+const separatorRegex = /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/;
+
 function clean(
   target: string,
   callback: (item: string, idx: number) => string
@@ -29,12 +31,12 @@ export function convertCamelCase(target: string) {
 }
 
 export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
-  const notSeparator = /^\/(\[){1,2}\.\.\.[a-zA-Z]+(\]){1,2}$/.test(name);
+  const notSeparator = new RegExp(`^${separatorRegex.source}$`).test(name);
   const target = (doConvertCamelCase ? convertCamelCase(name) : name).replace(
-    /\/(\[){1,2}\.\.\.[a-zA-Z]+(\]){1,2}/,
+    separatorRegex,
     (e) => {
       const isOpt = (e.match(/(\[)|(\])/g) || []).length === 4;
-      const label = /\.\.\.([a-zA-Z]+)/.exec(e);
+      const label = /\.{3}([a-zA-Z]+)/.exec(e);
       if (label && label.length > 1) {
         const prefix =
           (notSeparator ? "" : "_") +
@@ -47,13 +49,7 @@ export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
   return clean(target, (e, i) => {
     if (e === "/" && i > 0) {
       return "_";
-    } else if (
-      (e === "/" && i === 0) ||
-      e === "[" ||
-      e === "]" ||
-      e == " " ||
-      e === "-"
-    ) {
+    } else if ((e === "/" && i === 0) || ["[", "]", " ", "-"].includes(e)) {
       return "";
     }
     return e.toUpperCase();

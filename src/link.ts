@@ -108,12 +108,12 @@ export function generateLinkNodeTree(
     const reExt = config.api ? /\.(tsx|jsx|ts)/g : /\.(tsx|jsx)/g;
     nodeMap.setNode({ name: config.base, isDir: true, parentId: null });
     results.forEach((result) => {
-      const splitted = result.split("pages/");
+      const splitted = result.split("pages" + config.nativeSeparator);
       let parentId: number | null = null;
       let child: string = "";
       if (splitted.length >= 2) {
         if (!/^(_app|_document|index)\.tsx$/.test(splitted[1])) {
-          const targets = splitted[1].split("/");
+          const targets = splitted[1].split(config.nativeSeparator);
           child = targets[targets.length - 1].replace(reExt, "");
           parentId = nodeMap.handleParent(targets, parentId);
         } else {

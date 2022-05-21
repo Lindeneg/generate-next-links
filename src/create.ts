@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { exit } from "process";
 import { format } from "prettier";
 import { Config } from "./config";
@@ -43,9 +44,12 @@ export async function writeResult(
   dryCallback: (content: string) => void,
   logger?: Logger
 ) {
-  const name = `${config.out}/links${
-    config.omitTimestamp ? "" : "_" + Date.now()
-  }.${config.exportJson ? "json" : "ts"}`;
+  const name = path.join(
+    config.out,
+    `links${config.omitTimestamp ? "" : "_" + Date.now()}.${
+      config.exportJson ? "json" : "ts"
+    }`
+  );
   let content = getContent([...getRoot(config.root), ...links], config);
   content =
     process.env.NODE_ENV === "test"

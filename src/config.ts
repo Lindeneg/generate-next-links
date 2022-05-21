@@ -54,7 +54,7 @@ export function isDirectory(target: string, verbose: boolean): boolean {
   return false;
 }
 
-function getNativeSeparator() {
+export function getNativeSeparator() {
   return process.platform === "win32" ? "\\" : "/";
 }
 
@@ -67,10 +67,7 @@ function parseNextArgs(next: string | undefined, arg: string, config: Config): v
     } else if (isName) {
       config.name = target;
     } else if (["--path", "-P"].includes(arg)) {
-      const pagesPath = target.includes("pages")
-        ? target
-        : path.join(target, "pages");
-      config.path += pagesPath;
+      config.path = path.join(config.path, target);
     } else if (["--base", "-B"].includes(arg)) {
       config.base = target;
     }
@@ -152,6 +149,10 @@ export function getConfig(args: string[], root = process.cwd()): Config {
       default:
         break;
     }
+  }
+
+  if (!/.*\/pages\/*$/.test(config.path)) {
+    config.path = path.join(config.path, "pages");
   }
 
   if (!isDirectory(config.path, config.verbose)) {

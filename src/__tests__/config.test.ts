@@ -1,27 +1,29 @@
-import { getConfig, isDirectory } from "../config";
+import path from "path";
+import { getConfig, getNativeSeparator, isDirectory } from "../config";
 
 describe("Config Test Suite", () => {
   test("can find exiting directory", () => {
-    expect(isDirectory("__mockdir__", "./src/__tests__", false)).toBe(true);
+    expect(isDirectory("./src/__tests__/__mockdir__", false)).toBe(true);
   });
 
   test("can not find non-exiting directory", () => {
-    expect(
-      isDirectory("__mockdir__" + Date.now(), "./src/__tests__", false)
-    ).toBe(false);
+    expect(isDirectory("./src/__tests__/__mockdir__" + Date.now(), false)).toBe(
+      false
+    );
   });
 
   test("get config throws on root path not having a `pages` folder", () => {
-    expect(() => getConfig("./", [])).toThrow(
+    expect(() => getConfig([], "./")).toThrow(
       "`pages` folder not found.. exiting.."
     );
   });
 
   test("can get default config", () => {
     const rootPath = "./__mock__";
-    const config = getConfig(rootPath, []);
+    const config = getConfig([], rootPath);
     expect(config).toEqual({
-      path: rootPath + "/pages",
+      path: path.join(rootPath, "pages"),
+      nativeSeparator: getNativeSeparator(),
       out: rootPath,
       name: "links",
       base: "/",
@@ -38,11 +40,12 @@ describe("Config Test Suite", () => {
 
   test("can parse single config arg", () => {
     const rootPath = "./";
-    const config = getConfig(rootPath, ["", "", "--path", "__mock__"]);
+    const config = getConfig(["--path", "__mock__"], rootPath);
     expect(config).toEqual({
-      path: rootPath + "/__mock__/pages",
+      path: path.join(rootPath, "__mock__", "pages"),
       out: rootPath,
       name: "links",
+      nativeSeparator: getNativeSeparator(),
       base: "/",
       dry: false,
       api: false,
@@ -57,24 +60,26 @@ describe("Config Test Suite", () => {
 
   test("can parse multiple config args", () => {
     const rootPath = "./";
-    const config = getConfig(rootPath, [
-      "",
-      "",
-      "--path",
-      "__mock__",
-      "--dry",
-      "--api",
-      "--name",
-      "PageLinks",
-      "--verbose",
-      "--out",
-      "src/shared",
-    ]);
+    const config = getConfig(
+      [
+        "--path",
+        "__mock__",
+        "--dry",
+        "--api",
+        "--name",
+        "PageLinks",
+        "--verbose",
+        "--out",
+        "src/shared",
+      ],
+      rootPath
+    );
     expect(config).toEqual({
-      path: rootPath + "/__mock__/pages",
+      path: path.join(rootPath, "__mock__", "pages"),
       out: rootPath + "/src/shared",
       name: "PageLinks",
       base: "/",
+      nativeSeparator: getNativeSeparator(),
       dry: true,
       api: true,
       root: false,

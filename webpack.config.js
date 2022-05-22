@@ -5,7 +5,7 @@ module.exports = {
   mode: "production",
   entry: "./lib/index.js",
   target: "node",
-  externals: [nodeExternals()],
+  externals: [nodeExternals(), "prettier"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index.js",

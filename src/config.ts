@@ -81,6 +81,27 @@ function parseNextArgs(next: string | undefined, arg: string, config: Config): v
   }
 }
 
+function setPagesPath(config: Config): void {
+  const splitted = config.path.split(config.nativeSeparator);
+  const lastIdx = splitted.length - 1;
+
+  if (!(splitted[lastIdx] === "pages" || splitted[lastIdx - 1] === "pages")) {
+    config.path = path.join(config.path, "pages");
+  }
+}
+
+function checkPagesPath(config: Config): void {
+  if (!isDirectory(config.path, config.verbose)) {
+    log(false, LogLevel.Error, "`pages` folder not found.. exiting..");
+    if (process.env.NODE_ENV === "test") {
+      throw new Error("`pages` folder not found.. exiting..");
+    } else {
+      log(false, LogLevel.Debug, HELP);
+      exit(0);
+    }
+  }
+}
+
 export function getConfig(args: string[], root = process.cwd()): Config {
   const config: Config = {
     path: root,
@@ -151,19 +172,10 @@ export function getConfig(args: string[], root = process.cwd()): Config {
     }
   }
 
-  if (!/.*\/pages\/*$/.test(config.path)) {
-    config.path = path.join(config.path, "pages");
-  }
+  setPagesPath(config);
 
-  if (!isDirectory(config.path, config.verbose)) {
-    log(false, LogLevel.Error, "`pages` folder not found.. exiting..");
-    if (process.env.NODE_ENV === "test") {
-      throw new Error("`pages` folder not found.. exiting..");
-    } else {
-      log(false, LogLevel.Debug, HELP);
-      exit(0);
-    }
-  }
+  checkPagesPath(config);
+
   log(!config.verbose, LogLevel.Debug, "parsed config: ", config);
   return config;
 }

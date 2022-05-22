@@ -8,10 +8,7 @@ export type Link = [string, string];
 
 const separatorRegex = /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/;
 
-function clean(
-  target: string,
-  callback: (item: string, idx: number) => string
-) {
+function clean(target: string, callback: (item: string, idx: number) => string) {
   let result = "";
   for (let i = 0; i < target.length; i++) {
     result += callback(target[i], i);
@@ -39,8 +36,7 @@ export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
       const label = /\.{3}([a-zA-Z]+)/.exec(e);
       if (label && label.length > 1) {
         const prefix =
-          (notSeparator ? "" : "_") +
-          (isOpt ? "optional_catchall_" : "catchall_");
+          (notSeparator ? "" : "_") + (isOpt ? "optional_catchall_" : "catchall_");
         return prefix + label[1];
       }
       return e;
@@ -99,7 +95,7 @@ export function generateLinkNodeTree(
   callback: (map: NodeMap) => void,
   logger?: Logger
 ) {
-  walk(config.api, config.path, (err, results) => {
+  walk(config.api, config.path, config.nativeSeparator, (err, results) => {
     if (err) {
       log(false, LogLevel.Error, "could not walk the target directory: ", err);
       exit(1);
@@ -108,12 +104,12 @@ export function generateLinkNodeTree(
     const reExt = config.api ? /\.(tsx|jsx|ts)/g : /\.(tsx|jsx)/g;
     nodeMap.setNode({ name: config.base, isDir: true, parentId: null });
     results.forEach((result) => {
-      const splitted = result.split("pages/");
+      const splitted = result.split("pages" + config.nativeSeparator);
       let parentId: number | null = null;
       let child: string = "";
       if (splitted.length >= 2) {
         if (!/^(_app|_document|index)\.tsx$/.test(splitted[1])) {
-          const targets = splitted[1].split("/");
+          const targets = splitted[1].split(config.nativeSeparator);
           child = targets[targets.length - 1].replace(reExt, "");
           parentId = nodeMap.handleParent(targets, parentId);
         } else {

@@ -2,4 +2,4 @@
 
 const { main, getConfig } = require("./dist/index");
 
-main(getConfig(process.env.PWD || "", process.argv));
+main(getConfig(process.argv.slice(2)));

@@ -22,10 +22,7 @@ describe("Link Test Suite", () => {
   test.each([
     ["admin/edit/blog/[articleId]", "Admin/edit/blog/[article_Id]"],
     ["admin/music/artist/[artistId]", "Admin/music/artist/[artist_Id]"],
-    [
-      "adminRoute/music/artist/[artistId]",
-      "Admin_Route/music/artist/[artist_Id]",
-    ],
+    ["adminRoute/music/artist/[artistId]", "Admin_Route/music/artist/[artist_Id]"],
   ])("convert: %s , %s", (before, after) => {
     expect(convertCamelCase(before)).toBe(after);
   });
@@ -59,12 +56,9 @@ describe("Link Test Suite", () => {
     expect(buildLinkPath(nodeMap.getNode(id), nodeMap)).toBe(expected);
   });
   test("can generate nodemap from __mock__ directory", (done) => {
-    generateLinkNodeTree(
-      getConfig("./__mock__", ["", "", "--dry"]),
-      (predictedNodeMap) => {
-        expect(predictedNodeMap.size).toEqual(nodeMap.size);
-        done();
-      }
-    );
+    generateLinkNodeTree(getConfig(["--dry"], "./__mock__"), (predictedNodeMap) => {
+      expect(predictedNodeMap.size).toEqual(nodeMap.size);
+      done();
+    });
   });
 });

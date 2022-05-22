@@ -96,9 +96,7 @@ export class NodeMap {
     if (parentPath.length === 1) {
       return 0;
     }
-    const grandParentPath = parentPath
-      .slice(0, parentPath.length - 1)
-      .join("/");
+    const grandParentPath = parentPath.slice(0, parentPath.length - 1).join("/");
     const grandParent = this.getParent(grandParentPath);
     if (grandParent !== null) {
       return grandParent;

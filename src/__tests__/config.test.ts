@@ -76,7 +76,7 @@ describe("Config Test Suite", () => {
     );
     expect(config).toEqual({
       path: path.join(rootPath, "__mock__", "pages"),
-      out: rootPath + "/src/shared",
+      out: path.join(rootPath, "src", "shared"),
       name: "PageLinks",
       base: "/",
       nativeSeparator: getNativeSeparator(),

@@ -63,7 +63,7 @@ function parseNextArgs(next: string | undefined, arg: string, config: Config): v
     const isName = ["--name", "-N"].includes(arg);
     const target = isName ? next : path.join("/", next);
     if (["--out", "-O"].includes(arg)) {
-      config.out += target;
+      config.out = path.join(config.out, target);
     } else if (isName) {
       config.name = target;
     } else if (["--path", "-P"].includes(arg)) {

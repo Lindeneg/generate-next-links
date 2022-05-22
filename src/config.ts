@@ -4,7 +4,7 @@ import { exit } from "process";
 import { LogLevel, log } from "./log";
 
 // should probably just import package.json
-const VERSION = "2.1.6";
+const VERSION = "3.0.0";
 
 const HELP = `
 Usage: generate-next-links 

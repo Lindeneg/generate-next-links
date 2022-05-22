@@ -8,10 +8,7 @@ export type Link = [string, string];
 
 const separatorRegex = /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/;
 
-function clean(
-  target: string,
-  callback: (item: string, idx: number) => string
-) {
+function clean(target: string, callback: (item: string, idx: number) => string) {
   let result = "";
   for (let i = 0; i < target.length; i++) {
     result += callback(target[i], i);
@@ -39,8 +36,7 @@ export function cleanLinkName(name: string, doConvertCamelCase: boolean) {
       const label = /\.{3}([a-zA-Z]+)/.exec(e);
       if (label && label.length > 1) {
         const prefix =
-          (notSeparator ? "" : "_") +
-          (isOpt ? "optional_catchall_" : "catchall_");
+          (notSeparator ? "" : "_") + (isOpt ? "optional_catchall_" : "catchall_");
         return prefix + label[1];
       }
       return e;
@@ -99,7 +95,7 @@ export function generateLinkNodeTree(
   callback: (map: NodeMap) => void,
   logger?: Logger
 ) {
-  walk(config.api, config.path, (err, results) => {
+  walk(config.api, config.path, config.nativeSeparator, (err, results) => {
     if (err) {
       log(false, LogLevel.Error, "could not walk the target directory: ", err);
       exit(1);

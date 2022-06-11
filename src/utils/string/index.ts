@@ -6,14 +6,6 @@ const regex = {
 
 export const removeTargetExtension = (target: string): string => target.replace(regex.ext, '');
 
-export const forEachStringEntry = (target: string, callback: (item: string, idx: number) => string) => {
-    let result = '';
-    for (let i = 0; i < target.length; i++) {
-        result += callback(target[i], i);
-    }
-    return result;
-};
-
 export const convertCamelCase = (target: string): string => {
     const result: string[] = [];
     target.split(' ').forEach((entry) => {

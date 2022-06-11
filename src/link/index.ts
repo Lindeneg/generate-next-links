@@ -4,7 +4,6 @@ import {
     getLastInArray,
     convertCamelCase,
     convertHyphens,
-    forEachStringEntry,
     prefixStringIfNumber,
 } from '../utils';
 
@@ -66,15 +65,18 @@ export default class Link {
     }
 
     private runClean(target: string): string {
-        const cleaned = forEachStringEntry(target, (e, i) => {
-            if (e === '/' && i > 0) {
-                return '_';
-            } else if ((e === '/' && i === 0) || ['[', ']', ' ', '-'].includes(e)) {
-                return '';
+        let result = '';
+        for (let i = 0; i < target.length; i++) {
+            const entry = target[i];
+            if (entry === '/' && i > 0) {
+                result += '_';
+            } else if ((entry === '/' && i === 0) || ['[', ']', ' ', '-'].includes(entry)) {
+                result += '';
+            } else {
+                result += entry.toUpperCase();
             }
-            return e.toUpperCase();
-        });
-        return prefixStringIfNumber(cleaned);
+        }
+        return prefixStringIfNumber(result);
     }
 
     private getInitialLink(entries: string[]): string {

@@ -6,17 +6,21 @@ import type { TRegex } from '../types';
 type TWalkRegex = TRegex<'file' | 'pages'>;
 
 const getRegex = (api: boolean, separator: string): TWalkRegex => ({
-    file: api ? new RegExp(`^(.+\.(tsx|jsx)|.+\\${separator}api\\${separator}.+\.(ts|js))$`) : /^.+\.(tsx|jsx)$/,
+    file: api ? new RegExp(`^(.+.(tsx|jsx)|.+\\${separator}api\\${separator}.+.(ts|js))$`) : /^.+\.(tsx|jsx)$/,
     pages: new RegExp(`.+\\${separator}pages\\${separator}`),
 });
 
+type HandleEntryOptions = {
+    api: boolean;
+    separator: string;
+    regex: TWalkRegex;
+    targetPath: string;
+    results: string[];
+};
+
 const handleEntry = async (
-    api: boolean,
-    targetPath: string,
-    separator: string,
-    results: string[],
-    filePath: string,
-    regex: TWalkRegex
+    { api, separator, regex, targetPath, results }: HandleEntryOptions,
+    filePath: string
 ): Promise<void | string[]> => {
     const resolvedFilePath = resolve(targetPath, filePath);
     const fileStat = await tryOrNull(() => stat(resolvedFilePath));
@@ -35,8 +39,9 @@ const handleEntry = async (
 const walk = async (api: boolean, targetPath: string, separator: string, results: string[] = []): Promise<string[]> => {
     const regex = getRegex(api, separator);
     const targetFilePaths = await tryOrExit(() => readdir(targetPath));
+    const boundHandleEntry = handleEntry.bind(null, { api, targetPath, regex, separator, results });
     const promises: Array<ReturnType<typeof handleEntry>> = targetFilePaths.map((filePath) =>
-        handleEntry(api, targetPath, separator, results, filePath, regex)
+        boundHandleEntry(filePath)
     );
     await Promise.all(promises);
     return results;

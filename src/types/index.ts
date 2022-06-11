@@ -1,6 +1,6 @@
 export type TRegex<K extends string> = Record<K, RegExp>;
 
-export type TConfig = {
+export interface IConfig {
     path: string;
     out: string;
     name: string;
@@ -13,5 +13,6 @@ export type TConfig = {
     omitTimestamp: boolean;
     exportJson: boolean;
     convertCamelCase: boolean;
+    convertHyphens: boolean;
     start: number;
-};
+}

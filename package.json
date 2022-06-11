@@ -10,6 +10,8 @@
     "keywords": [
         "react",
         "typescript",
+        "node",
+        "nodejs",
         "nextjs",
         "utility",
         "generate-links"
@@ -26,16 +28,10 @@
     },
     "scripts": {
         "start": "node index.js",
-        "dev": "node index.dev.js -P __mock__ -D -V -C",
+        "dev": "node index.js -P __mock__ -D -V -C",
         "dev:api": "npm run dev -- --api",
-        "build": "npm run clean:dist && npm run build:ts && npm run build:bundle && npm run clean:lib",
-        "build:dev": "npm run build:ts -- --watch",
-        "build:ts": "tsc --project tsconfig.build.json",
-        "build:bundle": "webpack",
-        "clean": "npm run clean:lib && npm run clean:dist",
-        "clean:lib": "shx rm -rf lib",
-        "clean:dist": "shx rm -rf dist",
-        "test": "jest --verbose"
+        "test": "jest",
+        "test:coverage": "npm run test -- --coverage"
     },
     "devDependencies": {
         "@types/jest": "^26.0.24",

@@ -1,8 +1,7 @@
-import walk from '../walk/index';
+import walk from '../walk';
 import Link from '../link/';
 import { getLastInArray } from '../utils';
-import type { Config } from '../config';
-import type { TRegex } from '../types';
+import type { TConfig, TRegex } from '../types';
 
 type TLinkRegex = TRegex<'ext' | 'file'>;
 
@@ -11,12 +10,7 @@ const getRegex = (api: boolean): TLinkRegex => ({
     file: /^(_app|_document)\.(tsx|jsx)$/,
 });
 
-const handleEntry = async (
-    regex: TLinkRegex,
-    separator: string,
-    links: Link[],
-    filePath: string
-): Promise<void> => {
+const handleEntry = async (regex: TLinkRegex, separator: string, links: Link[], filePath: string): Promise<void> => {
     const splitted = filePath.split(separator);
     const last = getLastInArray(splitted);
     const isIndex = last?.split('.')[0] === 'index';
@@ -30,20 +24,13 @@ const handleEntry = async (
     }
 };
 
-const generateLinks = async (config: Config): Promise<Link[]> => {
+const generateLinks = async (config: TConfig): Promise<Link[]> => {
     const links: Link[] = [];
     const regex = getRegex(config.api);
     const filePaths = await walk(config.api, config.path, config.nativeSeparator);
-    const boundHandleEntry = handleEntry.bind(
-        null,
-        regex,
-        config.nativeSeparator,
-        links
-    );
+    const boundHandleEntry = handleEntry.bind(null, regex, config.nativeSeparator, links);
 
-    const promises: Array<ReturnType<typeof handleEntry>> = filePaths.map(
-        (filePath) => boundHandleEntry(filePath)
-    );
+    const promises: Array<ReturnType<typeof handleEntry>> = filePaths.map((filePath) => boundHandleEntry(filePath));
 
     await Promise.all(promises);
 

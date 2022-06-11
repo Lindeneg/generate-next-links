@@ -46,8 +46,7 @@ export default class Link {
         const label = regex.label.exec(target);
         console.log(target, isOpt, label);
         if (label && label.length > 1) {
-
-        } 
+        }
         return [false, false];
     }
 

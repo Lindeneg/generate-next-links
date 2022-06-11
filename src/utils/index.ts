@@ -4,24 +4,22 @@ export const tryOrFallback = async <T, F>(
     callback: () => Promise<T>,
     fallback: (err: unknown) => F
 ): Promise<T | F> => {
+    let result: T | F;
     try {
-        return callback();
+        result = await Promise.resolve(callback());
     } catch (err) {
-        return fallback(err);
+        result = await Promise.resolve(fallback(err));
     }
+    return result;
 };
 
-export const tryOrNull = async <T>(
-    callback: () => Promise<T>
-): Promise<T | null> => {
+export const tryOrNull = async <T>(callback: () => Promise<T>): Promise<T | null> => {
     return tryOrFallback(callback, () => null);
 };
 
-export const tryOrExit = async <T>(
-    callback: () => Promise<T>
-): Promise<T> => {
+export const tryOrExit = async <T>(callback: () => Promise<T>, logError = false): Promise<T> => {
     return tryOrFallback(callback, (err) => {
-        console.log(err);
+        logError && console.log(err);
         exit(1);
     });
 };

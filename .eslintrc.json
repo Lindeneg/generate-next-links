@@ -1,0 +1,44 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "env": {
+        "node": true,
+        "jest/globals": true
+    },
+    "rules": {
+        "default-case": "error",
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "max-len": [
+            "error",
+            120
+        ],
+        "no-else-return": 2,
+        "semi": [
+            "error",
+            "always"
+        ],
+        "space-unary-ops": 2
+    },
+    "plugins": [
+        "jest"
+    ],
+    "ignorePatterns": [
+        "**/dist",
+        "**/*.js",
+        "**/mock"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ]
+}

@@ -42,9 +42,7 @@ const generateLinks = async (config: Config): Promise<Link[]> => {
     );
 
     const promises: Array<ReturnType<typeof handleEntry>> = filePaths.map(
-        (filePath) => {
-            return boundHandleEntry(filePath);
-        }
+        (filePath) => boundHandleEntry(filePath)
     );
 
     await Promise.all(promises);

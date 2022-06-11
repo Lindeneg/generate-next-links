@@ -1,4 +1,4 @@
-import { removeEverythingAfterDot, getLastInArray } from '../utils';
+import { removeTargetExtension, getLastInArray } from '../utils';
 
 const regex = {
     separator: /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/,
@@ -25,7 +25,7 @@ export default class Link {
     private getNameWithoutExtension(entries: string[]): string {
         const last = getLastInArray(entries);
         if (last !== null) {
-            return removeEverythingAfterDot(last);
+            return removeTargetExtension(last);
         }
         return '';
     }
@@ -52,7 +52,7 @@ export default class Link {
     }
 
     private generateKey(entries: string[]): string {
-        let key: string = entries.join('/');
+        const key: string = entries.join('/');
 
         if (this.optionalCatchAll) {
         } else if (this.catchAll) {

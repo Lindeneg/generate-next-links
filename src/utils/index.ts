@@ -26,9 +26,9 @@ export const tryOrExit = async <T>(
     });
 };
 
-export const removeEverythingAfterDot = (target: string): string => {
+export const removeTargetExtension = (target: string): string => {
     return target.replace(/\.(tsx|jsx|ts|js)/, '');
-}
+};
 
 export const getLastInArray = <T>(arr: T[]): T | null => {
     const last = arr[arr.length - 1];
@@ -36,4 +36,4 @@ export const getLastInArray = <T>(arr: T[]): T | null => {
         return last;
     }
     return null;
-}
+};

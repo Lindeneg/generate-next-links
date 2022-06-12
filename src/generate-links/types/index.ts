@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import Link from '@/link';
 import type { TLinkOptions } from '@/link/types';
 import type { TRegex } from '@/types';

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export type TRegex<K extends string> = Record<K, RegExp>;
 
 export interface IConfig {

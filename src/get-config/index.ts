@@ -71,7 +71,7 @@ export default async (args: string[], root = process.cwd()): Promise<IConfig> =>
         }
     }
     setPagesPath(config);
-    await checkPagesPath(config);
     Logger.debug('parsed config: ', config);
+    await checkPagesPath(config);
     return config;
 };

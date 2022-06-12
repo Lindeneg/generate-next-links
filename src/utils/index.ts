@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { tryOrExit, tryOrFallback, tryOrNull } from './try';
 export {
     getRunTimeInSeconds,

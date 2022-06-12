@@ -1,7 +1,7 @@
 import { lstat } from 'fs/promises';
 import { exit } from 'process';
 import { join as joinPath } from 'path';
-import Logger, { LogSeverity } from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { HELP } from '../static';
 import type { IConfig } from '@/types';
 
@@ -10,7 +10,7 @@ export const isDirectory = async (target: string): Promise<boolean> => {
         const stat = await lstat(target);
         return stat.isDirectory();
     } catch (err) {
-        Logger.print(<string>err, LogSeverity.Error);
+        Logger.log(LogLevel.More, LogSeverity.Error, err);
     }
     return false;
 };

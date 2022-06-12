@@ -30,7 +30,7 @@
         "build": "rollup -c",
         "start": "node ./index.js",
         "dev": "yarn run start -P __mock__ -D -V -C",
-        "dev:api": "yarn run dev -A",
+        "dev:api": "yarn run dev -A -E",
         "test": "jest",
         "test:coverage": "yarn run test --coverage"
     },

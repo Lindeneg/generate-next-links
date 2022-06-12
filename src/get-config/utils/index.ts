@@ -20,7 +20,8 @@ export const getNativeSeparator = () => (platform === 'win32' ? '\\' : '/');
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
     if (next) {
         const isName = ['--name', '-N'].includes(arg);
-        const target = isName ? next : joinPath('/', next);
+        const isTab = ['--tab-size', '-S'].includes(arg);
+        const target = isName || isTab ? next : joinPath('/', next);
         if (['--out', '-O'].includes(arg)) {
             config.out = joinPath(config.out, target);
         } else if (isName) {
@@ -29,7 +30,7 @@ export const parseNextArgs = (next: string | undefined, arg: string, config: ICo
             config.path = joinPath(config.path, target);
         } else if (['--base', '-B'].includes(arg)) {
             config.base = target;
-        } else if (['--tab-size', '-S'].includes(arg)) {
+        } else if (isTab) {
             const n = parseInt(target);
             if (typeof n === 'number' && !Number.isNaN(n)) {
                 config.tabWidth = n;

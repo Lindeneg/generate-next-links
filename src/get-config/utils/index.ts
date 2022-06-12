@@ -1,5 +1,5 @@
 import { lstat } from 'fs/promises';
-import { exit } from 'process';
+import { exit, platform } from 'process';
 import { join as joinPath } from 'path';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { HELP } from '../static';
@@ -15,7 +15,7 @@ export const isDirectory = async (target: string): Promise<boolean> => {
     return false;
 };
 
-export const getNativeSeparator = () => (process.platform === 'win32' ? '\\' : '/');
+export const getNativeSeparator = () => (platform === 'win32' ? '\\' : '/');
 
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
     if (next) {
@@ -58,7 +58,7 @@ export const checkPagesPath = async (config: IConfig): Promise<void> => {
     }
 };
 
-export const getDefaultConfig = (root: string): IConfig => ({
+export const getDefaultConfig = (root: string, start = Date.now()): IConfig => ({
     path: root,
     out: root,
     nativeSeparator: getNativeSeparator(),
@@ -74,5 +74,5 @@ export const getDefaultConfig = (root: string): IConfig => ({
     singleQuotes: false,
     convertCamelCase: false,
     convertHyphens: false,
-    start: Date.now(),
+    start,
 });

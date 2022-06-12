@@ -32,6 +32,5 @@ export const findPotentialFiles = async (
         })
     );
     await Promise.all(promises);
-    console.log(results);
     return results;
 };

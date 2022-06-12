@@ -14,7 +14,7 @@ export default async (args: string[]): Promise<string> => {
             LogLevel.Less,
             LogSeverity.Default,
             content,
-            `\ndry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`
+            `\\dry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`
         );
     } else {
         Logger.success(

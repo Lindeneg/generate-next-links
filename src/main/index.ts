@@ -10,12 +10,8 @@ export default async (args: string[]): Promise<string> => {
     const [content, name] = await writeFile(links, config);
     if (config.dry) {
         Logger.debug('dry run chosen, no files committed\n');
-        Logger.log(
-            LogLevel.Less,
-            LogSeverity.Default,
-            content,
-            `\\dry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`
-        );
+        Logger.log(LogLevel.Less, LogSeverity.Default, content);
+        Logger.success(`dry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`);
     } else {
         Logger.success(
             `generated ${links.length} nextjs links in ${getRunTimeInSeconds(config.start)} seconds here: ${name}`

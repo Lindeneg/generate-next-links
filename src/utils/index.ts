@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-export { tryOrExit, tryOrFallback, tryOrNull } from './try';
+export { tryOrExit, tryOrFallback, tryOrNull, cast } from './try';
 export {
     getRunTimeInSeconds,
     removeTargetExtension,

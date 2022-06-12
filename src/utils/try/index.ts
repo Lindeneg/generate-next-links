@@ -21,3 +21,7 @@ export const tryOrExit = async <T>(callback: () => Promise<T>, logError = false)
         logError && console.log(err);
         exit(1);
     });
+
+export const cast = <T>(arg: unknown): T => {
+    return <T>arg;
+};

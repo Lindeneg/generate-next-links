@@ -22,7 +22,7 @@ export const findPotentialFiles = async (
             const resolvedFilePath = resolve(targetPath, filePath);
             const fileStat = await tryOrNull(() => stat(resolvedFilePath));
             if (fileStat && fileStat.isDirectory()) {
-                return findPotentialFiles(api, resolvedFilePath, separator, results, promises);
+                return findPotentialFiles(api, resolvedFilePath, separator, results);
             }
             if (regex.file.test(resolvedFilePath)) {
                 const cleanedFilePath = resolvedFilePath.replace(regex.pages, '');
@@ -32,5 +32,6 @@ export const findPotentialFiles = async (
         })
     );
     await Promise.all(promises);
+    console.log(results);
     return results;
 };

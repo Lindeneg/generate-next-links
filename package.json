@@ -27,7 +27,12 @@
         "generate-next-links": "index.js"
     },
     "scripts": {
-        "build": "rollup -c"
+        "build": "rollup -c",
+        "start": "node ./index.js",
+        "dev": "yarn run start -P __mock__ -D -V -C",
+        "dev:api": "yarn run dev -A",
+        "test": "jest",
+        "test:coverage": "yarn run test --coverage"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^21.1.0",

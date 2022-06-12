@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const { init } = require('./dist/index');
+const { main } = require('./dist/index');
 
-init(process.argv.slice(2));
+main(process.argv.slice(2));

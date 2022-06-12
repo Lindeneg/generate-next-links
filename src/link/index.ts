@@ -1,23 +1,6 @@
-import { TRegex, IConfig } from '../types';
-import {
-    removeTargetExtension,
-    getLastInArray,
-    convertCamelCase,
-    convertHyphens,
-    prefixStringIfNumber,
-} from '../utils';
-
-const regex: TRegex<'separator' | 'opt' | 'label' | 'notSeparator'> = (() => {
-    const separator = /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/;
-    return {
-        separator,
-        opt: /(\[)|(\])/g,
-        label: /\.{3}([a-zA-Z]+)/,
-        notSeparator: new RegExp(`^${separator.source}$`),
-    };
-})();
-
-export type TLinkOptions = Partial<Pick<IConfig, 'convertCamelCase' | 'convertHyphens'>>;
+import { removeTargetExtension, getLastInArray, convertCamelCase, convertHyphens, prefixStringIfNumber } from '@/utils';
+import { regex } from './static';
+import type { TLinkOptions } from './types';
 
 export default class Link {
     public readonly value: string;

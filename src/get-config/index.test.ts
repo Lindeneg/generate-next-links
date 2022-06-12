@@ -42,17 +42,15 @@ describe('@get-config', () => {
             expect(mockedLogger.logLevel).toEqual(LogLevel.Verbose);
             expect(config.verbose).toBe(true);
         });
-        test.each([['-I'], ['--version']])('%s prints version and exits', async (flag) => {
+        test.each([
+            ['-I', 'version'],
+            ['--version', 'version'],
+            ['-H', 'help'],
+            ['--help', 'help'],
+        ])('%s prints %s and exits', async (flag, mode) => {
             await getConfig([flag]);
             expect(mockedLogger.print).toHaveBeenCalledTimes(1);
-            expect(mockedLogger.print).toHaveBeenCalledWith(`version: ${VERSION}`);
-            expect(mockedExit).toHaveBeenCalledTimes(1);
-            expect(mockedExit).toHaveBeenCalledWith(0);
-        });
-        test.each([['-H'], ['--help']])('%s prints help and exits', async (flag) => {
-            await getConfig([flag]);
-            expect(mockedLogger.print).toHaveBeenCalledTimes(1);
-            expect(mockedLogger.print).toHaveBeenCalledWith(HELP);
+            expect(mockedLogger.print).toHaveBeenCalledWith(mode === 'version' ? `version: ${VERSION}` : HELP);
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(0);
         });

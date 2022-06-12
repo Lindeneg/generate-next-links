@@ -1,4 +1,5 @@
 import { exit } from 'process';
+import Logger from '@cl-live-server/logger';
 
 export const tryOrFallback = async <T, F>(
     callback: () => Promise<T>,
@@ -18,7 +19,7 @@ export const tryOrNull = async <T>(callback: () => Promise<T>): Promise<T | null
 
 export const tryOrExit = async <T>(callback: () => Promise<T>, logError = false): Promise<T> =>
     tryOrFallback(callback, (err) => {
-        logError && console.log(err);
+        logError && Logger.error(err);
         exit(1);
     });
 

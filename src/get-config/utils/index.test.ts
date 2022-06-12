@@ -3,11 +3,8 @@ import path from 'path';
 import process, { exit, platform } from 'process';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { isDirectory, getNativeSeparator, parseNextArgs, setPagesPath, checkPagesPath, getDefaultConfig } from '.';
+import { cast } from '../../utils';
 import { HELP } from '../static';
-
-const cast = <T>(arg: unknown): T => {
-    return <T>arg;
-};
 
 jest.mock('@cl-live-server/logger');
 jest.mock('fs/promises');

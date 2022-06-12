@@ -11,17 +11,17 @@ export const convertCamelCase = (target: string): string => {
     target.split(' ').forEach((entry) => {
         if (entry !== '') {
             const splitWords = entry.split(regex.camelCase).join('_');
-            result.push(splitWords.charAt(0).toUpperCase() + splitWords.slice(1));
+            result.push(splitWords.charAt(0) + splitWords.slice(1));
         }
     });
     return result.join(' ');
 };
 
-export const prefixStringIfNumber = (target: string, prefix = 'N'): string => {
+export const prefixStringIfNumber = (target: string, prefix?: string): string => {
     if (target.length > 0 && Number.isNaN(Number(target[0]))) {
         return target;
     }
-    return `${prefix}${target}`;
+    return `${prefix || 'N'}${target}`;
 };
 
 export const convertHyphens = (target: string): string => target.replace(regex.hyphens, '_');

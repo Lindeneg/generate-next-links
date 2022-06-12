@@ -8,10 +8,12 @@ export default async (links: Link[], config: IConfig): Promise<[string, string]>
     const name = getName(config);
     const content = format(getContent(links, config), {
         parser: config.exportJson ? 'json' : 'typescript',
-        tabWidth: 4,
-        singleQuote: true,
+        tabWidth: config.tabWidth,
+        singleQuote: config.singleQuotes,
     });
-    Logger.debug(`creating file: ${name}`);
-    await writeFile(name, content);
+    if (!config.dry) {
+        Logger.debug(`creating file: ${name}`);
+        await writeFile(name, content);
+    }
     return [content, name];
 };

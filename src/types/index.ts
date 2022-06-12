@@ -14,5 +14,7 @@ export interface IConfig {
     exportJson: boolean;
     convertCamelCase: boolean;
     convertHyphens: boolean;
+    singleQuotes: boolean;
+    tabWidth: number;
     start: number;
 }

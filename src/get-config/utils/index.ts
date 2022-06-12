@@ -29,6 +29,11 @@ export const parseNextArgs = (next: string | undefined, arg: string, config: ICo
             config.path = joinPath(config.path, target);
         } else if (['--base', '-B'].includes(arg)) {
             config.base = target;
+        } else if (['--tab-size', '-S'].includes(arg)) {
+            const n = parseInt(target);
+            if (typeof n === 'number' && !Number.isNaN(n)) {
+                config.tabWidth = n;
+            }
         }
     } else {
         Logger.error(`a flag '${arg}' that requires an argument was passed without an argument`);
@@ -57,6 +62,7 @@ export const getDefaultConfig = (root: string): IConfig => ({
     path: root,
     out: root,
     nativeSeparator: getNativeSeparator(),
+    tabWidth: 4,
     name: 'links',
     base: '/',
     dry: false,
@@ -65,6 +71,7 @@ export const getDefaultConfig = (root: string): IConfig => ({
     verbose: false,
     omitTimestamp: false,
     exportJson: false,
+    singleQuotes: false,
     convertCamelCase: false,
     convertHyphens: false,
     start: Date.now(),

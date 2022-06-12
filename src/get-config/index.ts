@@ -17,6 +17,8 @@ export default async (args: string[], root = process.cwd()): Promise<IConfig> =>
             case '-N':
             case '--base':
             case '-B':
+            case '--tab-size':
+            case '-S':
                 parseNextArgs(args[i + 1], arg, config);
                 break;
             case '--version':
@@ -35,6 +37,10 @@ export default async (args: string[], root = process.cwd()): Promise<IConfig> =>
             case '--api':
             case '-A':
                 config.api = true;
+                break;
+            case '--single-quote':
+            case '-Q':
+                config.singleQuotes = true;
                 break;
             case '--root':
             case '-R':

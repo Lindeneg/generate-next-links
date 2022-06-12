@@ -12,6 +12,7 @@ module.exports = {
     },
     setupFiles: ['<rootDir>/jest.setup.js'],
     verbose: true,
+    testResultsProcessor: 'jest-sonar-reporter',
     collectCoverage: false,
     collectCoverageFrom: [`**/src/**/*.ts`],
     coveragePathIgnorePatterns: ['/dist/', '/node_modules/'],

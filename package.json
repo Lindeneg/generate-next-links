@@ -46,6 +46,7 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-jest": "^26.1.5",
         "jest": "^28.1.1",
+        "jest-sonar-reporter": "^2.0.0",
         "rollup": "^2.70.2",
         "rollup-plugin-cleaner": "^1.0.0",
         "rollup-plugin-terser": "^7.0.2",

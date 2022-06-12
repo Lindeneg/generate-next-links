@@ -1,4 +1,4 @@
-import Logger from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
 import { getLastInArray } from '@/utils';
 import type { HandleEntryOptions, TGenerateLinkRegex } from '../types';
@@ -21,6 +21,6 @@ export const handleEntry = async (
         Logger.debug('generated link', JSON.stringify({ name: link.key, link: link.value }, null, 4));
         links.push(link);
     } else {
-        Logger.debug('ignoring file', splitted);
+        Logger.log(LogLevel.More, LogSeverity.Warning, `ignoring file: ${last}`);
     }
 };

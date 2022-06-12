@@ -54,6 +54,10 @@ export default async (args: string[], root = process.cwd()): Promise<IConfig> =>
             case '-C':
                 config.convertCamelCase = true;
                 break;
+            case '--convert-hyphens':
+            case '-E':
+                config.convertHyphens = true;
+                break;
             case '--export-json':
             case '-J':
                 config.exportJson = true;

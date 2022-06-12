@@ -47,6 +47,8 @@ export const setPagesPath = (config: IConfig): void => {
     const lastIdx = splitted.length - 1;
     if (!(splitted[lastIdx] === 'pages' || splitted[lastIdx - 1] === 'pages')) {
         config.path = joinPath(config.path, 'pages');
+    } else {
+        config.path = joinPath(...splitted);
     }
 };
 
@@ -59,7 +61,7 @@ export const checkPagesPath = async (config: IConfig): Promise<void> => {
     }
 };
 
-export const getDefaultConfig = (root: string, start = Date.now()): IConfig => ({
+export const getDefaultConfig = (root: string): IConfig => ({
     path: root,
     out: root,
     nativeSeparator: getNativeSeparator(),
@@ -75,5 +77,5 @@ export const getDefaultConfig = (root: string, start = Date.now()): IConfig => (
     singleQuotes: false,
     convertCamelCase: false,
     convertHyphens: false,
-    start,
+    start: Date.now(),
 });

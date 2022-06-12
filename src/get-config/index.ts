@@ -4,7 +4,8 @@ import { checkPagesPath, getDefaultConfig, parseNextArgs, setPagesPath } from '.
 import { HELP, VERSION } from './static';
 import type { IConfig } from '@/types';
 
-export default async (args: string[], root = process.cwd()): Promise<IConfig> => {
+export default async (args: string[]): Promise<IConfig> => {
+    const root = process.cwd();
     const config: IConfig = getDefaultConfig(root);
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];

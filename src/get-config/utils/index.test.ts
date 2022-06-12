@@ -3,6 +3,7 @@ import path from 'path';
 import process, { exit, platform } from 'process';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { isDirectory, getNativeSeparator, parseNextArgs, setPagesPath, checkPagesPath, getDefaultConfig } from '.';
+import { HELP } from '../static';
 
 const cast = <T>(arg: unknown): T => {
     return <T>arg;
@@ -11,7 +12,7 @@ const cast = <T>(arg: unknown): T => {
 jest.mock('@cl-live-server/logger');
 jest.mock('fs/promises');
 jest.mock('process', () => ({
-    platform: '',
+    platform: 'test-platform',
     exit: jest.fn(),
 }));
 
@@ -91,9 +92,70 @@ describe('@get-config/utils', () => {
         });
     });
 
-    //describe('setPagesPath', () => {});
+    describe('setPagesPath', () => {
+        test.each([
+            ['./root', '/'],
+            ['./root/pages', '/'],
+            ['./root/pages/', '/'],
+        ])('can set path from: %s', (pagesPath, nativeSeparator) => {
+            const expected = path.join('root', 'pages');
+            const config = {
+                nativeSeparator,
+                path: pagesPath,
+            };
+            setPagesPath(cast(config));
+            expect(config.path).toEqual(expected);
+        });
+    });
 
-    //describe('checkPagesPath', () => {});
+    describe('checkPagesPath', () => {
+        test('exits if pages is not directory', async () => {
+            mockedLstat.mockImplementation(async () => {
+                return cast({
+                    isDirectory: () => false,
+                });
+            });
+            await checkPagesPath(cast({ path: './some-path' }));
+            expect(mockedLogger.error).toHaveBeenCalledWith('`pages` folder not found.. exiting..');
+            expect(mockedLogger.print).toHaveBeenCalledWith(HELP);
+            expect(mockedExit).toHaveBeenCalledTimes(1);
+        });
 
-    //describe('getDefaultConfig', () => {});
+        test('does not exist if pages is directory', async () => {
+            mockedLstat.mockImplementation(async () => {
+                return cast({
+                    isDirectory: () => true,
+                });
+            });
+            await checkPagesPath(cast({ path: './some-path' }));
+            expect(mockedLogger.error).toHaveBeenCalledTimes(0);
+            expect(mockedLogger.print).toHaveBeenCalledTimes(0);
+            expect(mockedExit).toHaveBeenCalledTimes(0);
+        });
+    });
+
+    describe('getDefaultConfig', () => {
+        test('can get config', () => {
+            const root = './root';
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { start, ...config } = getDefaultConfig(root);
+            expect(config).toEqual({
+                path: root,
+                out: root,
+                nativeSeparator: '/',
+                tabWidth: 4,
+                name: 'links',
+                base: '/',
+                dry: false,
+                api: false,
+                root: false,
+                verbose: false,
+                omitTimestamp: false,
+                exportJson: false,
+                singleQuotes: false,
+                convertCamelCase: false,
+                convertHyphens: false,
+            });
+        });
+    });
 });

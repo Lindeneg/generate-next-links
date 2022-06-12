@@ -25,3 +25,7 @@ export const prefixStringIfNumber = (target: string, prefix = 'N'): string => {
 };
 
 export const convertHyphens = (target: string): string => target.replace(regex.hyphens, '_');
+
+export const getRunTimeInSeconds = (start: number): string => {
+    return ((Date.now() - start) / 1000).toFixed(3);
+};

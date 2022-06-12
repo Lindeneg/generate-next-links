@@ -3,3 +3,4 @@ dist
 lib
 .DS*
 coverage
+test-report.xml

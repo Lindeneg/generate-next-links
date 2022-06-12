@@ -89,6 +89,7 @@ describe('@get-config/utils', () => {
                 "a flag '--path' that requires an argument was passed without an argument"
             );
             expect(mockedExit).toHaveBeenCalledTimes(1);
+            expect(mockedExit).toHaveBeenCalledWith(1);
         });
     });
 
@@ -119,6 +120,7 @@ describe('@get-config/utils', () => {
             expect(mockedLogger.error).toHaveBeenCalledWith('`pages` folder not found.. exiting..');
             expect(mockedLogger.print).toHaveBeenCalledWith(HELP);
             expect(mockedExit).toHaveBeenCalledTimes(1);
+            expect(mockedExit).toHaveBeenCalledWith(1);
         });
 
         test('does not exist if pages is directory', async () => {

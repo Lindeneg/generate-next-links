@@ -5,6 +5,7 @@ src
 lib
 jest.config.js
 .eslintrc.json
+coverage
 index.dev.js
 tsconfig.*
 webpack.config.js

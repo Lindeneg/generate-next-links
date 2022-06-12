@@ -1,5 +1,6 @@
 import { lstat } from 'fs/promises';
-import process from 'process';
+import path from 'path';
+import process, { exit, platform } from 'process';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { isDirectory, getNativeSeparator, parseNextArgs, setPagesPath, checkPagesPath, getDefaultConfig } from '.';
 
@@ -11,12 +12,12 @@ jest.mock('@cl-live-server/logger');
 jest.mock('fs/promises');
 jest.mock('process', () => ({
     platform: '',
-    exit: () => null,
+    exit: jest.fn(),
 }));
 
 const mockedLogger = jest.mocked(Logger, true);
 const mockedLstat = jest.mocked(lstat);
-const mockedProcess = jest.mocked(process);
+const mockedExit = jest.mocked(exit);
 
 describe('@get-config/utils', () => {
     beforeEach(() => {
@@ -49,10 +50,10 @@ describe('@get-config/utils', () => {
         test.each([
             ['linux', '/'],
             ['win32', '\\'],
-        ])('can return correct separator from platform %s', (platform, expected) => {
-            const originalPlatform = process.platform;
+        ])('can return correct separator from platform %s', (_platform, expected) => {
+            const originalPlatform = platform;
             Object.defineProperty(process, 'platform', {
-                value: platform,
+                value: _platform,
             });
             const result = getNativeSeparator();
             expect(result).toBe(expected);
@@ -64,13 +65,35 @@ describe('@get-config/utils', () => {
     });
 
     describe('parseNextArgs', () => {
-        test.each([])('can handle next arg %s', (arg, key, expected) => {});
-        test('logs and exits if flag specified without required arg', () => {});
+        test.each([
+            ['--name', '-N', 'name', 'AppLink', 'AppLink', {}],
+            ['--path', '-P', 'path', './some/out/path', path.join('root', 'some', 'out', 'path'), { path: './root' }],
+            ['--out', '-O', 'out', './some/out/path', path.join('root', 'some', 'out', 'path'), { out: './root' }],
+            ['--base', '-B', 'base', '/some-base', path.join('/', 'some-base'), {}],
+            ['--tab-size', '-S', 'tabWidth', '2', 2, {}],
+        ])('can handle next arg %s | %s', (arg1, arg2, key, next, expected, overrides) => {
+            const config1 = { ...overrides };
+            const config2 = { ...overrides };
+            parseNextArgs(next, arg1, cast(config1));
+            parseNextArgs(next, arg2, cast(config2));
+            expect(config1).toEqual({ [key]: expected });
+            expect(config2).toEqual({ [key]: expected });
+            expect(mockedLogger.error).toHaveBeenCalledTimes(0);
+        });
+        test('logs and exits if flag specified without required arg', () => {
+            const config = {};
+            parseNextArgs(undefined, '--path', cast(config));
+            expect(mockedLogger.error).toHaveBeenCalledWith(
+                // eslint-disable-next-line quotes
+                "a flag '--path' that requires an argument was passed without an argument"
+            );
+            expect(mockedExit).toHaveBeenCalledTimes(1);
+        });
     });
 
-    describe('setPagesPath', () => {});
+    //describe('setPagesPath', () => {});
 
-    describe('checkPagesPath', () => {});
+    //describe('checkPagesPath', () => {});
 
-    describe('getDefaultConfig', () => {});
+    //describe('getDefaultConfig', () => {});
 });

@@ -14,12 +14,12 @@ export default () => {
                 format: 'cjs',
             },
         ],
-        external: ['prettier'],
+        external: ['prettier', '@cl-live-server/logger'],
         plugins: [
             cleaner({
                 targets: ['./dist'],
             }),
-            resolve(),
+            resolve({ preferBuiltins: true }),
             commonjs(),
             typescript({
                 tsconfig: './tsconfig.json',

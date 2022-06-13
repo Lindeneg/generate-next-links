@@ -10,6 +10,9 @@ module.exports = {
             tsconfig: '<rootDir>/tsconfig.json',
         },
     },
+    moduleNameMapper: {
+        '@/(.*)': ['<rootDir>/src/$1'],
+    },
     setupFiles: ['<rootDir>/jest.setup.js'],
     verbose: true,
     testResultsProcessor: 'jest-sonar-reporter',

@@ -1,3 +1,5 @@
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links)
+
 ## Generate links to nextjs pages
 
 This program generates a file with a [TypeScript](https://www.typescriptlang.org/) `enum` containing pathnames to all pages in a [next.js](https://nextjs.org/) application.

@@ -31,16 +31,19 @@ describe('@get-config/utils', () => {
     });
 
     describe('isDirectory', () => {
-        test.each([[true], [false]])('can return lstat result if no error is thrown', async (expected) => {
-            mockedLstat.mockImplementation(async () => {
-                return cast({
-                    isDirectory: () => expected,
+        test.each([[true], [false]])(
+            'can return lstat result if no error is thrown',
+            async (expected) => {
+                mockedLstat.mockImplementation(async () => {
+                    return cast({
+                        isDirectory: () => expected,
+                    });
                 });
-            });
-            const result = await isDirectory('./found-dir');
-            expect(result).toBe(expected);
-            expect(mockedLogger.log).toHaveBeenCalledTimes(0);
-        });
+                const result = await isDirectory('./found-dir');
+                expect(result).toBe(expected);
+                expect(mockedLogger.log).toHaveBeenCalledTimes(0);
+            }
+        );
         test('can catch error and log it correctly', async () => {
             const testError = new Error('test-error');
             mockedLstat.mockImplementation(async () => {
@@ -48,7 +51,11 @@ describe('@get-config/utils', () => {
             });
             const result = await isDirectory('./not-found-dir');
             expect(result).toBe(false);
-            expect(mockedLogger.log).toHaveBeenCalledWith(LogLevel.More, LogSeverity.Error, testError);
+            expect(mockedLogger.log).toHaveBeenCalledWith(
+                LogLevel.More,
+                LogSeverity.Error,
+                testError
+            );
         });
     });
 

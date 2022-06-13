@@ -50,7 +50,9 @@ describe('@get-config', () => {
         ])('%s prints %s and exits', async (flag, mode) => {
             await getConfig([flag]);
             expect(mockedLogger.print).toHaveBeenCalledTimes(1);
-            expect(mockedLogger.print).toHaveBeenCalledWith(mode === 'version' ? `version: ${VERSION}` : HELP);
+            expect(mockedLogger.print).toHaveBeenCalledWith(
+                mode === 'version' ? `version: ${VERSION}` : HELP
+            );
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(0);
         });

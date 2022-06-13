@@ -18,17 +18,19 @@ export const isDirectory = async (target: string): Promise<boolean> => {
 
 export const getNativeSeparator = () => (platform === 'win32' ? '\\' : '/');
 
-export const getPrefixSeparator = (isBase: boolean, native: string): string => (isBase ? '/' : native);
+export const getPrefixSeparator = (isBase: boolean, native: string): string =>
+    isBase ? '/' : native;
 
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
     if (next) {
         const isName = ['--name', '-N'].includes(arg);
         const isTab = ['--tab-size', '-S'].includes(arg);
         const isBase = ['--base', '-B'].includes(arg);
-        const target =
-            isName || isTab
-                ? next
-                : prefixStringIfNotContainedInStart(next, getPrefixSeparator(isBase, config.nativeSeparator));
+        const prefixedNext = prefixStringIfNotContainedInStart(
+            next,
+            getPrefixSeparator(isBase, config.nativeSeparator)
+        );
+        const target = isName || isTab ? next : prefixedNext;
         if (['--out', '-O'].includes(arg)) {
             config.out = joinPath(config.out, target);
         } else if (isName) {

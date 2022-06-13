@@ -24,7 +24,12 @@ export const getContent = (links: Link[], { name, exportJson }: IConfig): string
 };
 
 export const getName = ({ out, name, omitTimestamp, exportJson }: IConfig): string =>
-    joinPath(out, `${name.toLowerCase()}${omitTimestamp ? '' : '_' + Date.now()}.${exportJson ? 'json' : 'ts'}`);
+    joinPath(
+        out,
+        `${name.toLowerCase()}${omitTimestamp ? '' : '_' + Date.now()}.${
+            exportJson ? 'json' : 'ts'
+        }`
+    );
 
 export const writeFile = async (name: string, content: string): Promise<void> => {
     try {

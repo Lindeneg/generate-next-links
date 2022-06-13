@@ -48,7 +48,11 @@ describe('@walk/utils', () => {
                 },
             };
         });
-        const files = await findPotentialFiles(!isWithout, './__mock__/pages', getNativeSeparator());
+        const files = await findPotentialFiles(
+            !isWithout,
+            './__mock__/pages',
+            getNativeSeparator()
+        );
         const target = isWithout ? withoutApi : mockPaths;
         expect(runs).toEqual(diff);
         // we run 3 times in total and 2 times recursively..

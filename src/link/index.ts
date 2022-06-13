@@ -1,6 +1,12 @@
-import { removeTargetExtension, getLastInArray, convertCamelCase, convertHyphens, prefixStringIfNumber } from '@/utils';
-import { regex } from './static';
-import type { TLinkOptions } from './types';
+import { regex } from '@/link/static';
+import type { TLinkOptions } from '@/link/types';
+import {
+    removeTargetExtension,
+    getLastInArray,
+    convertCamelCase,
+    convertHyphens,
+    prefixStringIfNumber,
+} from '@/utils';
 
 export default class Link {
     public readonly value: string;
@@ -36,10 +42,11 @@ export default class Link {
         const value = this.getInitialLink(entries);
         const notSeparator = regex.notSeparator.test(value);
         const key = this.runConversions(value).replace(regex.separator, (e) => {
-            const isOpt = (e.match(regex.opt) || []).length === 4;
+            const isOpt = e.match(regex.opt)?.length === 4;
             const label = regex.label.exec(e);
             if (label && label.length > 1) {
-                const prefix = (notSeparator ? '' : '_') + (isOpt ? 'optional_catchall_' : 'catchall_');
+                const prefix =
+                    (notSeparator ? '' : '_') + (isOpt ? 'optional_catchall_' : 'catchall_');
                 return prefix + label[1];
             }
             return e;

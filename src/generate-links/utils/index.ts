@@ -1,10 +1,10 @@
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
 import { getLastInArray } from '@/utils';
-import type { HandleEntryOptions, TGenerateLinkRegex } from '../types';
+import type { HandleEntryOptions, TGenerateLinkRegex } from '@/generate-links/types';
 
 export const getRegex = (api: boolean): TGenerateLinkRegex => ({
-    ext: api ? /\.(tsx|jsx|ts)/g : /\.(tsx|jsx)/g,
+    ext: api ? /\.(tsx|jsx|ts|js)/g : /\.(tsx|jsx)/g,
     file: /^(_app|_document)\.(tsx|jsx)$/,
 });
 

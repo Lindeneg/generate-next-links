@@ -10,10 +10,16 @@ export default async (args: string[]): Promise<string> => {
     const [content, name] = await writeFile(links, config);
     if (config.dry) {
         Logger.log(LogLevel.More, LogSeverity.None, content);
-        Logger.success(`dry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`);
+        Logger.success(
+            `dry run generated ${links.length} nextjs links in ${getRunTimeInSeconds(
+                config.start
+            )} seconds`
+        );
     } else {
         Logger.success(
-            `generated ${links.length} nextjs links in ${getRunTimeInSeconds(config.start)} seconds here: ${name}`
+            `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
+                config.start
+            )} seconds here: ${name}`
         );
     }
     Logger.log(LogLevel.Less, LogSeverity.None, '');

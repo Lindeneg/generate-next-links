@@ -19,25 +19,16 @@ const getInstance = (name: string, overrides?: Overrides | undefined, mocks?: st
 };
 
 describe('@link', () => {
-    test('handles standard file', () => {
-        const link = getInstance('davis');
-        expect(link.key).toEqual('MUSIC_JAZZ_MILES_DAVIS');
-        expect(link.value).toEqual('/music/jazz/miles/davis');
-    });
-    test('handles index file', () => {
-        const link = getInstance('index');
-        expect(link.key).toEqual('MUSIC_JAZZ_MILES');
-        expect(link.value).toEqual('/music/jazz/miles');
-    });
-    test('handles catchall file', () => {
-        const link = getInstance('[...davis]');
-        expect(link.key).toEqual('MUSIC_JAZZ_MILES_CATCHALL_DAVIS');
-        expect(link.value).toEqual('/music/jazz/miles/[...davis]');
-    });
-    test('handles optional catchall file', () => {
-        const link = getInstance('[[...davis]]');
-        expect(link.key).toEqual('MUSIC_JAZZ_MILES_OPTIONAL_CATCHALL_DAVIS');
-        expect(link.value).toEqual('/music/jazz/miles/[[...davis]]');
+    test.each([
+        ['standard', 'davis', '_DAVIS'],
+        ['index', 'index', ''],
+        ['catchall', '[...davis]', '_CATCHALL_DAVIS'],
+        ['optional catchall', '[[...davis]]', '_OPTIONAL_CATCHALL_DAVIS'],
+    ])('handles %s file', (_, name, expected) => {
+        const link = getInstance(name);
+        const suffixName = name === 'index' ? '' : '/' + name;
+        expect(link.key).toEqual('MUSIC_JAZZ_MILES' + expected);
+        expect(link.value).toEqual('/music/jazz/miles' + suffixName);
     });
 
     test('handles standard file with conversions', () => {

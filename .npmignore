@@ -4,7 +4,11 @@ __mock__
 src
 lib
 jest.config.js
-package-lock.json
+jest.setup.js
+.eslintrc.json
+coverage
 index.dev.js
 tsconfig.*
-webpack.config.js
+rollup.config.js
+sonar-project.properties
+test-report.xml

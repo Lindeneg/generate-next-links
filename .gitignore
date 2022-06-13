@@ -2,3 +2,5 @@ node_modules
 dist
 lib
 .DS*
+coverage
+test-report.xml

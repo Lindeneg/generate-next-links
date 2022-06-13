@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const { main, getConfig } = require("./dist/index");
+const { main } = require('./dist/bundle.min.js');
 
-main(getConfig(process.argv.slice(2)));
+main(process.argv.slice(2));

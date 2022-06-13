@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const regex = (() => {
     const separator = /\/(\[){1,2}\.{3}[a-zA-Z]+(\]){1,2}/;
     return {

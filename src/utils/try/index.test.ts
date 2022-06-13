@@ -1,6 +1,6 @@
 import { exit } from 'process';
 import Logger from '@cl-live-server/logger';
-import { tryOrExit, tryOrFallback, tryOrNull } from '.';
+import { tryOrExit, tryOrFallback, tryOrNull } from '@/utils/try';
 
 jest.mock('@cl-live-server/logger');
 jest.mock('process', () => ({

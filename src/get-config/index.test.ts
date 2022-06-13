@@ -1,12 +1,12 @@
 import { exit } from 'process';
 import Logger, { LogLevel } from '@cl-live-server/logger';
-import { cast } from '../utils';
-import getConfig from '.';
-import * as utils from './utils';
-import { HELP, VERSION } from './static';
+import { cast } from '@/utils';
+import getConfig from '@/get-config';
+import * as utils from '@/get-config/utils';
+import { HELP, VERSION } from '@/get-config/static';
 
 jest.mock('@cl-live-server/logger');
-jest.mock('./utils');
+jest.mock('@/get-config/utils');
 jest.mock('process', () => ({
     exit: jest.fn(),
 }));

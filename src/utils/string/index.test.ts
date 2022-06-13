@@ -1,4 +1,11 @@
-import { getRunTimeInSeconds, removeTargetExtension, convertCamelCase, convertHyphens, prefixStringIfNumber } from '.';
+import {
+    getRunTimeInSeconds,
+    removeTargetExtension,
+    convertCamelCase,
+    convertHyphens,
+    prefixStringIfNumber,
+    prefixStringIfNotContainedInStart,
+} from '@/utils/string';
 
 describe('@utils/string', () => {
     describe('removeTargetExtension', () => {
@@ -30,6 +37,15 @@ describe('@utils/string', () => {
             ['multi-word-kebab-case', 'multi_word_kebab_case'],
         ])('handles %s', (target, expected) => {
             expect(convertHyphens(target)).toEqual(expected);
+        });
+    });
+
+    describe('prefixStringWithSeparator', () => {
+        test.each([
+            ['CL', 'C', 'CL'],
+            ['L', 'C', 'CL'],
+        ])('handles %s', (target, prefix, expected) => {
+            expect(prefixStringIfNotContainedInStart(target, prefix)).toEqual(expected);
         });
     });
 

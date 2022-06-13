@@ -1,10 +1,10 @@
 /* istanbul ignore file */
-export { tryOrExit, tryOrFallback, tryOrNull, cast } from './try';
+export { tryOrExit, tryOrFallback, tryOrNull, cast } from '@/utils/try';
 export {
     getRunTimeInSeconds,
     removeTargetExtension,
     convertCamelCase,
     convertHyphens,
     prefixStringIfNumber,
-} from './string';
-export { getLastInArray } from './array';
+} from '@/utils/string';
+export { getLastInArray } from '@/utils/array';

@@ -13,6 +13,17 @@ export default class Link {
         [this.key, this.value] = this.generateLink(entries);
     }
 
+    public toString() {
+        return JSON.stringify(
+            {
+                name: this.key,
+                link: this.value,
+            },
+            null,
+            4
+        );
+    }
+
     private getNameWithoutExtension(entries: string[]): string {
         const last = getLastInArray(entries);
         if (last !== null) {

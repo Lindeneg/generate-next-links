@@ -2,7 +2,8 @@ import { lstat } from 'fs/promises';
 import { exit, platform } from 'process';
 import { join as joinPath } from 'path';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
-import { HELP } from '../static';
+import { HELP } from '@/get-config/static';
+import { prefixStringIfNotContainedInStart } from '@/utils/string';
 import type { IConfig } from '@/types';
 
 export const isDirectory = async (target: string): Promise<boolean> => {
@@ -17,18 +18,24 @@ export const isDirectory = async (target: string): Promise<boolean> => {
 
 export const getNativeSeparator = () => (platform === 'win32' ? '\\' : '/');
 
+export const getPrefixSeparator = (isBase: boolean, native: string): string => (isBase ? '/' : native);
+
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
     if (next) {
         const isName = ['--name', '-N'].includes(arg);
         const isTab = ['--tab-size', '-S'].includes(arg);
-        const target = isName || isTab ? next : joinPath('/', next);
+        const isBase = ['--base', '-B'].includes(arg);
+        const target =
+            isName || isTab
+                ? next
+                : prefixStringIfNotContainedInStart(next, getPrefixSeparator(isBase, config.nativeSeparator));
         if (['--out', '-O'].includes(arg)) {
             config.out = joinPath(config.out, target);
         } else if (isName) {
             config.name = target;
         } else if (['--path', '-P'].includes(arg)) {
             config.path = joinPath(config.path, target);
-        } else if (['--base', '-B'].includes(arg)) {
+        } else if (isBase) {
             config.base = target;
         } else if (isTab) {
             const n = parseInt(target);

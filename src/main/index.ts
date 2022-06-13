@@ -9,13 +9,13 @@ export default async (args: string[]): Promise<string> => {
     const links = await generateLinks(config);
     const [content, name] = await writeFile(links, config);
     if (config.dry) {
-        Logger.debug('dry run chosen, no files committed\n');
-        Logger.log(LogLevel.Less, LogSeverity.Default, content);
+        Logger.log(LogLevel.More, LogSeverity.None, content);
         Logger.success(`dry run generated ${links.length} links in ${getRunTimeInSeconds(config.start)} seconds`);
     } else {
         Logger.success(
             `generated ${links.length} nextjs links in ${getRunTimeInSeconds(config.start)} seconds here: ${name}`
         );
     }
+    Logger.log(LogLevel.Less, LogSeverity.None, '');
     return content;
 };

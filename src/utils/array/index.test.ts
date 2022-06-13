@@ -1,4 +1,4 @@
-import { getLastInArray } from '.';
+import { getLastInArray } from '@/utils/array';
 
 describe('@utils/array', () => {
     test('can get last of array if defined', () => {

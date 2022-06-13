@@ -17,11 +17,18 @@ export const convertCamelCase = (target: string): string => {
     return result.join(' ');
 };
 
-export const prefixStringIfNumber = (target: string, prefix?: string): string => {
-    if (target.length > 0 && Number.isNaN(Number(target[0]))) {
-        return target;
+export const prefixStringIfNotContainedInStart = (target: string, separator: string): string => {
+    if (!target.startsWith(separator)) {
+        return separator + target;
     }
-    return `${prefix || 'N'}${target}`;
+    return target;
+};
+
+export const prefixStringIfNumber = (target: string, prefix?: string): string => {
+    if (target.length > 0 && !Number.isNaN(parseInt(target[0]))) {
+        return prefixStringIfNotContainedInStart(target, prefix || 'N');
+    }
+    return target;
 };
 
 export const convertHyphens = (target: string): string => target.replace(regex.hyphens, '_');

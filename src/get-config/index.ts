@@ -1,7 +1,7 @@
 import { exit } from 'process';
 import Logger, { LogLevel } from '@cl-live-server/logger';
-import { checkPagesPath, getDefaultConfig, parseNextArgs, setPagesPath } from './utils';
-import { HELP, VERSION } from './static';
+import { checkPagesPath, getDefaultConfig, parseNextArgs, setPagesPath } from '@/get-config/utils';
+import { HELP, VERSION } from '@/get-config/static';
 import type { IConfig } from '@/types';
 
 export default async (args: string[]): Promise<IConfig> => {

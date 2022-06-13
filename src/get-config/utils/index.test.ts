@@ -2,9 +2,17 @@ import { lstat } from 'fs/promises';
 import path from 'path';
 import process, { exit, platform } from 'process';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
-import { isDirectory, getNativeSeparator, parseNextArgs, setPagesPath, checkPagesPath, getDefaultConfig } from '.';
-import { cast } from '../../utils';
-import { HELP } from '../static';
+import {
+    isDirectory,
+    getNativeSeparator,
+    getPrefixSeparator,
+    parseNextArgs,
+    setPagesPath,
+    checkPagesPath,
+    getDefaultConfig,
+} from '@/get-config/utils';
+import { HELP } from '@/get-config/static';
+import { cast } from '@/utils';
 
 jest.mock('@cl-live-server/logger');
 jest.mock('fs/promises');
@@ -62,20 +70,44 @@ describe('@get-config/utils', () => {
         });
     });
 
+    describe('getPrefixSeparator', () => {
+        test.each([
+            [true, '\\', '/'],
+            [false, '\\', '\\'],
+        ])('can return correct prefix separator', (isBase, native, expected) => {
+            expect(getPrefixSeparator(isBase, native)).toEqual(expected);
+        });
+    });
+
     describe('parseNextArgs', () => {
+        const sep = platform === 'win32' ? '\\' : '/';
         test.each([
             ['--name', '-N', 'name', 'AppLink', 'AppLink', {}],
-            ['--path', '-P', 'path', './some/out/path', path.join('root', 'some', 'out', 'path'), { path: './root' }],
-            ['--out', '-O', 'out', './some/out/path', path.join('root', 'some', 'out', 'path'), { out: './root' }],
-            ['--base', '-B', 'base', '/some-base', path.join('/', 'some-base'), {}],
+            [
+                '--path',
+                '-P',
+                'path',
+                './some/out/path',
+                path.join('root', 'some', 'out', 'path'),
+                { path: './root', nativeSeparator: sep },
+            ],
+            [
+                '--out',
+                '-O',
+                'out',
+                './some/out/path',
+                path.join('root', 'some', 'out', 'path'),
+                { out: './root', nativeSeparator: sep },
+            ],
+            ['--base', '-B', 'base', '/some-base', '/some-base', { nativeSeparator: sep }],
             ['--tab-size', '-S', 'tabWidth', '2', 2, {}],
         ])('can handle next arg %s | %s', (arg1, arg2, key, next, expected, overrides) => {
             const config1 = { ...overrides };
             const config2 = { ...overrides };
             parseNextArgs(next, arg1, cast(config1));
             parseNextArgs(next, arg2, cast(config2));
-            expect(config1).toEqual({ [key]: expected });
-            expect(config2).toEqual({ [key]: expected });
+            expect(config1).toEqual({ ...overrides, [key]: expected });
+            expect(config2).toEqual({ ...overrides, [key]: expected });
             expect(mockedLogger.error).toHaveBeenCalledTimes(0);
         });
         test('logs and exits if flag specified without required arg', () => {

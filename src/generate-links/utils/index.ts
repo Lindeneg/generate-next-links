@@ -18,7 +18,7 @@ export const handleEntry = async (
     const hasParents = splitted.length > 1;
     if (last && !regex.file.test(last) && (!isIndex || hasParents)) {
         const link: Link = new Link(splitted, config);
-        Logger.debug('generated link', JSON.stringify({ name: link.key, link: link.value }, null, 4));
+        Logger.log(LogLevel.More, LogSeverity.None, `generated link ${link}`);
         links.push(link);
     } else {
         Logger.log(LogLevel.More, LogSeverity.Warning, `ignoring file: ${last}`);

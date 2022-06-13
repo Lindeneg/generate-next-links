@@ -1,10 +1,10 @@
 import { readdir, stat } from 'fs/promises';
 import { resolve } from 'path';
 import { tryOrExit, tryOrNull } from '@/utils';
-import type { TWalkRegex } from '../types';
+import type { TWalkRegex } from '@/walk/types';
 
 export const getRegex = (api: boolean, separator: string): TWalkRegex => ({
-    file: api ? new RegExp(`^(.+.(tsx|jsx)|.+\\${separator}api\\${separator}.+.(ts|js))$`) : /^.+\.(tsx|jsx)$/,
+    file: api ? new RegExp(`^(.+.(tsx|jsx)|.*\\${separator}api\\${separator}.+.(ts|js))$`) : /^.+\.(tsx|jsx)$/,
     pages: new RegExp(`.+\\${separator}pages\\${separator}`),
 });
 

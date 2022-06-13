@@ -1,7 +1,7 @@
 {
     "name": "generate-next-links",
     "description": "Generate links enum containing paths to nextjs pages",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "author": {
         "name": "Christian Lindeneg",
         "email": "hi@lindeneg.org",

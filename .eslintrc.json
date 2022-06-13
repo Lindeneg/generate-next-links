@@ -15,7 +15,7 @@
         "default-case": "error",
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
-        "max-len": ["error", 120],
+        "max-len": ["error", 100],
         "no-else-return": 2,
         "semi": ["error", "always"],
         "space-unary-ops": 2

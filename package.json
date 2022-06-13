@@ -32,7 +32,9 @@
         "dev": "yarn run start -P __mock__ -D -V -C",
         "dev:api": "yarn run dev -A -E",
         "test": "jest",
-        "test:coverage": "yarn run test --coverage"
+        "test:coverage": "yarn run test --coverage",
+        "lint": "yarn eslint **/src/**",
+        "lint:fix": "yarn lint --fix"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^21.1.0",

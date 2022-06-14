@@ -1,5 +1,5 @@
 import { exit } from 'process';
-import Logger from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 
 export const tryOrFallback = async <T, F>(
     callback: () => Promise<T>,
@@ -17,9 +17,9 @@ export const tryOrFallback = async <T, F>(
 export const tryOrNull = async <T>(callback: () => Promise<T>): Promise<T | null> =>
     tryOrFallback(callback, async () => null);
 
-export const tryOrExit = async <T>(callback: () => Promise<T>, logError = false): Promise<T> =>
+export const tryOrExit = async <T>(callback: () => Promise<T>): Promise<T> =>
     tryOrFallback(callback, (err) => {
-        logError && Logger.error(err);
+        Logger.log(LogLevel.More, LogSeverity.Error, err);
         exit(1);
     });
 

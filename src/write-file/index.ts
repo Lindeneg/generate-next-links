@@ -2,12 +2,8 @@ import { exit } from 'process';
 import { format } from 'prettier';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
-import { getName, getContent, writeFile } from '@/write-file/utils';
+import { getName, getContent, writeFile, sortLinks } from '@/write-file/utils';
 import type { IConfig } from '@/types';
-
-const sortLinks = (links: Link[]): Link[] => {
-    return links.sort((a, b) => (b.key > a.key ? -1 : 1));
-};
 
 export default async (links: Link[], config: IConfig): Promise<[string, string]> => {
     const sortedLinks = sortLinks(links);

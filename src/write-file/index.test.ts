@@ -39,6 +39,7 @@ describe('@write-file', () => {
     test('calls getContent with given links, config', async () => {
         mockedUtils.getName.mockImplementation(() => 'test-name');
         mockedUtils.getContent.mockImplementation(() => 'test-content');
+        mockedUtils.sortLinks.mockImplementation(() => cast(links));
         const config = getConfig();
         await writeFile(cast(links), cast(config));
         expect(mockedUtils.getContent).toHaveBeenCalledTimes(1);

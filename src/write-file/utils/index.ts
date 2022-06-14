@@ -5,6 +5,10 @@ import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
 import type { IConfig } from '@/types';
 
+export const sortLinks = (links: Link[]): Link[] => {
+    return links.sort((a, b) => (b.key > a.key ? -1 : 1));
+};
+
 export const getContent = (links: Link[], { name, exportJson }: IConfig): string => {
     if (exportJson) {
         return JSON.stringify(

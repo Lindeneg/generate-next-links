@@ -3,7 +3,7 @@ import { exit, platform } from 'process';
 import { join as joinPath } from 'path';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { HELP } from '@/get-config/static';
-import { prefixStringIfNotContainedInStart } from '@/utils/string';
+import { prefixStringIfNotContainedInStart, prefixStringIfNumber } from '@/utils/string';
 import type { IConfig } from '@/types';
 
 export const isDirectory = async (target: string): Promise<boolean> => {
@@ -34,8 +34,7 @@ export const parseNextArgs = (next: string | undefined, arg: string, config: ICo
         if (['--out', '-O'].includes(arg)) {
             config.out = joinPath(config.out, target);
         } else if (isName) {
-            // TODO: validate name parameter, so it can safely be used in enum and as filename
-            config.name = target;
+            config.name = prefixStringIfNumber(target.replace(/[^a-z0-9]/gi, ''), '');
         } else if (['--path', '-P'].includes(arg)) {
             config.path = joinPath(config.path, target);
         } else if (isBase) {

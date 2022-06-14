@@ -2,14 +2,15 @@ import { exit } from 'process';
 import { format } from 'prettier';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
-import { getName, getContent, writeFile } from '@/write-file/utils';
+import { getName, getContent, writeFile, sortLinks } from '@/write-file/utils';
 import type { IConfig } from '@/types';
 
 export default async (links: Link[], config: IConfig): Promise<[string, string]> => {
+    const sortedLinks = sortLinks(links);
     const name = getName(config);
     let content: string;
     try {
-        content = format(getContent(links, config), {
+        content = format(getContent(sortedLinks, config), {
             parser: config.exportJson ? 'json' : 'typescript',
             tabWidth: config.tabWidth,
             singleQuote: config.singleQuotes,

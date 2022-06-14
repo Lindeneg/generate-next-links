@@ -90,6 +90,8 @@ describe('@get-config/utils', () => {
         const sep = platform === 'win32' ? '\\' : '/';
         test.each([
             ['--name', '-N', 'name', 'AppLink', 'AppLink', {}],
+            ['--name', '-N', 'name', 'App Link', 'AppLink', {}],
+            ['--name', '-N', 'name', '123 App%Link-123', 'N123AppLink123', {}],
             [
                 '--path',
                 '-P',

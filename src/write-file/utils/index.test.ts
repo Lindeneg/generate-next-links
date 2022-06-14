@@ -5,7 +5,7 @@ import { writeFile as fsWriteFile } from 'fs/promises';
 import { exit } from 'process';
 import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import Link from '@/link';
-import { getContent, getName, writeFile } from '@/write-file/utils';
+import { getContent, getName, writeFile, sortLinks } from '@/write-file/utils';
 import { cast } from '@/utils';
 
 jest.mock('fs/promises');
@@ -66,6 +66,24 @@ describe('@write-file/utils', () => {
             ['with', 'with', { omitTimestamp: false, exportJson: true }, /applink_\d+\.json/],
         ])('can get name %s timestamp and %s json', (_, __, opts, expected) => {
             expect(getName(cast({ out: './root', name: 'AppLink', ...opts }))).toMatch(expected);
+        });
+    });
+
+    describe('sortLinks', () => {
+        test('sorts array of links', () => {
+            expect(
+                sortLinks(
+                    cast([
+                        { key: 'PRODUCTS_EDIT', value: '/products/edit' },
+                        { key: 'ADMIN', value: '/admin' },
+                        { key: 'MILES_DAVIS', value: '/miles/davis' },
+                    ])
+                )
+            ).toEqual([
+                { key: 'ADMIN', value: '/admin' },
+                { key: 'MILES_DAVIS', value: '/miles/davis' },
+                { key: 'PRODUCTS_EDIT', value: '/products/edit' },
+            ]);
         });
     });
 

@@ -1,5 +1,5 @@
 import { exit } from 'process';
-import Logger from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { tryOrExit, tryOrFallback, tryOrNull } from '@/utils/try';
 
 jest.mock('@cl-live-server/logger');
@@ -22,20 +22,13 @@ describe('@utils/try', () => {
         successCallback = jest.fn(() => Promise.resolve('success'));
     });
     describe('tryOrExit', () => {
-        test('calls exit and does not log error if no opts', async () => {
+        test('calls exit and does log error if opts', async () => {
             await tryOrExit(errCallback);
             expect(errCallback).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(1);
-            expect(mockedLogger.error).toHaveBeenCalledTimes(0);
-        });
-        test('calls exit and does log error if opts', async () => {
-            await tryOrExit(errCallback, true);
-            expect(errCallback).toHaveBeenCalledTimes(1);
-            expect(mockedExit).toHaveBeenCalledTimes(1);
-            expect(mockedExit).toHaveBeenCalledWith(1);
-            expect(mockedLogger.error).toHaveBeenCalledTimes(1);
-            expect(mockedLogger.error).toHaveBeenCalledWith(err);
+            expect(mockedLogger.log).toHaveBeenCalledTimes(1);
+            expect(mockedLogger.log).toHaveBeenCalledWith(LogLevel.More, LogSeverity.Error, err);
         });
         test('returns callback result if no err', async () => {
             const result = await tryOrExit(successCallback);

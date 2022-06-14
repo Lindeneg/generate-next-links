@@ -1,1 +1,3 @@
-This folder simply contains a mock of a real nextjs pages folder. Used in development and in testing.
+This folder simply contains a mocked `pages` nextjs pages folder, which is used in development and testing.
+
+The `snapshot` folder contains snapshots of the expected content of generated files.

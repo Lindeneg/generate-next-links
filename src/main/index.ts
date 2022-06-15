@@ -8,19 +8,14 @@ export default async (args: string[]): Promise<string> => {
     const config = await getConfig(args);
     const links = await generateLinks(config);
     const [content, name] = await writeFile(links, config);
+    const msg = `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
+        config.start
+    )} seconds`;
     if (config.dry) {
         Logger.log(LogLevel.More, LogSeverity.None, content);
-        Logger.success(
-            `dry run generated ${links.length} nextjs links in ${getRunTimeInSeconds(
-                config.start
-            )} seconds`
-        );
+        Logger.success('dry run ' + msg);
     } else {
-        Logger.success(
-            `generated ${links.length} nextjs links in ${getRunTimeInSeconds(
-                config.start
-            )} seconds here: ${name}`
-        );
+        Logger.success(msg + ' here: ' + name);
     }
     Logger.log(LogLevel.Less, LogSeverity.None, '');
     return content;

@@ -21,6 +21,15 @@ export const getNativeSeparator = () => (platform === 'win32' ? '\\' : '/');
 export const getPrefixSeparator = (isBase: boolean, native: string): string =>
     isBase ? '/' : native;
 
+export const parseTabSizeNumber = (target: string): number => {
+    const n = parseInt(target);
+    if (typeof n === 'number' && !Number.isNaN(n)) {
+        return n;
+    }
+    Logger.error(`flag '--tab-size' '-S' requires integer argument, not '${target}'`);
+    exit(1);
+};
+
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
     if (next) {
         const isName = ['--name', '-N'].includes(arg);
@@ -40,10 +49,7 @@ export const parseNextArgs = (next: string | undefined, arg: string, config: ICo
         } else if (isBase) {
             config.base = target;
         } else if (isTab) {
-            const n = parseInt(target);
-            if (typeof n === 'number' && !Number.isNaN(n)) {
-                config.tabWidth = n;
-            }
+            config.tabWidth = parseTabSizeNumber(target);
         }
     } else {
         Logger.error(`a flag '${arg}' that requires an argument was passed without an argument`);

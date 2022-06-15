@@ -9,6 +9,7 @@ import {
     parseNextArgs,
     setPagesPath,
     checkPagesPath,
+    parseTabSizeNumber,
     getDefaultConfig,
 } from '@/get-config/utils';
 import { HELP } from '@/get-config/static';
@@ -144,6 +145,24 @@ describe('@get-config/utils', () => {
             };
             setPagesPath(cast(config));
             expect(config.path).toEqual(expected);
+        });
+    });
+
+    describe('parseTabSizeNumber', () => {
+        test.each([
+            ['2', 0, 2],
+            ['asd', 1, undefined],
+        ])('can set path from: %s', (target, err, expected) => {
+            const result = parseTabSizeNumber(target);
+            expect(result).toEqual(expected);
+            expect(mockedExit).toHaveBeenCalledTimes(err);
+            expect(mockedLogger.error).toHaveBeenCalledTimes(err);
+            if (err) {
+                expect(mockedLogger.error).toHaveBeenCalledWith(
+                    // eslint-disable-next-line quotes
+                    "flag '--tab-size' '-S' requires integer argument, not 'asd'"
+                );
+            }
         });
     });
 

@@ -10,10 +10,10 @@ This program generates a file with a [TypeScript](https://www.typescriptlang.org
 
 ##### Installing
 
-- `npm install -g generate-next-links`
-- `generate-next-links [...ARGS]`
-- **or**
-- `npx generate-next-links@latest [...ARGS]`
+-   `npm install -g generate-next-links`
+-   `generate-next-links [...ARGS]`
+-   **or**
+-   `npx generate-next-links@latest [...ARGS]`
 
 ##### Options
 
@@ -28,6 +28,7 @@ Options:
  -P --path [PATH]         path to folder where 'pages' directory resides
  -O --out  [PATH]         path to folder where ts file will be written to
  -B --base [PATH]         custom base path, defaults to '/'
+ -S --tab-size [INT]      specify tab size used in generated file
  -A --api                 include API paths found in '/pages/api' folder
  -R --root                include an 'INDEX' entry with path '/'
  -D --dry                 perform all operations except writing to disk
@@ -35,6 +36,8 @@ Options:
  -T --omit-timestamp      omit timestamp from written ts file
  -J --export-json         export json instead of ts enum
  -C --convert-camel-case  convert camel case to be delimited by underscore
+ -E --convert-hyphens     convert kebab case to be delimited by underscore
+ -Q --single-quote        use single quotes in the generated file
  -I --version             show current version
  -H --help                show help
 ```
@@ -76,16 +79,16 @@ Given the above structure, this program will generate a `.ts` file with the foll
 
 ```ts
 export enum links {
-  N404 = "/404",
-  N500 = "/500",
-  ADMIN = "/admin",
-  ADMIN_ADMINISTRATE = "/admin/administrate",
-  ADMIN_USER = "/admin/user",
-  ADMIN_USER_OPTIONS_DASHBOARD = "/admin/user/options/dashboard",
-  CONTENT = "/content",
-  CONTENT_ARTICLEID = "/content/[articleId]",
-  POSTS_CATCHALL_SLUG = "/posts/[...slug]",
-  USER_OPTIONAL_CATCHALL_SLUG = "/user/[[...slug]]",
+    N404 = '/404',
+    N500 = '/500',
+    ADMIN = '/admin',
+    ADMIN_ADMINISTRATE = '/admin/administrate',
+    ADMIN_USER = '/admin/user',
+    ADMIN_USER_OPTIONS_DASHBOARD = '/admin/user/options/dashboard',
+    CONTENT = '/content',
+    CONTENT_ARTICLEID = '/content/[articleId]',
+    POSTS_CATCHALL_SLUG = '/posts/[...slug]',
+    USER_OPTIONAL_CATCHALL_SLUG = '/user/[[...slug]]',
 }
 ```
 
@@ -111,7 +114,7 @@ Or with another library such as [cl-fill-link](https://github.com/Lindeneg/cl-fi
 ```ts
 // returns: '/posts/category/music/jazz/miles-davis'
 fillLink(links.POSTS_CATCHALL_SLUG, {
-  slug: ["category", "music", "jazz", "miles-davis"],
+    slug: ['category', 'music', 'jazz', 'miles-davis'],
 });
 ```
 
@@ -134,19 +137,19 @@ Run the program with the `--api` flag to produce the following:
 
 ```ts
 export enum links {
-  N404 = "/404",
-  N500 = "/500",
-  ADMIN = "/admin",
-  ADMIN_ADMINISTRATE = "/admin/administrate",
-  ADMIN_USER = "/admin/user",
-  ADMIN_USER_OPTIONS_DASHBOARD = "/admin/user/options/dashboard",
-  API_ARTICLE_CREATE = "/api/article/create",
-  API_AUTH_LOGIN = "/api/auth/login",
-  API_AUTH_LOGOUT = "/api/auth/logout",
-  API_USER_OPTIONAL_CATCHALL_USERID = "/api/user/[[...userId]]",
-  CONTENT = "/content",
-  CONTENT_ARTICLEID = "/content/[articleId]",
-  POSTS_CATCHALL_SLUG = "/posts/[...slug]",
-  USER_OPTIONAL_CATCHALL_SLUG = "/user/[[...slug]]",
+    N404 = '/404',
+    N500 = '/500',
+    ADMIN = '/admin',
+    ADMIN_ADMINISTRATE = '/admin/administrate',
+    ADMIN_USER = '/admin/user',
+    ADMIN_USER_OPTIONS_DASHBOARD = '/admin/user/options/dashboard',
+    API_ARTICLE_CREATE = '/api/article/create',
+    API_AUTH_LOGIN = '/api/auth/login',
+    API_AUTH_LOGOUT = '/api/auth/logout',
+    API_USER_OPTIONAL_CATCHALL_USERID = '/api/user/[[...userId]]',
+    CONTENT = '/content',
+    CONTENT_ARTICLEID = '/content/[articleId]',
+    POSTS_CATCHALL_SLUG = '/posts/[...slug]',
+    USER_OPTIONAL_CATCHALL_SLUG = '/user/[[...slug]]',
 }
 ```

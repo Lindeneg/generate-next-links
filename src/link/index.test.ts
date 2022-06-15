@@ -5,17 +5,15 @@ type Overrides = Partial<TLinkOptions>;
 
 const getMockEntries = (name: string) => ['music', 'jazz', 'miles', `${name}.tsx`];
 
-const getOpts = (overrides: Overrides): TLinkOptions => ({
+const getOpts = (overrides: Overrides = {}): TLinkOptions => ({
     convertCamelCase: false,
     convertHyphens: false,
+    base: '/',
     ...overrides,
 });
 
 const getInstance = (name: string, overrides?: Overrides | undefined, mocks?: string[]): Link => {
-    return new Link(
-        mocks ? mocks : getMockEntries(name),
-        overrides ? getOpts(overrides) : undefined
-    );
+    return new Link(mocks ? mocks : getMockEntries(name), getOpts(overrides));
 };
 
 describe('@link', () => {
@@ -50,6 +48,25 @@ describe('@link', () => {
         expect(link.value).toEqual('/helloThere/good-sir');
     });
 
+    test.each([
+        [
+            '/some-base/path',
+            'SOME_BASE_PATH_HELLOTHERE_GOOD_SIR',
+            '/some-base/path/helloThere/good-sir',
+        ],
+        ['someBase', 'SOMEBASE_HELLOTHERE_GOOD_SIR', '/someBase/helloThere/good-sir'],
+        ['/another/base/', 'ANOTHER_BASE_HELLOTHERE_GOOD_SIR', '/another/base/helloThere/good-sir'],
+        ['/', 'HELLOTHERE_GOOD_SIR', '/helloThere/good-sir'],
+    ])('handles %s base', (base, expectedKey, expectedValue) => {
+        const link = getInstance(
+            '[[...davis]]',
+            { convertCamelCase: false, convertHyphens: true, base },
+            ['helloThere', 'good-sir.tsx']
+        );
+        expect(link.key).toEqual(expectedKey);
+        expect(link.value).toEqual(expectedValue);
+    });
+
     test('handles optional catchall file with entries', () => {
         const link = getInstance('[[...davis]]', undefined, ['[[...davis]]']);
         expect(link.key).toEqual('OPTIONAL_CATCHALL_DAVIS');
@@ -59,7 +76,7 @@ describe('@link', () => {
     test('handles standard file without entries', () => {
         const link = getInstance('', undefined, []);
         expect(link.key).toEqual('');
-        expect(link.value).toEqual('');
+        expect(link.value).toEqual('/');
     });
 
     test('handles toString call correctly', () => {

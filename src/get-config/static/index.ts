@@ -14,7 +14,7 @@ Options:
  -B --base     [PATH]         nextjs base path, defaults to '/'
  -S --tab-size [INT]          specify tab size used in generated file
  -A --api                     include API paths found in '/pages/api' folder
- -R --root                    include an 'INDEX' entry with path '/'
+ -R --root                    include an 'ROOT' entry with path '/'
  -D --dry                     perform all operations except writing to disk
  -V --verbose                 show all log messages in stdout
  -T --omit-timestamp          omit timestamp from written ts file

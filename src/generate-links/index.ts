@@ -1,3 +1,4 @@
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import walk from '@/walk';
 import Link from '@/link';
 import RootLink from '@/link/root-link';
@@ -16,7 +17,9 @@ export default async ({
     const config = { convertCamelCase, convertHyphens, base };
     const links: Link[] = [];
     if (root) {
-        links.push(new RootLink(config));
+        const rootLink = new RootLink(config);
+        Logger.log(LogLevel.More, LogSeverity.None, `generated link ${rootLink}`);
+        links.push(rootLink);
     }
     const regex = getRegex(api);
     const filePaths = await walk(api, path, nativeSeparator);

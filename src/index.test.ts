@@ -2,6 +2,7 @@ import { unlink, readFile } from 'fs/promises';
 import {
     tsApiSnapshot,
     tsNonApiSnapshot,
+    tsRootBaseSnapshot,
     jsonApiSnapshot,
     jsonNonApiSnapshot,
 } from '../__mock__/snapshots';
@@ -36,13 +37,13 @@ describe('@generate-next-links', () => {
     });
 
     test.each([
-        ['ts', 'without', tsNonApiSnapshot],
-        ['ts', 'with', tsApiSnapshot],
-        ['json', 'without', jsonNonApiSnapshot],
-        ['json', 'with', jsonApiSnapshot],
-    ])('can generate %s file with pages links %s api', async (ext, mode, snapshot) => {
-        const api = mode === 'with';
-        const name = mode + 'links';
+        ['ts', [], tsNonApiSnapshot, 'a'],
+        ['ts', ['-A'], tsApiSnapshot, 'b'],
+        ['ts', ['-R', '-B', '/some/base'], tsRootBaseSnapshot, 'e'],
+        ['json', ['-J'], jsonNonApiSnapshot, 'c'],
+        ['json', ['-J', '-A'], jsonApiSnapshot, 'd'],
+    ])('can generate %s file with pages links with %s', async (ext, overrides, snapshot, id) => {
+        const name = id + 'links';
         const ename = name + '.' + ext;
         file = ename;
 
@@ -57,8 +58,7 @@ describe('@generate-next-links', () => {
             '-Q',
             '-C',
             '-E',
-            api ? '-A' : '',
-            ext === 'json' ? '-J' : '',
+            ...overrides,
         ]);
 
         const content = await read(ename);

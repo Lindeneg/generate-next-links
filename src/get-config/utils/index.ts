@@ -26,8 +26,9 @@ export const parseTabSizeNumber = (target: string): number => {
     if (typeof n === 'number' && !Number.isNaN(n)) {
         return n;
     }
-    Logger.error(`flag '--tab-size' '-S' requires integer argument, not '${target}'`);
-    exit(1);
+    const err = `flag '--tab-size' '-S' requires integer argument, not '${target}'`;
+    Logger.error(err);
+    throw new Error(err);
 };
 
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {

@@ -28,7 +28,7 @@ export const parseTabSizeNumber = (target: string): number => {
     }
     const err = `flag '--tab-size' '-S' requires integer argument, not '${target}'`;
     Logger.error(err);
-    throw new Error(err);
+    exit(1);
 };
 
 export const parseNextArgs = (next: string | undefined, arg: string, config: IConfig): void => {
@@ -72,7 +72,7 @@ export const checkPagesPath = async (config: IConfig): Promise<void> => {
     const directory = await isDirectory(config.path);
     if (!directory) {
         Logger.error('`pages` folder not found.. exiting..');
-        Logger.print(HELP);
+        Logger.print(HELP, LogSeverity.None);
         exit(1);
     }
 };

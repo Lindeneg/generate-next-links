@@ -175,7 +175,7 @@ describe('@get-config/utils', () => {
             });
             await checkPagesPath(cast({ path: './some-path' }));
             expect(mockedLogger.error).toHaveBeenCalledWith('`pages` folder not found.. exiting..');
-            expect(mockedLogger.print).toHaveBeenCalledWith(HELP);
+            expect(mockedLogger.print).toHaveBeenCalledWith(HELP, LogSeverity.None);
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(1);
         });

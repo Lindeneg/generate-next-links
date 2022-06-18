@@ -14,8 +14,7 @@ export const handleEntry = async (
 ): Promise<void> => {
     const splitted = filePath.split(separator);
     const last = getLastInArray(splitted);
-    //@ts-expect-error asd
-    const isIndex = last.split('.')[0] === 'index';
+    const isIndex = last?.split('.')[0] === 'index';
     const hasParents = splitted.length > 1;
     if (last && !regex.file.test(last) && (!isIndex || hasParents)) {
         const link: Link = new Link(splitted, config);

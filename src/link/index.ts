@@ -44,12 +44,14 @@ export default class Link {
         const value = this.getInitialLink(entries);
         const notSeparator = regex.notSeparator.test(value);
         const key = this.runConversions(value).replace(regex.separator, (e) => {
-            //@ts-expect-error asd
-            const isOpt = e.match(regex.opt).length === 4;
+            const isOpt = e.match(regex.opt)?.length === 4;
             const label = regex.label.exec(e);
-            const prefix = (notSeparator ? '' : '_') + (isOpt ? 'optional_catchall_' : 'catchall_');
-            //@ts-expect-error asd
-            return prefix + String(label[1]);
+            if (label && label.length > 1) {
+                const prefix =
+                    (notSeparator ? '' : '_') + (isOpt ? 'optional_catchall_' : 'catchall_');
+                return prefix + label[1];
+            }
+            return e;
         });
 
         return [this.runClean(key), value];

@@ -24,13 +24,13 @@ If no 'path' is specified, a 'pages' folder must be located
 inside the folder where the script is running from
 
 Options:
- -N --name [NAME]         name of generated TypeScript enum
- -P --path [PATH]         path to folder where 'pages' directory resides
- -O --out  [PATH]         path to folder where ts file will be written to
- -B --base [PATH]         custom base path, defaults to '/'
- -S --tab-size [INT]      specify tab size used in generated file
+ -N --name [NAME]         name of generated TypeScript enum               default: links
+ -P --path [PATH]         path to folder where 'pages' directory resides  default: cwd
+ -O --out  [PATH]         path to folder where ts file will be written to default: cwd
+ -B --base [PATH]         define a custom base path to prefix all paths   default: /
+ -S --tab-size [INT]      specify tab size used in generated file         default: 4
  -A --api                 include API paths found in '/pages/api' folder
- -R --root                include an 'INDEX' entry with path '/'
+ -R --root                include a root entry with path [BASE]
  -D --dry                 perform all operations except writing to disk
  -V --verbose             show all log messages in stdout
  -T --omit-timestamp      omit timestamp from written ts file

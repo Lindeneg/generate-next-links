@@ -1,5 +1,5 @@
 import { exit } from 'process';
-import Logger, { LogLevel } from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { checkPagesPath, getDefaultConfig, parseNextArgs, setPagesPath } from '@/get-config/utils';
 import { HELP, VERSION } from '@/get-config/static';
 import type { IConfig } from '@/types';
@@ -24,7 +24,7 @@ export default async (args: string[]): Promise<IConfig> => {
                 break;
             case '--version':
             case '-I':
-                Logger.print(`version: ${VERSION}`);
+                Logger.print(`version: ${VERSION}`, LogSeverity.None);
                 return exit(0);
             case '--dry':
             case '-D':
@@ -65,7 +65,7 @@ export default async (args: string[]): Promise<IConfig> => {
                 break;
             case '--help':
             case '-H':
-                Logger.print(HELP);
+                Logger.print(HELP, LogSeverity.None);
                 return exit(0);
             default:
                 break;

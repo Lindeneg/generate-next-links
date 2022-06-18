@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 export const tsApiSnapshot = `
-"export enum withlinks {
+"export enum blinks {
     ADMIN = '/admin',
     ADMIN_BLOG = '/admin/blog',
     ADMIN_BLOG_POSTS = '/admin/blog/posts',
@@ -29,7 +30,7 @@ export const tsApiSnapshot = `
 `;
 
 export const tsNonApiSnapshot = `
-"export enum withoutlinks {
+"export enum alinks {
     ADMIN = '/admin',
     ADMIN_BLOG = '/admin/blog',
     ADMIN_BLOG_POSTS = '/admin/blog/posts',
@@ -50,6 +51,33 @@ export const tsNonApiSnapshot = `
     PRODUCTS_CREATE = '/products/create',
     PRODUCTS_EDIT = '/products/edit',
     PRODUCTS_ID = '/products/[id]',
+}
+"
+`;
+
+export const tsRootBaseSnapshot = `
+"export enum elinks {
+    SOME_BASE_400 = '/some/base/400',
+    SOME_BASE_42_ANSWER = '/some/base/42/answer',
+    SOME_BASE_500 = '/some/base/500',
+    SOME_BASE_ADMIN = '/some/base/admin',
+    SOME_BASE_ADMIN_BLOG = '/some/base/admin/blog',
+    SOME_BASE_ADMIN_BLOG_POSTS = '/some/base/admin/blog/posts',
+    SOME_BASE_ADMIN_USER_ID = '/some/base/admin/user/[id]',
+    SOME_BASE_CATCHALL_MILES = '/some/base/[...miles]',
+    SOME_BASE_CUSTOMER_ID = '/some/base/[customerId]',
+    SOME_BASE_FAQ_LANGUAGE = '/some/base/faq/[language]',
+    SOME_BASE_OPTIONAL_CATCHALL_DAVIS = '/some/base/[[...davis]]',
+    SOME_BASE_POST_ALT_OPTIONAL_CATCHALL_SLUG = '/some/base/post-alt/[[...slug]]',
+    SOME_BASE_POST_CATCHALL_SLUG = '/some/base/post/[...slug]',
+    SOME_BASE_PRODUCTS_CATEGORY = '/some/base/products/[category]',
+    SOME_BASE_PRODUCTS_CATEGORY_THEME_COLOR_COLOR_ID = '/some/base/products/[category]/theme/color/[colorId]',
+    SOME_BASE_PRODUCTS_CATEGORY_THEME_CURRENT = '/some/base/products/[category]/theme/current',
+    SOME_BASE_PRODUCTS_CATEGORY_THEME_NEW = '/some/base/products/[category]/theme/new',
+    SOME_BASE_PRODUCTS_CREATE = '/some/base/products/create',
+    SOME_BASE_PRODUCTS_EDIT = '/some/base/products/edit',
+    SOME_BASE_PRODUCTS_ID = '/some/base/products/[id]',
+    SOME_BASE_ROOT = '/some/base',
 }
 "
 `;

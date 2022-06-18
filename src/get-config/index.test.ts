@@ -1,5 +1,5 @@
 import { exit } from 'process';
-import Logger, { LogLevel } from '@cl-live-server/logger';
+import Logger, { LogLevel, LogSeverity } from '@cl-live-server/logger';
 import { cast } from '@/utils';
 import getConfig from '@/get-config';
 import * as utils from '@/get-config/utils';
@@ -51,7 +51,8 @@ describe('@get-config', () => {
             await getConfig([flag]);
             expect(mockedLogger.print).toHaveBeenCalledTimes(1);
             expect(mockedLogger.print).toHaveBeenCalledWith(
-                mode === 'version' ? `version: ${VERSION}` : HELP
+                mode === 'version' ? `version: ${VERSION}` : HELP,
+                LogSeverity.None
             );
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(0);

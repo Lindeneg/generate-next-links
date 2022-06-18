@@ -9,13 +9,15 @@ import {
 } from '@/utils';
 
 export default class Link {
-    public readonly value: string;
-    public readonly key: string;
+    public value: string;
+    public key: string;
 
     private readonly options: TLinkOptions;
+    protected readonly strippedBase: string;
 
-    constructor(entries: string[], options: TLinkOptions = {}) {
+    constructor(entries: string[], options: TLinkOptions) {
         this.options = { convertCamelCase: false, convertHyphens: false, ...options };
+        this.strippedBase = '/' + this.stripForwardSlash(this.options.base);
         [this.key, this.value] = this.generateLink(entries);
     }
 
@@ -84,13 +86,24 @@ export default class Link {
         const name = this.getNameWithoutExtension(entries);
         const copy = [...entries];
         copy.pop();
-        let value = copy.join('/') + '/' + (name === 'index' ? '' : name);
-        if (!value.startsWith('/')) {
-            value = '/' + value;
+        const value = copy.join('/') + '/' + (name === 'index' ? '' : name);
+        return this.appendToBase(value);
+    }
+
+    private stripForwardSlash(target: string): string {
+        if (target.startsWith('/')) {
+            target = target.slice(1);
         }
-        if (value.endsWith('/')) {
-            value = value.slice(0, value.length - 1);
+        if (target.endsWith('/')) {
+            target = target.slice(0, target.length - 1);
         }
-        return value;
+        return target;
+    }
+
+    protected appendToBase(value: string): string {
+        const strippedValue = this.stripForwardSlash(value);
+        return (
+            this.strippedBase + (this.strippedBase === '/' ? strippedValue : '/' + strippedValue)
+        );
     }
 }

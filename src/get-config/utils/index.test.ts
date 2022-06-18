@@ -9,6 +9,7 @@ import {
     parseNextArgs,
     setPagesPath,
     checkPagesPath,
+    parseTabSizeNumber,
     getDefaultConfig,
 } from '@/get-config/utils';
 import { HELP } from '@/get-config/static';
@@ -147,6 +148,24 @@ describe('@get-config/utils', () => {
         });
     });
 
+    describe('parseTabSizeNumber', () => {
+        test.each([
+            ['2', 0, 2],
+            ['asd', 1, undefined],
+        ])('can set path from: %s', (target, err, expected) => {
+            const result = parseTabSizeNumber(target);
+            expect(result).toEqual(expected);
+            expect(mockedExit).toHaveBeenCalledTimes(err);
+            expect(mockedLogger.error).toHaveBeenCalledTimes(err);
+            if (err) {
+                expect(mockedLogger.error).toHaveBeenCalledWith(
+                    // eslint-disable-next-line quotes
+                    "flag '--tab-size' '-S' requires integer argument, not 'asd'"
+                );
+            }
+        });
+    });
+
     describe('checkPagesPath', () => {
         test('exits if pages is not directory', async () => {
             mockedLstat.mockImplementation(async () => {
@@ -156,7 +175,7 @@ describe('@get-config/utils', () => {
             });
             await checkPagesPath(cast({ path: './some-path' }));
             expect(mockedLogger.error).toHaveBeenCalledWith('`pages` folder not found.. exiting..');
-            expect(mockedLogger.print).toHaveBeenCalledWith(HELP);
+            expect(mockedLogger.print).toHaveBeenCalledWith(HELP, LogSeverity.None);
             expect(mockedExit).toHaveBeenCalledTimes(1);
             expect(mockedExit).toHaveBeenCalledWith(1);
         });

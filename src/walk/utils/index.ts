@@ -10,6 +10,27 @@ export const getRegex = (api: boolean, separator: string): TWalkRegex => ({
     pages: new RegExp(`.+\\${separator}pages\\${separator}`),
 });
 
+export const targetFilePathCallback = async (
+    api: boolean,
+    targetPath: string,
+    separator: string,
+    regex: TWalkRegex,
+    filePath: string,
+    results: string[],
+    promises: Promise<void | string[]>[]
+) => {
+    const resolvedFilePath = resolve(targetPath, filePath);
+    const fileStat = await tryOrNull(() => stat(resolvedFilePath));
+    if (fileStat && fileStat.isDirectory()) {
+        return findPotentialFiles(api, resolvedFilePath, separator, results, promises);
+    }
+    if (regex.file.test(resolvedFilePath)) {
+        const cleanedFilePath = resolvedFilePath.replace(regex.pages, '');
+        results.push(cleanedFilePath);
+    }
+    return Promise.resolve();
+};
+
 export const findPotentialFiles = async (
     api: boolean,
     targetPath: string,
@@ -19,19 +40,8 @@ export const findPotentialFiles = async (
 ): Promise<string[]> => {
     const regex = getRegex(api, separator);
     const targetFilePaths = await tryOrExit(() => readdir(targetPath));
-    promises.push(
-        ...targetFilePaths.map(async (filePath) => {
-            const resolvedFilePath = resolve(targetPath, filePath);
-            const fileStat = await tryOrNull(() => stat(resolvedFilePath));
-            if (fileStat && fileStat.isDirectory()) {
-                return findPotentialFiles(api, resolvedFilePath, separator, results);
-            }
-            if (regex.file.test(resolvedFilePath)) {
-                const cleanedFilePath = resolvedFilePath.replace(regex.pages, '');
-                results.push(cleanedFilePath);
-            }
-            return Promise.resolve();
-        })
+    promises = targetFilePaths.map((filePath) =>
+        targetFilePathCallback(api, targetPath, separator, regex, filePath, results, promises)
     );
     await Promise.all(promises);
     return results;

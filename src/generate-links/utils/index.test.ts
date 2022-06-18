@@ -7,7 +7,7 @@ jest.mock('@/link');
 
 const mockedLogger = jest.mocked(Logger, true);
 const mockedLink = jest.mocked(Link, true);
-const config = {};
+const config = { base: '/' };
 
 describe('@generate-links/utils', () => {
     beforeEach(() => {

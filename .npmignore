@@ -7,7 +7,6 @@ jest.config.js
 jest.setup.js
 .eslintrc.json
 coverage
-index.dev.js
 tsconfig.*
 rollup.config.js
 sonar-project.properties

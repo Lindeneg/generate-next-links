@@ -138,7 +138,7 @@ describe('@get-config/utils', () => {
             ['./root/pages', '/'],
             ['./root/pages/', '/'],
         ])('can set path from: %s', (pagesPath, nativeSeparator) => {
-            const expected = path.join('root', 'pages');
+            const expected = path.join('/', 'root', 'pages');
             const config = {
                 nativeSeparator,
                 path: pagesPath,

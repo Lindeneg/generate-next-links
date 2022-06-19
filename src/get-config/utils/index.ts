@@ -62,9 +62,9 @@ export const setPagesPath = (config: IConfig): void => {
     const splitted = config.path.split(config.nativeSeparator);
     const lastIdx = splitted.length - 1;
     if (!(splitted[lastIdx] === 'pages' || splitted[lastIdx - 1] === 'pages')) {
-        config.path = joinPath(config.path, 'pages');
+        config.path = joinPath('/', config.path, 'pages');
     } else {
-        config.path = joinPath(...splitted);
+        config.path = joinPath('/', ...splitted);
     }
 };
 

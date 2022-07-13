@@ -1,5 +1,8 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Lindeneg_generate-next-links&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Lindeneg_generate-next-links)
 
+
+*I **highly** recommend checking out [this](https://github.com/tatethurston/nextjs-routes) library created by [Tate Thurston](https://github.com/tatethurston). It types the standard nextjs `Link` component by using declaration merging. If you have no need for an exported `enum` or `JSON` file, I urge you to use `nextjs-routes`, as it is superior. I will personally use it going forward.*
+
 ## Generate links to nextjs pages
 
 This program generates a file with a [TypeScript](https://www.typescriptlang.org/) `enum` containing pathnames to all pages in a [next.js](https://nextjs.org/) application.
